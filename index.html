@@ -342,6 +342,17 @@
             { id: 4, name: "台灣大賽G7決戰", req: 15000, rewardText: "+10 抽卡券 & 500 碎片", rewardType: "both", rewardValT: 10, rewardValF: 500 }
         ];
 
+        // 🌟 新增球場天氣與環境陣列
+        const stadiumEnvironments = [
+            { name: "☀️ 臺南球場 (烈日大賽)", bonusTeam: "Uni Girls", desc: "統一獅女孩戰力 +20%" },
+            { name: "⛈️ 洲際球場 (雨天延賽)", bonusTeam: "Passion Sisters", desc: "中信兄弟女孩戰力 +20%" },
+            { name: "🏟️ 臺北大巨蛋 (舒適空調)", bonusTeam: "All", desc: "全員基礎戰力 +10%" },
+            { name: "🦅 澄清湖球場 (狂風大作)", bonusTeam: "Wing Stars", desc: "台鋼雄鷹女孩戰力 +20%" },
+            { name: "⚾ 樂天桃園球場 (熱血應援)", bonusTeam: "Rakuten Girls", desc: "樂天桃猿女孩戰力 +20%" },
+            { name: "🐉 天母棒球場 (龍星大樂)", bonusTeam: "Dragons Beauties", desc: "味全龍女孩戰力 +20%" }
+        ];
+        let currentEnvironment = stadiumEnvironments[0];
+
         // ==========================================
         // 存檔與變數區 (V13 自動向下相容繼承)
         // ==========================================
@@ -446,7 +457,6 @@
         
         function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) {
             let girl;
-            // PU 卡包機制：40% 機率直接強鎖定為當前 PU 星向女孩！
             if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } 
             else { girl = getRandomGirl(forceTeam); }
             
@@ -470,9 +480,18 @@
         function startOpening(mode, costType = 'tickets', targetTeam = null) {
             if (isGameOver) return alert("遊戲已完美破關！無法再抽取新卡包。"); cardQueue = []; document.getElementById('duplicate-alert').innerText = "";
             
+            // 🐛 修復：將原本不存在的 consumeTickets 改為直接計算並存檔
             if (costType === 'tickets') {
-                if(mode === 'pack' || mode === 'team' || mode === 'pickup') { if (tickets < 1) return alert("抽卡券不足！"); consumeTickets(1); }
-                if(mode === 'box') { if (tickets < 10) return alert("抽卡券不足 10 張！"); consumeTickets(10); }
+                if(mode === 'pack' || mode === 'team' || mode === 'pickup') { 
+                    if (tickets < 1) return alert("抽卡券不足！"); 
+                    tickets -= 1; 
+                }
+                if(mode === 'box') { 
+                    if (tickets < 10) return alert("抽卡券不足 10 張！"); 
+                    tickets -= 10; 
+                }
+                saveStamina();
+                updateStamina();
             }
 
             if(mode === 'pack') { for(let i=0; i<4; i++) generateCard("普卡", "common"); const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc); } 
@@ -548,9 +567,18 @@
                     let card = collection[key];
                     let base = rarityCombatPower[card.rarity] || 0;
                     let aff = affection[card.name] || 1;
-                    let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1; // ❤️ 好感度戰力加成
+                    let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1; 
                     
-                    basePower += Math.floor(base * mult);
+                    let cardPower = Math.floor(base * mult);
+                    
+                    // 🌤️ 計算球場天氣加成
+                    if (currentEnvironment.bonusTeam === card.team) {
+                        cardPower = Math.floor(cardPower * 1.2);
+                    } else if (currentEnvironment.bonusTeam === "All") {
+                        cardPower = Math.floor(cardPower * 1.1);
+                    }
+                    
+                    basePower += cardPower;
                     teamCounts[card.team] = (teamCounts[card.team] || 0) + 1;
                 }
             });
@@ -568,7 +596,9 @@
         function renderBattleModal() {
             const powerData = calculateSquadPower();
             document.getElementById('battle-total-power').innerText = powerData.finalPower;
-            document.getElementById('battle-synergy-text').innerText = powerData.synergyName;
+            
+            // 🌤️ 顯示當前天氣
+            document.getElementById('battle-synergy-text').innerHTML = `${powerData.synergyName}<br><span style="font-size:13px; color:#ff9a9e; text-shadow:none;">🏟️ 今日環境：${currentEnvironment.name} (${currentEnvironment.desc})</span>`;
             document.getElementById('battle-synergy-text').style.color = powerData.synergyColor;
 
             let squadHtml = "";
@@ -579,7 +609,11 @@
                     let base = rarityCombatPower[card.rarity] || 0;
                     let aff = affection[card.name] || 1;
                     let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
+                    
                     let finalCardPwr = Math.floor(base * mult);
+                    // 🌤️ 個別卡牌天氣計算
+                    if (currentEnvironment.bonusTeam === card.team) finalCardPwr = Math.floor(finalCardPwr * 1.2);
+                    else if (currentEnvironment.bonusTeam === "All") finalCardPwr = Math.floor(finalCardPwr * 1.1);
 
                     squadHtml += `<div class="squad-slot filled" onclick="openCardSelector(${i})"><div class="slot-remove" onclick="removeCardFromSlot(event, ${i})">✖</div><div style="font-size:10px; color:#aaa; margin-top:10px;">${card.team}</div><div style="font-size:16px; font-weight:bold; color:white; margin:5px 0;">${card.name}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold;">⚡ ${finalCardPwr}</div></div>`;
                 } else { squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})"><div style="font-size:36px; color:#aaa; margin-bottom:5px;">+</div><div style="font-size:12px; color:#fbc2eb;">點擊選擇</div></div>`; }
@@ -600,17 +634,28 @@
             if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">您還沒有解鎖任何卡片喔，先去抽卡吧！</div>'; } 
             else {
                 keys.sort((a, b) => {
-                    let pwrA = Math.floor((rarityCombatPower[collection[a].rarity] || 0) * (affection[collection[a].name]===10?1.25:(affection[collection[a].name]>=5?1.1:1)));
-                    let pwrB = Math.floor((rarityCombatPower[collection[b].rarity] || 0) * (affection[collection[b].name]===10?1.25:(affection[collection[b].name]>=5?1.1:1)));
-                    return pwrB - pwrA;
+                    let getPwr = (card) => {
+                        let base = rarityCombatPower[card.rarity] || 0;
+                        let aff = affection[card.name] || 1;
+                        let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
+                        let pwr = Math.floor(base * mult);
+                        if (currentEnvironment.bonusTeam === card.team) pwr = Math.floor(pwr * 1.2);
+                        else if (currentEnvironment.bonusTeam === "All") pwr = Math.floor(pwr * 1.1);
+                        return pwr;
+                    };
+                    return getPwr(collection[b]) - getPwr(collection[a]);
                 });
                 keys.forEach(k => {
                     let card = collection[k]; let isUsed = manualSquad.includes(k); let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
                     let statusHtml = isUsed ? "<div style='color:red; font-size:12px; margin-top:5px; font-weight:bold;'>出戰中</div>" : "";
                     let aff = affection[card.name] || 1; let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
-                    let finalCardPwr = Math.floor((rarityCombatPower[card.rarity] || 0) * mult);
                     
-                    html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}</div>${statusHtml}</div>`;
+                    let finalCardPwr = Math.floor((rarityCombatPower[card.rarity] || 0) * mult);
+                    let envIcon = "";
+                    if (currentEnvironment.bonusTeam === card.team) { finalCardPwr = Math.floor(finalCardPwr * 1.2); envIcon = " <span style='color:#f1c40f;'>☀️UP</span>"; }
+                    else if (currentEnvironment.bonusTeam === "All") { finalCardPwr = Math.floor(finalCardPwr * 1.1); envIcon = " <span style='color:#f1c40f;'>☀️UP</span>"; }
+
+                    html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}${envIcon}</div>${statusHtml}</div>`;
                 });
             }
             document.getElementById('selector-list').innerHTML = html; document.getElementById('selector-modal').style.display = 'block';
@@ -647,7 +692,11 @@
                 modal.style.display = "block"; 
                 if(modalId === 'collection-modal') renderAlbumPage(); 
                 if(modalId === 'log-modal') renderLog(); 
-                if(modalId === 'battle-modal') renderBattleModal(); 
+                if(modalId === 'battle-modal') {
+                    // 🌤️ 每次開啟挑戰賽介面時，隨機切換一次天氣環境
+                    currentEnvironment = stadiumEnvironments[Math.floor(Math.random() * stadiumEnvironments.length)];
+                    renderBattleModal(); 
+                }
                 if(modalId === 'shop-modal') document.getElementById('shop-fragments-display').innerText = fragments;
             }
         }
