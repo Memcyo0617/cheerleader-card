@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -52,7 +52,7 @@
         .card-back { background: repeating-linear-gradient(45deg, #1a1016, #1a1016 15px, #2b1b24 15px, #2b1b24 30px); border: 4px solid var(--pink); display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.6); }
         .card-back-logo { font-size: 36px; font-weight: bold; color: var(--pink); text-shadow: 0 0 10px var(--pink); letter-spacing: 2px;}
         .card-back-sub { font-size: 14px; color: #ffb3d9; margin-top: 5px; }
-        .card-front { transform: rotateY(180deg); background-color: var(--panel-bg); display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 12px; border: 4px solid #553549; box-shadow: 0 10px 25px rgba(0,0,0,0.6); overflow: hidden; position: relative;}
+        .card-front { transform: rotateY(180deg); background-color: var(--panel-bg); display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 12px; border: 4px solid #553549; box-shadow: 0 10px 25px rgba(0,0,0,0.6); overflow: hidden; position: relative; }
         
         .card-team { font-size: 13px; font-weight: bold; margin-bottom: 8px; z-index: 2; padding: 4px 12px; border-radius: 20px; color: white; width: 80%; text-align: center;}
         .card-type { font-size: 11px; margin-bottom: 5px; z-index: 2; font-weight: bold; letter-spacing: 2px; color: #fbc2eb; }
@@ -60,60 +60,41 @@
         .card-image-wrapper { width: 100%; height: 160px; border-radius: 10px; overflow: hidden; position: relative; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.2); background-color: #2b1b24; z-index: 2; }
         .card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
         
-        /* ✨ 閃卡特效 CSS (新增) */
-        [class*="rarity-limited"], .rarity-mythic, .rarity-legendary {
-            position: relative;
-            overflow: hidden;
-        }
-
-        [class*="rarity-limited"]::after, .rarity-mythic::after, .rarity-legendary::after {
-            content: "";
-            position: absolute;
-            top: -150%;
-            left: -150%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.4) 50%,
-                rgba(255, 255, 255, 0) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(45deg);
-            transition: all 0.3s;
-            animation: shine-sweep 3s infinite;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .rarity-mythic::after {
-            background: linear-gradient(
-                135deg,
-                rgba(255, 215, 0, 0) 0%,
-                rgba(255, 215, 0, 0) 40%,
-                rgba(255, 215, 0, 0.6) 50%,
-                rgba(255, 215, 0, 0) 60%,
-                rgba(255, 215, 0, 0) 100%
-            );
-            animation: shine-sweep 2s infinite;
-        }
-
-        @keyframes shine-sweep {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            20% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
         /* 好感度特效 (MAX) */
         .affection-max { border-color: var(--pink) !important; box-shadow: 0 0 25px rgba(255,126,179,0.8), inset 0 0 15px rgba(255,126,179,0.5) !important; }
         .heart-badge { position: absolute; top: 8px; left: 8px; background: rgba(255,126,179,0.9); color: white; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 10px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); border: 1px solid white; }
 
-        /* 稀有度邊框特效 */
+        /* 稀有度邊框與亮面/閃卡特效 */
         .rarity-common { border-color: #886a7d; background: linear-gradient(135deg, #4a2f41, #2b1b24); }
-        .rarity-rare { border-color: var(--silver); background: linear-gradient(135deg, #2c3e50, #1a252f); }
-        .rarity-epic { border-color: #00f2fe; background: linear-gradient(135deg, #2a0845, #6441A5); }
+        
+        /* 💫 亮面特卡 (Rare) 特效補回：銀白斜向動態流光 */
+        .rarity-rare { 
+            border-color: var(--silver); 
+            background: linear-gradient(135deg, #2c3e50, #1a252f); 
+            box-shadow: 0 0 12px rgba(189, 195, 199, 0.4);
+        }
+        .rarity-rare::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg); animation: rareShine 3.5s infinite linear; pointer-events: none; z-index: 3;
+        }
+
+        /* ✨ 平行閃卡 (Epic) 特效補回：強烈極光與彩虹霓虹閃爍 */
+        .rarity-epic { 
+            border-color: #00f2fe; 
+            background: linear-gradient(135deg, #2a0845, #6441A5); 
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+        }
+        .rarity-epic::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(125deg, rgba(255,0,128,0.15) 0%, rgba(0,242,254,0.15) 50%, rgba(255,215,0,0.15) 100%);
+            animation: epicRainbow 4s infinite linear; pointer-events: none; z-index: 1; mix-blend-mode: screen;
+        }
+
+        /* 稀有卡動畫骨架 */
+        @keyframes rareShine { 0% { left: -60%; } 30% { left: 140%; } 100% { left: 140%; } }
+        @keyframes epicRainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
         .rarity-limited-silver { border-color: #e0e0e0; background: linear-gradient(135deg, #4a4a4a, #1a1a1a); box-shadow: 0 0 15px #c0c0c0; }
         .rarity-limited-gold { border-color: #ffd700; background: linear-gradient(135deg, #5c4000, #1f1500); box-shadow: 0 0 20px #ffd700; }
         .rarity-limited-red { border-color: #ff3b3b; background: linear-gradient(135deg, #5c0000, #1f0000); box-shadow: 0 0 20px #ff3b3b; }
@@ -192,391 +173,390 @@
         <button id="btn-box" class="btn-box" onclick="startOpening('box')">🎁 撕開一盒 (10券)</button>
         <button class="btn-frag" onclick="toggleModal('shop-modal')">🛒 心願碎片商城</button>
     </div>
-
-    <div class="controls">
-        <button class="btn-collection" onclick="toggleModal('collection-modal')">📚 收藏卡冊</button>
-        <button class="btn-battle" onclick="toggleModal('battle-modal')">⚔️ 每日應援挑戰賽</button>
-        <button class="btn-rates" onclick="toggleModal('rate-modal')">📊 機率說明</button>
-        <button class="btn-log" onclick="toggleModal('log-modal')">📜 獲獎紀錄</button>
-        <button style="background:#444; color:#ccc;" onclick="clearCollection()">🗑️ 重置資料</button>
+    
+    <div class="pickup-section">
+        <div style="margin-bottom: 5px; color: var(--gold); font-weight: bold; font-size: 16px;">🌟 限時 Pick Up (每小時輪替)</div>
+        <div style="margin-bottom: 15px; font-size: 18px;">
+            本日星向女孩：<span id="pu-girl-name" style="color: var(--pink); font-weight: bold; font-size: 24px; text-shadow: 0 0 5px var(--pink);">???</span> 
+            <span style="font-size: 14px; color: #aaa;">(<span id="pu-girl-team">???</span>)</span>
+        </div>
+        <button class="btn-pu" onclick="startOpening('pickup')">🌟 抽 PU 專屬包 (消耗 1 券)</button>
+        <div style="font-size: 12px; color: #888; margin-top: 8px;">*此包出現該位女孩機率高達 40%，是大補丸！</div>
     </div>
 
+    <div class="team-gacha-section">
+        <div style="margin-bottom: 10px; color: #ffb3d9; font-weight: bold;">🎯 狙擊專屬球隊 (大獎機率下調)</div>
+        <select id="target-team-select" class="team-picker">
+            <option value="Passion Sisters">中信兄弟 Passion Sisters</option>
+            <option value="Uni Girls">統一獅 Uni Girls</option>
+            <option value="Fubon Angels">富邦悍將 Fubon Angels</option>
+            <option value="Dragons Beauties">味全龍 Dragons Beauties</option>
+            <option value="Rakuten Girls">樂天桃猿 Rakuten Girls</option>
+            <option value="Wing Stars">台鋼雄鷹 Wing Stars</option>
+        </select>
+        <button id="btn-team-pack" class="btn-team" onclick="startOpening('team')">🎯 抽專屬包 (消耗 1 券)</button>
+    </div>
+
+    <div class="controls">
+        <button class="btn-battle" onclick="toggleModal('battle-modal')">⚔️ 每日應援挑戰賽</button>
+        <button class="btn-rates" onclick="toggleModal('rates-modal')">📊 機率表</button>
+        <button class="btn-log" onclick="toggleModal('log-modal')">🏆 大獎紀錄</button>
+        <button class="btn-collection" onclick="toggleModal('collection-modal')">📖 九宮格卡冊與養成</button>
+        <button onclick="clearCollection()" style="background: #e74c3c; color: white;">🗑️ 重置</button>
+    </div>
+    
     <div id="display-area">
+        <h3 id="status-text" style="color: #ffb3d9;">等待抽卡中... 每分鐘回復 1 張抽卡券！</h3>
         <div id="queue-status"></div>
         <div id="card-container"></div>
         <div id="duplicate-alert"></div>
         <button id="btn-next" class="btn-next" onclick="showNextCard()">翻開下一張！ ➡️</button>
-        <div id="status-text" style="margin-top: 20px; font-weight: bold; color: var(--pink);"></div>
     </div>
 
-    <!-- 收藏卡冊視窗 -->
-    <div id="collection-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('collection-modal')">關閉</button>
-        <div class="modal-content">
-            <h2 style="color:var(--pink);">📚 我的啦啦隊卡冊</h2>
-            <div id="collection-stats" style="margin-bottom: 15px; color: #fbc2eb; font-weight: bold;"></div>
-            
-            <div class="album-filters">
-                <select id="filter-team" onchange="onAlbumFilterChange()">
-                    <option value="Passion Sisters">Passion Sisters (中信兄弟)</option>
-                    <option value="Uni Girls">Uni Girls (統一獅)</option>
-                    <option value="Fubon Angels">Fubon Angels (富邦悍將)</option>
-                    <option value="Dragons Beauties">Dragons Beauties (味全龍)</option>
-                    <option value="Rakuten Girls">Rakuten Girls (樂天桃猿)</option>
-                    <option value="Wing Stars">Wing Stars (台鋼雄鷹)</option>
-                </select>
-                <select id="filter-type" onchange="onAlbumFilterChange()">
-                    <option value="普卡">普卡 (Common)</option>
-                    <option value="限量銀閃卡">限量銀閃卡 (Limited Silver)</option>
-                    <option value="限量金閃卡">限量金閃卡 (Limited Gold)</option>
-                    <option value="限量紅閃卡">限量紅閃卡 (Limited Red)</option>
-                    <option value="專屬簽名卡">專屬簽名卡 (Legendary)</option>
-                    <option value="實戰衣物卡">實戰衣物卡 (Relic)</option>
-                    <option value="唇印簽名卡">唇印簽名卡 (Legendary)</option>
-                    <option value="1/1 寶石簽名卡">1/1 寶石簽名卡 (Mythic)</option>
-                </select>
-            </div>
-
-            <div id="album-complete-banner"></div>
-
-            <div class="album-grid-container" id="album-grid"></div>
-
-            <div class="album-pagination">
-                <button onclick="changeAlbumPage(-1)">⬅️ 上一頁</button>
-                <span id="album-page-info" class="album-page-info">1 / 1</span>
-                <button onclick="changeAlbumPage(1)">下一頁 ➡️</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 碎片商城視窗 -->
     <div id="shop-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('shop-modal')">關閉</button>
-        <div class="modal-content">
-            <h2 style="color:#00f2fe;">🛒 心願碎片商城</h2>
-            <p>當前碎片：⭐ <span id="shop-fragments-display" style="color:#00f2fe; font-size:24px; font-weight:bold;">0</span></p>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-top:30px;">
-                <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; border:1px solid #00f2fe;">
-                    <h3>🎫 抽卡券 x1</h3>
-                    <p style="color:#aaa;">立即補充 1 張抽卡券</p>
-                    <button class="btn-frag" onclick="buyItem('tickets', 10, 1)">⭐ 10 兌換</button>
-                </div>
-                <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; border:1px solid #00f2fe;">
-                    <h3>🎫 抽卡券 x11</h3>
-                    <p style="color:#aaa;">大量補充，特惠組合</p>
-                    <button class="btn-frag" onclick="buyItem('tickets', 100, 11)">⭐ 100 兌換</button>
-                </div>
-                <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; border:1px solid #ffd700;">
-                    <h3>🎁 隨機限量包</h3>
-                    <p style="color:#aaa;">必中一張 Limited 等級卡片</p>
-                    <button class="btn-pu" onclick="buyItem('limited_pack', 500, 1)">⭐ 500 兌換</button>
-                </div>
+        <button class="close-btn" onclick="toggleModal('shop-modal')">✖ 關閉</button>
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <h2 style="color: #00f2fe; text-shadow: 0 0 10px rgba(0,242,254,0.5);">🛒 心願碎片商城</h2>
+            <div style="font-size: 18px; margin-bottom: 20px;">目前擁有碎片：<span style="color: #00f2fe; font-size: 26px; font-weight: bold;" id="shop-fragments-display">0</span></div>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #fbc2eb;">🎀 隨機應援包</h3>
+                <p style="font-size: 13px; color: #aaa;">包含 5 張隨機女孩卡片，有機率開出限量大獎。</p>
+                <button class="btn-frag" onclick="buyShopItem('random')">兌換 (消耗 100 碎片)</button>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #fbc2eb;">🎯 指定球隊保底包</h3>
+                <p style="font-size: 13px; color: #aaa;">必定獲得所選球隊的 5 張女孩卡片，大獎機率稍降。</p>
+                <select id="shop-team-select" class="team-picker" style="margin-bottom: 10px; width: 80%;">
+                    <option value="Passion Sisters">中信兄弟 Passion Sisters</option>
+                    <option value="Uni Girls">統一獅 Uni Girls</option>
+                    <option value="Fubon Angels">富邦悍將 Fubon Angels</option>
+                    <option value="Dragons Beauties">味全龍 Dragons Beauties</option>
+                    <option value="Rakuten Girls">樂天桃猿 Rakuten Girls</option>
+                    <option value="Wing Stars">台鋼雄鷹 Wing Stars</option>
+                </select><br>
+                <button class="btn-team" onclick="buyShopItem('team')">兌換 (消耗 150 碎片)</button>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762;">
+                <h3 style="margin-top: 0; color: var(--pink);">🎁 珍珠奶茶 (好感度道具)</h3>
+                <p style="font-size: 13px; color: #aaa;">請直接前往「📖 九宮格卡冊」中點擊想培養的本命女孩，<br>即可在介面下方消耗 50 碎片餵食，提升好感度與戰力！</p>
             </div>
         </div>
     </div>
 
-    <!-- 戰鬥挑戰視窗 -->
-    <div id="battle-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('battle-modal')">關閉</button>
+    <div id="rates-modal" class="modal">
+        <button class="close-btn" onclick="toggleModal('rates-modal')">✖ 關閉</button>
         <div class="modal-content">
-            <h2 style="color:#ff4b2b;">⚔️ 每日應援挑戰賽</h2>
-            <p style="color:#aaa;">排出最強的 5 人陣容，贏取大量抽卡券與碎片！</p>
+            <h2 style="color: var(--pink);">📊 抽卡機率分布 (含戰力表)</h2>
+            <table class="rate-table">
+                <tr><th>卡片款式</th><th>機率</th><th>重複分解</th><th>⚔️ 基礎應援力</th></tr>
+                <tr><td style="color:#bdc3c7;">💫 亮面特卡 (Rare)</td><td>50.0%</td><td>+2 片</td><td>30</td></tr>
+                <tr><td style="color:#00f2fe;">✨ 平行閃卡 (Epic)</td><td>30.0%</td><td>+10 片</td><td>100</td></tr>
+                <tr><td style="color:#c0c0c0;">⚪ 限量銀閃卡 (/25)</td><td>4.0%</td><td>獨立收藏</td><td>500</td></tr>
+                <tr><td style="color:#ffd700;">🟡 限量金閃卡 (/10)</td><td>2.0%</td><td>獨立收藏</td><td>1000</td></tr>
+                <tr><td style="color:#ff3b3b;">🔴 限量紅閃卡 (/5)</td><td>0.5%</td><td>獨立收藏</td><td>3000</td></tr>
+                <tr><td style="color:#e67e22;">👕 實戰衣物卡 (Relic)</td><td>9.0%</td><td>+150 片</td><td>1500</td></tr>
+                <tr><td style="color:var(--pink);">🎀 專屬/唇印簽名卡</td><td>4.0%</td><td>+250 片</td><td>2500</td></tr>
+                <tr><td style="color:var(--gold);">👑 1/1 寶石簽名大獎</td><td>0.5%</td><td>無價</td><td>10000</td></tr>
+            </table>
+            <p style="color:#aaa; font-size:12px; margin-top:10px;">註：排班時若派出同隊伍女孩，可觸發最高 +50% 增幅戰力；提升本命女孩好感度最高可再獲 +25% 加成！</p>
+        </div>
+    </div>
+
+    <div id="battle-modal" class="modal">
+        <button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button>
+        <div class="modal-content" style="max-width: 850px;">
+            <h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 每日應援挑戰賽</h2>
+            <p style="color:#aaa;">請點擊下方空位，從卡冊中挑選出 5 位最強女孩組成你的應援天團！<br>⚠️ 派出越多同球隊女孩，可觸發越強的團隊默契加成！</p>
             
-            <div style="background:rgba(0,0,0,0.5); padding:20px; border-radius:15px; margin:20px 0; border:2px solid #ff4b2b;">
-                <div style="font-size:14px; color:#aaa;">當前陣容總應援戰力</div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;">
+                <div style="font-size:16px; color:white;">當前天團 總應援戰力</div>
                 <div id="battle-total-power" class="power-text">0</div>
-                <div id="battle-synergy-text" class="synergy-text">尚未成隊</div>
-                
-                <div class="squad-container" id="battle-squad">
-                    <!-- 5 個插槽 -->
-                </div>
+                <div id="battle-synergy-text" class="synergy-text">散裝應援團 (無加成)</div>
+                <div id="battle-squad" class="squad-container"></div>
             </div>
 
-            <h3 style="text-align:left; color:var(--gold); border-left:4px solid var(--gold); padding-left:10px;">🏆 挑戰關卡</h3>
             <div id="battle-stages-container"></div>
         </div>
     </div>
 
-    <!-- 卡片選擇器 (戰鬥用) -->
-    <div id="selector-modal" class="modal" style="z-index: 200; background: rgba(0,0,0,0.9);">
-        <button class="close-btn" onclick="document.getElementById('selector-modal').style.display='none'">取消</button>
-        <div class="modal-content" style="max-width: 600px;">
-            <h3 style="color:var(--pink);">選擇出戰女孩</h3>
+    <div id="selector-modal" class="modal" style="z-index: 200;">
+        <div class="modal-content" style="max-width: 700px; background: rgba(30,15,25,0.98); border: 2px solid var(--gold);">
+            <h3 style="color: var(--gold);">🔍 選擇上陣女孩</h3>
+            <p style="color:#aaa; font-size:12px;">已為您自動依據基礎戰力排序，反灰卡片代表目前正在陣容中。</p>
             <div id="selector-list" class="card-list"></div>
+            <button class="btn-battle" style="margin-top:20px; width:100%;" onclick="document.getElementById('selector-modal').style.display='none'">取消選擇</button>
         </div>
     </div>
 
-    <!-- 單卡放大檢視器 -->
-    <div id="card-viewer-modal" class="modal" onclick="closeCardViewer()">
-        <div id="card-viewer-content" onclick="event.stopPropagation()"></div>
-    </div>
-
-    <!-- 機率視窗 -->
-    <div id="rate-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('rate-modal')">關閉</button>
-        <div class="modal-content">
-            <h2 style="color:var(--gold);">📊 抽卡機率說明</h2>
-            <table class="rate-table">
-                <tr><th>稀有度</th><th>機率</th><th>碎片轉換</th></tr>
-                <tr><td style="color:#886a7d;">普卡 (Common)</td><td>80.0%</td><td>1</td></tr>
-                <tr><td style="color:var(--silver);">限量銀閃卡 (Limited Silver)</td><td>12.0%</td><td>10</td></tr>
-                <tr><td style="color:var(--gold);">限量金閃卡 (Limited Gold)</td><td>5.0%</td><td>30</td></tr>
-                <tr><td style="color:#ff3b3b;">限量紅閃卡 (Limited Red)</td><td>2.0%</td><td>100</td></tr>
-                <tr><td style="color:var(--pink);">專屬簽名卡 (Legendary)</td><td>0.7%</td><td>250</td></tr>
-                <tr><td style="color:#e67e22;">實戰衣物卡 (Relic)</td><td>0.2%</td><td>500</td></tr>
-                <tr><td style="color:var(--pink);">唇印簽名卡 (Legendary)</td><td>0.09%</td><td>800</td></tr>
-                <tr><td style="color:#fff; text-shadow:0 0 5px var(--gold);">1/1 寶石簽名卡 (Mythic)</td><td>0.01%</td><td>2000</td></tr>
-            </table>
-            <p style="color:#aaa; font-size:12px; margin-top:15px;">* 獲得重複卡片時，系統會自動將其回收並轉換為「心願碎片」。<br>* 限量卡片與簽名卡若有「編號」，則重複獲得時不會轉換碎片，而是保留獨立編號實體卡。</p>
-        </div>
-    </div>
-
-    <!-- 紀錄視窗 -->
     <div id="log-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('log-modal')">關閉</button>
-        <div class="modal-content">
-            <h2 style="color:var(--gold);">📜 稀有大獎獲獎紀錄</h2>
-            <div style="margin-bottom:20px; font-size:18px;">生涯總抽數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold;">0</span></div>
-            <div id="log-list"></div>
+        <button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button>
+        <div class="modal-content" style="max-width: 600px;">
+            <h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄 (淨化版)</h2>
+            <div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div>
+            <div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div>
         </div>
+    </div>
+
+    <div id="collection-modal" class="modal">
+        <button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button>
+        <div class="modal-content" style="max-width:950px;">
+            <h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2>
+            <div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div>
+            <div id="album-complete-banner"></div>
+
+            <div class="album-filters">
+                <select id="filter-team" onchange="onAlbumFilterChange()">
+                    <option value="Passion Sisters">中信兄弟 Passion Sisters</option>
+                    <option value="Uni Girls">統一獅 Uni Girls</option>
+                    <option value="Fubon Angels">富邦悍將 Fubon Angels</option>
+                    <option value="Dragons Beauties">味全龍 Dragons Beauties</option>
+                    <option value="Rakuten Girls">樂天桃猿 Rakuten Girls</option>
+                    <option value="Wing Stars">台鋼雄鷹 Wing Stars</option>
+                </select>
+                <select id="filter-type" onchange="onAlbumFilterChange()">
+                    <option value="普卡">🌸 普卡</option>
+                    <option value="亮面特卡">💫 亮面特卡</option>
+                    <option value="平行閃卡">✨ 平行閃卡</option>
+                    <option value="限量銀閃卡">⚪ 限量銀閃卡 (/25)</option>
+                    <option value="限量金閃卡">🟡 限量金閃卡 (/10)</option>
+                    <option value="限量紅閃卡">🔴 限量紅閃卡 (/5)</option>
+                    <option value="實戰衣物卡">👕 實戰衣物卡</option>
+                    <option value="專屬簽名卡">✍ 專屬簽名卡</option>
+                    <option value="唇印簽名卡">💋 唇印簽名卡</option>
+                    <option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option>
+                </select>
+            </div>
+            <div id="album-grid" class="album-grid-container"></div>
+            <div class="album-pagination">
+                <button onclick="changeAlbumPage(-1)">◀ 上一頁</button>
+                <span id="album-page-info" class="album-page-info">1 / 1</span>
+                <button onclick="changeAlbumPage(1)">下一頁 ▶</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()">
+        <div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div>
+        <button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button>
     </div>
 
     <script>
-        // ==========================================
-        // 核心數據庫 (V13 究極版)
-        // ==========================================
         const db = {
-            "Passion Sisters": { color: "#f39c12", members: ["峮峮", "短今", "畇二", "希希", "凱蒂", "波波", "小迪", "曼容", "妮可", "邊荷律", "李丹妃", "恬采", "夏蕾"] },
-            "Uni Girls": { color: "#e67e22", members: ["瑟七", "艾璐", "斐棋", "Ｍina", "妮妮", "Yuki", "少少", "賴賴", "芮絲", "Joy", "侯芳", "包子", "趙娟週"] },
-            "Fubon Angels": { color: "#3498db", members: ["慈妹", "秀秀子", "丹丹", "檸檬", "潔米", "卡卡", "東東", "昂兒", "沁沁", "奶昔", "李晧禎", "南珉貞", "李雅英"] },
-            "Dragons Beauties": { color: "#e74c3c", members: ["李多慧", "林襄", "小映", "口水", "心璇", "賴可", "琪琪", "馬妹", "張晴", "昆娜", "星岑", "沛沛"] },
-            "Rakuten Girls": { color: "#c0392b", members: ["若潼", "嘎琳", "孟潔", "琳妲", "籃籃", "巫苡萱", "曲曲", "岱縈", "阿布舞", "慧慧", "陳伊", "筠熹"] },
-            "Wing Stars": { color: "#2ecc71", members: ["安芝儇", "Mingo", "李樂", "妡玖", "艾琳", "筱雯", "瑈瑈", "昆娜", "恬魚", "黃澄澄", "圈圈"] }
+            "Passion Sisters": { color: "var(--team-ps)", members: ["凱蒂", "貴貴", "希希", "短今", "峮峮", "晴兒", "波波", "畇二", "妮可", "林可", "君白", "曼容", "小迪", "沛婕", "汶汶", "怡琪", "Wendy", "夏蕾", "少鹽", "邊荷律", "牛奶", "芊芊", "衣宸", "瑄", "莎莎", "維尼", "璇璇", "桃子", "金渡兒", "JJUBI", "珮含", "容容"] },
+            "Uni Girls": { color: "var(--team-ug)", members: ["妮妮", "Yuki", "Mina", "瑟七", "賴賴", "少少", "芮絲", "曼萍", "Joy", "柔一", "Maggie", "斐棋", "一七", "侯芳", "包子", "千紘", "希美", "趙娟週", "文慧真", "安惠志", "藤本彩花", "子筑", "安琪", "妍蓁", "培根", "姿琳"] },
+            "Fubon Angels": { color: "var(--team-fa)", members: ["潔米", "慈妹", "檸檬", "Jessy", "丹丹", "秀秀子", "Tiffany", "安娜", "沁沁", "維心", "奶昔", "大頭", "卡洛琳", "栗子", "南珉貞", "李雅英", "李珠珢", "禾羽", "潔潔", "雅惟", "李晧禎", "貝兒", "小芊", "呱呱", "Laynee", "陳愉", "朴星垠"] },
+            "Dragons Beauties": { color: "var(--team-db)", members: ["心璇", "馬妹", "小映", "口水", "Like", "張晴", "芮妮", "霖霖", "小蛙", "蘿拉", "寧寧", "詩雅", "璦昀", "沛沛", "林襄", "李多慧", "Yuri", "菲菲", "群群", "佩霓", "靜靜", "金娜妍", "權喜原", "貝拉", "姵宸", "瑄瑄"] },
+            "Rakuten Girls": { color: "var(--team-rg)", members: ["岱縈", "琳妲","孟潔", "卉妮", "若潼", "筠熹", "穎樂", "熊霓", "穆又甯", "宋宋", "禹菡", "貝佳頤", "言梓璇", "溫妮", "Kira", "崔荷潾", "Mika", "高橋佳帆", "笑笑", "彭彭", "廉世彬", "禹洙漢", "河智媛", "高佳彬", "金佳垠"] },
+            "Wing Stars": { color: "var(--team-ws)", members: ["安芝儇", "朴旻曙", "螢螢", "圈圈", "恬魚", "昆昆", "李樂", "JC", "黃澄澄", "妡0", "艾琳", "一粒", "瑈瑈", "林浠", "筱雯", "毛毛", "芃芃", "玖玖", "米亞", "米妮", "尼莫", "千千", "ET", "會晴", "芋頭", "Nina"] }
         };
+        
+        // 攤平所有女孩資料以供 PU 系統抽取
+        const allGirlsFlat = [];
+        for (let t in db) { db[t].members.forEach(m => allGirlsFlat.push({team: t, name: m, color: db[t].color})); }
 
-        const typeToRarity = { "普卡": "common", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "專屬簽名卡": "legendary", "實戰衣物卡": "relic", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" };
-        const rarityPoints = { "common": 1, "limited-silver": 10, "limited-gold": 30, "limited-red": 100, "legendary": 250, "relic": 500, "mythic": 2000 };
-        const rarityCombatPower = { "common": 100, "limited-silver": 300, "limited-gold": 800, "limited-red": 2000, "legendary": 5000, "relic": 7500, "mythic": 15000 };
+        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" };
+        const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 };
+        const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 };
+        const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25, "1/1 寶石簽名卡": 1 };
 
-        // 戰鬥關卡配置
         const battleStagesConfig = [
-            { id: 1, name: "新手村應援練習", req: 800, rewardText: "🎫 2 券", rewardType: "tickets", rewardVal: 2 },
-            { id: 2, name: "地方熱身賽挑戰", req: 2500, rewardText: "🎫 5 券 + ⭐ 50 碎片", rewardType: "both", rewardValT: 5, rewardValF: 50 },
-            { id: 3, name: "球場外圍大集結", req: 6000, rewardText: "🎫 10 券", rewardType: "tickets", rewardVal: 10 },
-            { id: 4, name: "職業聯賽正式賽", req: 15000, rewardText: "⭐ 300 碎片", rewardType: "fragments", rewardVal: 300 },
-            { id: 5, name: "總冠軍應援決戰", req: 35000, rewardText: "🎫 30 券 + ⭐ 1000 碎片", rewardType: "both", rewardValT: 30, rewardValF: 1000 },
-            { id: 6, name: "究極女神巔峰戰", req: 65000, rewardText: "⭐ 5000 碎片", rewardType: "fragments", rewardVal: 5000 }
+            { id: 1, name: "街頭應援快閃", req: 300, rewardText: "+2 抽卡券", rewardType: "tickets", rewardVal: 2 },
+            { id: 2, name: "主場例行賽", req: 1500, rewardText: "+50 心願碎片", rewardType: "fragments", rewardVal: 50 },
+            { id: 3, name: "明星賽大巨蛋", req: 5000, rewardText: "+3 抽卡券 & 100 碎片", rewardType: "both", rewardValT: 3, rewardValF: 100 },
+            { id: 4, name: "台灣大賽G7決戰", req: 15000, rewardText: "+10 抽卡券 & 500 碎片", rewardType: "both", rewardValT: 10, rewardValF: 500 }
         ];
 
-        // 球場環境系統
+        // 🌟 新增球場天氣與環境陣列
         const stadiumEnvironments = [
-            { name: "☀️ 晴空萬里", desc: "所有女孩戰力額外 +10%", bonusTeam: "All" },
-            { name: "⛈️ 午後雷陣雨", desc: "考驗意志力！無加成", bonusTeam: "None" },
-            { name: "🏟️ 兄弟主場：洲際球場", desc: "Passion Sisters 戰力 +20%", bonusTeam: "Passion Sisters" },
-            { name: "🏟️ 統一主場：台南球場", desc: "Uni Girls 戰力 +20%", bonusTeam: "Uni Girls" },
-            { name: "🏟️ 富邦主場：新莊球場", desc: "Fubon Angels 戰力 +20%", bonusTeam: "Fubon Angels" },
-            { name: "🏟️ 味全主場：天母球場", desc: "Dragons Beauties 戰力 +20%", bonusTeam: "Dragons Beauties" },
-            { name: "🏟️ 樂天主場：桃園球場", desc: "Rakuten Girls 戰力 +20%", bonusTeam: "Rakuten Girls" },
-            { name: "🏟️ 台鋼主場：澄清湖球場", desc: "Wing Stars 戰力 +20%", bonusTeam: "Wing Stars" }
+            { name: "☀️ 臺南球場 (烈日大賽)", bonusTeam: "Uni Girls", desc: "統一獅女孩戰力 +20%" },
+            { name: "⛈️ 洲際球場 (雨天延賽)", bonusTeam: "Passion Sisters", desc: "中信兄弟女孩戰力 +20%" },
+            { name: "🏟️ 臺北大巨蛋 (舒適空調)", bonusTeam: "All", desc: "全員基礎戰力 +10%" },
+            { name: "🦅 澄清湖球場 (狂風大作)", bonusTeam: "Wing Stars", desc: "台鋼雄鷹女孩戰力 +20%" },
+            { name: "⚾ 樂天桃園球場 (熱血應援)", bonusTeam: "Rakuten Girls", desc: "樂天桃猿女孩戰力 +20%" },
+            { name: "🐉 天母棒球場 (龍星大樂)", bonusTeam: "Dragons Beauties", desc: "味全龍女孩戰力 +20%" }
         ];
-
-        // ==========================================
-        // 狀態變數
-        // ==========================================
-        let collection = JSON.parse(localStorage.getItem('cheer_collection_v13')) || {};
-        let pullLog = JSON.parse(localStorage.getItem('cheer_pull_log_v13')) || [];
-        let tickets = parseInt(localStorage.getItem('cheer_tickets_v13')) || 10;
-        let fragments = parseInt(localStorage.getItem('cheer_fragments_v13')) || 0;
-        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v13')) || 0;
-        let lastUpdateTime = parseInt(localStorage.getItem('cheer_last_time_v13')) || Date.now();
-        let isGameOver = localStorage.getItem('cheer_gameover_v13') === 'true';
-        let manualSquad = JSON.parse(localStorage.getItem('cheer_squad_v13')) || [null, null, null, null, null];
-        let battleRecord = JSON.parse(localStorage.getItem('cheer_battles_v13')) || { cleared: [] };
-        let affection = JSON.parse(localStorage.getItem('cheer_affection_v13')) || {};
         let currentEnvironment = stadiumEnvironments[0];
 
-        const MAX_TICKETS = 10;
-        const REGEN_TIME = 180000; // 3分鐘一抽
-        let cardQueue = [];
-        let albumTeam = "Passion Sisters";
-        let albumType = "普卡";
-        let albumPage = 1;
-        const cardsPerPage = 6;
-        const totalUniquePossible = 528; // 6隊 * 11人 * 8種卡
+        // ==========================================
+        // 存檔與變數區 (V13 自動向下相容繼承)
+        // ==========================================
+        function getOldData(keyBase) { return JSON.parse(localStorage.getItem(keyBase + '_v13')) || JSON.parse(localStorage.getItem(keyBase + '_v12')) || JSON.parse(localStorage.getItem(keyBase + '_v11')); }
+        
+        let collection = getOldData('cheer_collection') || {};
+        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v13')) || parseInt(localStorage.getItem('cheer_total_pulls_v12')) || parseInt(localStorage.getItem('cheer_total_pulls_v11')) || 0;
+        let pullLog = getOldData('cheer_pull_log') || [];
+        let isGameOver = localStorage.getItem('cheer_gameover_v13') === 'true' || localStorage.getItem('cheer_gameover_v12') === 'true';
+        let fragments = parseInt(localStorage.getItem('cheer_fragments_v13')) || parseInt(localStorage.getItem('cheer_fragments_v12')) || parseInt(localStorage.getItem('cheer_fragments_v11')) || 0;
+        
+        // 💖 好感度系統專屬存檔
+        let affection = JSON.parse(localStorage.getItem('cheer_affection_v13')) || {};
 
-        // ==========================================
-        // 資源邏輯
-        // ==========================================
+        let limitedInventory = getOldData('cheer_inventory');
+        if (!limitedInventory) {
+            limitedInventory = {};
+            for (let t in db) { db[t].members.forEach(m => { for (let tier in limitedTiersConfig) { limitedInventory[`${t}_${tier}_${m}`] = limitedTiersConfig[tier]; } }); }
+        }
+        
+        let battleRecord = getOldData('cheer_battles') || { date: '', cleared: [] };
+        let todayString = new Date().toDateString();
+        if (battleRecord.date !== todayString) { battleRecord = { date: todayString, cleared: [] }; }
+
+        let manualSquad = getOldData('cheer_squad') || [null, null, null, null, null];
+
+        // 立刻將繼承來的資料轉存為 V13
+        localStorage.setItem('cheer_collection_v13', JSON.stringify(collection));
+        localStorage.setItem('cheer_inventory_v13', JSON.stringify(limitedInventory));
+        localStorage.setItem('cheer_battles_v13', JSON.stringify(battleRecord));
+        localStorage.setItem('cheer_squad_v13', JSON.stringify(manualSquad));
+        localStorage.setItem('cheer_affection_v13', JSON.stringify(affection));
+
+        const MAX_TICKETS = 10; const REGEN_MS = 60 * 1000; 
+        let tickets = parseInt(localStorage.getItem('cheer_tickets_v13')) || parseInt(localStorage.getItem('cheer_tickets_v12')) || MAX_TICKETS;
+        let lastUpdateTime = parseInt(localStorage.getItem('cheer_time_v13')) || parseInt(localStorage.getItem('cheer_time_v12')) || Date.now();
+
+        let cardQueue = []; 
+        let albumTeam = "Passion Sisters"; let albumType = "普卡"; let albumPage = 1; const cardsPerPage = 9;
+        let totalUniquePossible = 0; Object.keys(db).forEach(t => totalUniquePossible += db[t].members.length * Object.keys(typeToRarity).length);
+
+        let currentPUHour = -1;
+
         function updateStamina() {
-            const now = Date.now();
-            const elapsed = now - lastUpdateTime;
-            if (tickets < MAX_TICKETS) {
-                const added = Math.floor(elapsed / REGEN_TIME);
-                if (added > 0) {
-                    tickets = Math.min(MAX_TICKETS, tickets + added);
-                    lastUpdateTime = lastUpdateTime + (added * REGEN_TIME);
-                    saveStamina();
-                }
-                const nextRegen = REGEN_TIME - (elapsed % REGEN_TIME);
-                const min = Math.floor(nextRegen / 60000);
-                const sec = Math.floor((nextRegen % 60000) / 1000);
-                document.getElementById('ui-timer').innerText = `(${min}:${sec < 10 ? '0' : ''}${sec} 後 +1)`;
-            } else {
-                document.getElementById('ui-timer').innerText = "(已達上限)";
+            if (isGameOver) return; const now = Date.now();
+            if (tickets < MAX_TICKETS) { let diff = now - lastUpdateTime; let added = Math.floor(diff / REGEN_MS); if (added > 0) { tickets = Math.min(MAX_TICKETS, tickets + added); lastUpdateTime += added * REGEN_MS; saveStamina(); } } else { lastUpdateTime = now; }
+            document.getElementById('ui-tickets').innerText = tickets; document.getElementById('ui-fragments').innerText = fragments;
+            if (document.getElementById('shop-fragments-display')) document.getElementById('shop-fragments-display').innerText = fragments;
+            if (tickets < MAX_TICKETS) { let remain = REGEN_MS - (now - lastUpdateTime); let m = Math.floor(remain / 60000); let s = Math.floor((remain % 60000) / 1000); document.getElementById('ui-timer').innerText = `(回復: ${m}:${s.toString().padStart(2, '0')})`; } else { document.getElementById('ui-timer').innerText = `(已滿)`; }
+            
+            document.getElementById('btn-pack').disabled = (tickets < 1); document.getElementById('btn-team-pack').disabled = (tickets < 1); document.getElementById('btn-box').disabled = (tickets < 10);
+            
+            // 🌟 每秒檢查 Pick Up 輪替
+            let hour = Math.floor(Date.now() / 3600000);
+            if (hour !== currentPUHour) {
+                currentPUHour = hour;
+                let puGirl = getCurrentPUGirl();
+                document.getElementById('pu-girl-name').innerText = puGirl.name;
+                document.getElementById('pu-girl-team').innerText = puGirl.team;
             }
-            document.getElementById('ui-tickets').innerText = tickets;
-            document.getElementById('ui-fragments').innerText = fragments;
-            saveStamina();
         }
-
-        function saveStamina() {
-            localStorage.setItem('cheer_tickets_v13', tickets);
-            localStorage.setItem('cheer_fragments_v13', fragments);
-            localStorage.setItem('cheer_last_time_v13', lastUpdateTime);
-        }
-
         setInterval(updateStamina, 1000);
 
-        function buyItem(type, cost, amount) {
-            if (fragments < cost) { alert("碎片不足！"); return; }
-            fragments -= cost;
-            if (type === 'tickets') { tickets += amount; alert(`成功兌換 ${amount} 張抽卡券！`); }
-            else if (type === 'limited_pack') { startOpening('limited_pack'); }
-            updateStamina();
-            document.getElementById('shop-fragments-display').innerText = fragments;
+        function saveStamina() { localStorage.setItem('cheer_tickets_v13', tickets); localStorage.setItem('cheer_time_v13', lastUpdateTime); localStorage.setItem('cheer_fragments_v13', fragments); }
+        
+        // ==========================================
+        // 🛒 商城與好感度系統
+        // ==========================================
+        function buyShopItem(type) {
+            if (type === 'random') {
+                if (fragments >= 100) { fragments -= 100; saveStamina(); updateStamina(); toggleModal('shop-modal'); startOpening('pack', 'free'); } 
+                else { alert("心願碎片不足 100 片！"); }
+            } else if (type === 'team') {
+                if (fragments >= 150) { fragments -= 150; saveStamina(); updateStamina(); let t = document.getElementById('shop-team-select').value; toggleModal('shop-modal'); startOpening('team', 'free', t); } 
+                else { alert("心願碎片不足 150 片！"); }
+            }
         }
 
+        let currentViewedCard = null; // 全局變數供餵食珍奶後重新渲染
         function sendGift(girlName) {
-            if (fragments < 50) { alert("碎片不足 50，無法餵食珍奶！"); return; }
-            let currentAff = affection[girlName] || 1;
-            if (currentAff >= 10) { alert("好感度已達 MAX！"); return; }
+            if (fragments >= 50) {
+                let aff = affection[girlName] || 1;
+                if (aff >= 10) return;
+                fragments -= 50;
+                affection[girlName] = aff + 1;
+                saveStamina();
+                localStorage.setItem('cheer_affection_v13', JSON.stringify(affection));
+                updateStamina();
+                if (currentViewedCard) viewCardInViewer(currentViewedCard); // 刷新好感面板
+                renderAlbumPage(); // 刷新卡冊徽章
+            } else {
+                alert("心願碎片不足 50 片！快去抽卡融煉重複卡片吧！");
+            }
+        }
+
+        function playGachaSound(rarity) { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); if (rarity === 'common' || rarity === 'rare') { osc.type = 'triangle'; osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1); osc.start(); osc.stop(ctx.currentTime + 0.1); } else { osc.type = 'square'; osc.frequency.setValueAtTime(600, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.1); osc.frequency.setValueAtTime(1200, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6); osc.start(); osc.stop(ctx.currentTime + 0.6); } } catch(e) {} }
+
+        // 🌟 獲取當前小時的 PU 女階
+        function getCurrentPUGirl() { let hour = Math.floor(Date.now() / 3600000); return allGirlsFlat[hour % allGirlsFlat.length]; }
+        function getRandomGirl(forceTeam = null) { const teams = Object.keys(db); const team = forceTeam ? forceTeam : teams[Math.floor(Math.random() * teams.length)]; const members = db[team].members; return { team, name: members[Math.floor(Math.random() * members.length)], color: db[team].color }; }
+        function shuffle(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+        
+        function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) {
+            let girl;
+            if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } 
+            else { girl = getRandomGirl(forceTeam); }
             
-            fragments -= 50;
-            affection[girlName] = currentAff + 1;
-            localStorage.setItem('cheer_affection_v13', JSON.stringify(affection));
-            localStorage.setItem('cheer_fragments_v13', fragments);
+            let finalType = type; let finalRarity = rarity; let serialNum = "";
+            if (limitedTiersConfig[type] !== undefined) {
+                let limitKey = `${girl.team}_${type}_${girl.name}`;
+                if (limitedInventory[limitKey] > 0) { let max = limitedTiersConfig[type]; let current = max - limitedInventory[limitKey] + 1; serialNum = `${current}/${max}`; limitedInventory[limitKey] -= 1; localStorage.setItem('cheer_inventory_v13', JSON.stringify(limitedInventory)); } else { finalType = "平行閃卡"; finalRarity = "epic"; desc = ""; }
+            }
+            cardQueue.push({ team: girl.team, teamColor: girl.color, name: girl.name, type: finalType, rarity: finalRarity, desc, serialNum });
+        }
+
+        function rollSpecialSlot(isTeamPack = false) {
+            const rng = Math.random();
+            if (isTeamPack) {
+                if(rng < 0.001) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.005) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.015) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.035) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.050) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.090) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.240) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" };
+            } else {
+                if(rng < 0.005) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.010) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.030) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.070) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.110) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.200) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.500) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" };
+            }
+        }
+
+        function startOpening(mode, costType = 'tickets', targetTeam = null) {
+            if (isGameOver) return alert("遊戲已完美破關！無法再抽取新卡包。"); cardQueue = []; document.getElementById('duplicate-alert').innerText = "";
             
-            alert(`💖 你送出了珍奶！${girlName} 的好感度提升至 Lv.${affection[girlName]}！`);
-            updateStamina();
-            if (currentViewedCard) viewCardInViewer(currentViewedCard); // 刷新檢視器
-        }
-
-        // ==========================================
-        // 抽卡核心邏輯
-        // ==========================================
-        function startOpening(mode) {
-            if (isGameOver) { alert("你已集齊全圖鑑！請受我一拜，大師！"); return; }
-            if (cardQueue.length > 0) return;
-            if (mode === 'pack') { if (tickets < 1) { alert("抽卡券不足！"); return; } tickets -= 1; generatePack(1); }
-            else if (mode === 'box') { if (tickets < 10) { alert("抽卡券不足！"); return; } tickets -= 10; generatePack(10); }
-            else if (mode === 'limited_pack') { generatePack(1, true); }
-            saveStamina(); updateStamina();
-        }
-
-        function rollRarity(isGuaranteedLimited = false) {
-            if (isGuaranteedLimited) {
-                const r = Math.random();
-                if (r < 0.01) return "mythic";
-                if (r < 0.05) return "relic";
-                if (r < 0.15) return "legendary";
-                if (r < 0.35) return "limited-red";
-                if (r < 0.65) return "limited-gold";
-                return "limited-silver";
+            if (costType === 'tickets') {
+                if(mode === 'pack' || mode === 'team' || mode === 'pickup') { 
+                    if (tickets < 1) return alert("抽卡券不足！"); 
+                    tickets -= 1; 
+                }
+                if(mode === 'box') { 
+                    if (tickets < 10) return alert("抽卡券不足 10 張！"); 
+                    tickets -= 10; 
+                }
+                saveStamina();
+                updateStamina();
             }
-            const r = Math.random();
-            if (r < 0.0001) return "mythic";
-            if (r < 0.001) return "relic";
-            if (r < 0.008) return "legendary";
-            if (r < 0.028) return "limited-red";
-            if (r < 0.078) return "limited-gold";
-            if (r < 0.198) return "limited-silver";
-            return "common";
-        }
 
-        function generatePack(count, isGuaranteedLimited = false) {
-            cardQueue = [];
-            for (let i = 0; i < count * 5; i++) {
-                const teamKeys = Object.keys(db);
-                const team = teamKeys[Math.floor(Math.random() * teamKeys.length)];
-                const member = db[team].members[Math.floor(Math.random() * db[team].members.length)];
-                const rarity = rollRarity(isGuaranteedLimited);
-                
-                let type = "普卡";
-                if (rarity === "limited-silver") type = "限量銀閃卡";
-                else if (rarity === "limited-gold") type = "限量金閃卡";
-                else if (rarity === "limited-red") type = "限量紅閃卡";
-                else if (rarity === "legendary") type = Math.random() < 0.1 ? "唇印簽名卡" : "專屬簽名卡";
-                else if (rarity === "relic") type = "實戰衣物卡";
-                else if (rarity === "mythic") type = "1/1 寶石簽名卡";
-
-                let serialNum = null;
-                if (rarity === "mythic") serialNum = "1/1";
-                else if (rarity === "relic") serialNum = Math.floor(Math.random() * 25) + 1;
-                else if (rarity === "legendary") serialNum = Math.floor(Math.random() * 50) + 1;
-                else if (rarity === "limited-red") serialNum = Math.floor(Math.random() * 99) + 1;
-                else if (rarity === "limited-gold") serialNum = Math.floor(Math.random() * 299) + 1;
-
-                cardQueue.push({ team, teamColor: db[team].color, name: member, type, rarity, serialNum });
+            if(mode === 'pack') { for(let i=0; i<4; i++) generateCard("普卡", "common"); const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc); } 
+            else if(mode === 'pickup') { for(let i=0; i<4; i++) generateCard("普卡", "common", "", null, true); const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc, null, true); }
+            else if(mode === 'team') { const teamToDraw = targetTeam || document.getElementById('target-team-select').value; for(let i=0; i<4; i++) generateCard("普卡", "common", "", teamToDraw); const sp = rollSpecialSlot(true); generateCard(sp.type, sp.rarity, sp.desc, teamToDraw); }
+            else if(mode === 'box') {
+                for(let i=0; i<35; i++) generateCard("普卡", "common"); for(let i=0; i<8; i++) generateCard("亮面特卡", "rare"); for(let i=0; i<4; i++) generateCard("平行閃卡", "epic");
+                generateCard("實戰衣物卡", "relic", "👕切片"); generateCard("專屬簽名卡", "legendary", "✍"); generateCard("限量銀閃卡", "limited-silver", "");
+                if(Math.random() < 0.05) { const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc); } 
             }
-            shuffle(cardQueue);
-            document.getElementById('status-text').innerText = "";
-            document.getElementById('btn-next').style.display = "block";
-            showNextCard();
-        }
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+            shuffle(cardQueue); document.getElementById('status-text').innerText = ""; document.getElementById('btn-next').style.display = "block"; showNextCard();
         }
 
         function getCardHTML(data, isGachaReveal = false, isLocked = false) {
-            let nameColor = "#fff";
-            let signatureHtml = "";
-            let relicHtml = "";
-            let mythicBadge = "";
+            let nameColor = "#fff"; let signatureHtml = ""; let relicHtml = ""; let mythicBadge = "";
             let affLevel = affection[data.name] || 1;
             
-            if (data.rarity === 'relic') {
-                nameColor = '#f39c12';
-                relicHtml = `<div class="relic-patch">Patch</div>`;
-            } else if (data.rarity === 'legendary') {
-                nameColor = 'var(--pink)';
-                let signText = data.type === "唇印簽名卡" ? "💋 " + data.name : "Sign. " + data.name;
-                signatureHtml = `<div class="signature-overlay">${signText}</div>`;
-            } else if (data.rarity === 'mythic') {
-                nameColor = '#fff';
-                mythicBadge = `<div class="mythic-badge">1/1</div>`;
-                signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">Sign. ${data.name}</div>`;
-            }
+            if (data.rarity === 'relic') { nameColor = '#f39c12'; relicHtml = `<div class="relic-patch">Patch</div>`; }
+            else if (data.rarity === 'legendary') { nameColor = 'var(--pink)'; let signText = data.type === "唇印簽名卡" ? "<span class='lip-mark'>💋</span> " + data.name : "Sign. " + data.name; signatureHtml = `<div class="signature-overlay">${signText}</div>`; }
+            else if (data.rarity === 'mythic') { nameColor = '#fff'; mythicBadge = `<div class="mythic-badge">1/1</div>`; signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">Sign. ${data.name}</div>`; }
 
-            let serialBadge = "";
-            if (data.serialNum) {
-                serialBadge = `<div class="serial-badge">No. ${data.serialNum}</div>`;
-            }
+            let serialBadge = ""; if (data.serials && data.serials.length > 0) { let displaySerials = data.serials.slice(0, 3).join(' / '); let more = data.serials.length > 3 ? '...' : ''; serialBadge = `<div class="serial-badge" style="font-size:9px; padding:4px;">編號: ${displaySerials}${more}</div>`; } else if (data.serialNum) { serialBadge = `<div class="serial-badge">No. ${data.serialNum}</div>`; }
             
-            let lockedClass = isLocked ? "locked-silhouette" : "";
-            let flipState = isGachaReveal ? "" : "flipped"; 
+            let lockedClass = isLocked ? "locked-silhouette" : ""; let flipState = isGachaReveal ? "" : "flipped"; 
             let heartBadge = affLevel > 1 ? `<div class="heart-badge">❤️ Lv.${affLevel}</div>` : "";
             let maxAffClass = affLevel === 10 ? "affection-max" : "";
 
             return `
                 <div class="card-container-3d ${lockedClass}">
                     <div class="card-inner ${flipState}">
-                        <div class="card-back ${maxAffClass}">
-                            <div class="card-back-logo">CPBL</div>
-                            <div class="card-back-sub">Cheerleaders</div>
-                        </div>
+                        <div class="card-back ${maxAffClass}"><div class="card-back-logo">CPBL</div><div class="card-back-sub">Cheerleaders</div></div>
                         <div class="card-front rarity-${data.rarity} ${maxAffClass}">
                             <div class="card-team" style="background-color: ${data.teamColor};">${data.team}</div>
                             ${mythicBadge} ${serialBadge} ${heartBadge}
                             <div class="card-image-wrapper">
-                                <img src="images/${data.name}.jpg" alt="${data.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'padding:20px; color:#555;\\'>📸<br>缺少 ${data.name}.jpg</div>';">
+                                <img src="images/${data.name}.jpg" alt="${data.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'missing-img\\'>📸<br>缺少 ${data.name}.jpg<br>等待上傳</div>';">
                                 ${relicHtml} ${signatureHtml}
                             </div>
-                            <div class="card-type">${data.type}</div>
-                            <div class="card-name" style="color: ${nameColor};">${data.name}</div>
+                            <div class="card-type">${data.type}</div><div class="card-name" style="color: ${nameColor};">${data.name}</div>
                         </div>
                     </div>
                 </div>
@@ -584,62 +564,22 @@
         }
 
         function showNextCard() {
-            const container = document.getElementById('card-container');
-            const status = document.getElementById('queue-status');
-            const btn = document.getElementById('btn-next');
-            const dupAlert = document.getElementById('duplicate-alert');
-            dupAlert.innerText = "";
-
-            if (cardQueue.length === 0) {
-                container.innerHTML = "";
-                status.innerText = "卡包已見底！";
-                btn.style.display = "none";
-                document.getElementById('status-text').innerText = "點擊上方按鈕，繼續尋找本命女孩！";
-                checkGameCompletion();
-                return;
-            }
-
-            const data = cardQueue.pop();
-            totalPulls++;
-            localStorage.setItem('cheer_total_pulls_v13', totalPulls);
+            const container = document.getElementById('card-container'); const status = document.getElementById('queue-status'); const btn = document.getElementById('btn-next'); const dupAlert = document.getElementById('duplicate-alert'); dupAlert.innerText = "";
+            if (cardQueue.length === 0) { container.innerHTML = ""; status.innerText = "卡包已見底！"; btn.style.display = "none"; document.getElementById('status-text').innerText = "點擊上方按鈕，繼續尋找本命女孩！"; checkGameCompletion(); return; }
+            const data = cardQueue.pop(); totalPulls++; localStorage.setItem('cheer_total_pulls_v13', totalPulls);
             const key = `${data.team}_${data.type}_${data.name}`;
             
-            if (!collection[key]) {
-                collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] };
-            } else {
-                collection[key].count++;
-                if (data.serialNum) {
-                    if (!collection[key].serials) collection[key].serials = [];
-                    collection[key].serials.push(data.serialNum);
-                    dupAlert.style.color = "var(--gold)";
-                    dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！`;
-                } else {
-                    let earnedPoints = rarityPoints[data.rarity] || 1;
-                    fragments += earnedPoints;
-                    dupAlert.style.color = "#00f2fe";
-                    dupAlert.innerText = `♻️ 重複卡片已轉換為 +${earnedPoints} 碎片！`;
-                }
+            if (!collection[key]) { collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] }; } 
+            else {
+                collection[key].count++; 
+                if (data.serialNum) { if (!collection[key].serials) collection[key].serials = []; collection[key].serials.push(data.serialNum); dupAlert.style.color = "var(--gold)"; dupAlert.style.textShadow = "0 0 5px var(--gold)"; dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！實體卡已獨立保存至卡冊！`; } else { let earnedPoints = rarityPoints[data.rarity] || 1; fragments += earnedPoints; localStorage.setItem('cheer_fragments_v13', fragments); dupAlert.style.color = "#00f2fe"; dupAlert.style.textShadow = "0 0 5px #00f2fe"; dupAlert.innerText = `♻️ 獲得重複卡片，已自動轉換為 +${earnedPoints} 心願碎片！`; updateStamina(); }
             }
-
-            localStorage.setItem('cheer_collection_v13', JSON.stringify(collection));
-            localStorage.setItem('cheer_fragments_v13', fragments);
-
-            if (['relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) {
-                pullLog.unshift({ ...data, pullNumber: totalPulls });
-                if (pullLog.length > 200) pullLog.pop();
-                localStorage.setItem('cheer_pull_log_v13', JSON.stringify(pullLog));
-            }
-
+            localStorage.setItem('cheer_collection_v13', JSON.stringify(collection)); 
+            if (['relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { pullLog.unshift({ ...data, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v13', JSON.stringify(pullLog)); }
             status.innerText = `剩餘未翻開卡片：${cardQueue.length} 張`;
-            container.innerHTML = getCardHTML(data, true, false);
-            
-            setTimeout(() => {
-                const inner = container.querySelector('.card-inner');
-                if(inner) inner.classList.add('flipped');
-            }, 50);
-
-            if (cardQueue.length === 0) btn.innerText = "確認完成 🎉";
-            else btn.innerText = "翻開下一張！ ➡️";
+            container.innerHTML = getCardHTML(data, true, false); playGachaSound(data.rarity);
+            setTimeout(() => { const inner = container.querySelector('.card-inner'); if(inner) inner.classList.add('flipped'); }, 50);
+            if (cardQueue.length === 0) btn.innerText = "確認完成 🎉"; else btn.innerText = "翻開下一張！ ➡️";
         }
 
         // ==========================================
@@ -654,18 +594,26 @@
                     let base = rarityCombatPower[card.rarity] || 0;
                     let aff = affection[card.name] || 1;
                     let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1; 
+                    
                     let cardPower = Math.floor(base * mult);
-                    if (currentEnvironment.bonusTeam === card.team) cardPower = Math.floor(cardPower * 1.2);
-                    else if (currentEnvironment.bonusTeam === "All") cardPower = Math.floor(cardPower * 1.1);
+                    
+                    if (currentEnvironment.bonusTeam === card.team) {
+                        cardPower = Math.floor(cardPower * 1.2);
+                    } else if (currentEnvironment.bonusTeam === "All") {
+                        cardPower = Math.floor(cardPower * 1.1);
+                    }
+                    
                     basePower += cardPower;
                     teamCounts[card.team] = (teamCounts[card.team] || 0) + 1;
                 }
             });
             let maxSameTeam = 0; for (let t in teamCounts) { if (teamCounts[t] > maxSameTeam) maxSameTeam = teamCounts[t]; }
+
             let multiplier = 1; let synergyName = "散裝應援團 (無加成)"; let synergyColor = "#aaa";
             if (maxSameTeam === 5) { multiplier = 1.5; synergyName = "🔥 完美純血陣容 (+50%)"; synergyColor = "#ff3b3b"; }
             else if (maxSameTeam >= 3) { multiplier = 1.25; synergyName = "✨ 核心默契連線 (+25%)"; synergyColor = "var(--gold)"; }
             else if (maxSameTeam >= 2) { multiplier = 1.1; synergyName = "🤝 雙星閃耀 (+10%)"; synergyColor = "#00f2fe"; }
+
             let finalPower = Math.floor(basePower * multiplier);
             return { basePower, finalPower, synergyName, synergyColor };
         }
@@ -673,7 +621,8 @@
         function renderBattleModal() {
             const powerData = calculateSquadPower();
             document.getElementById('battle-total-power').innerText = powerData.finalPower;
-            document.getElementById('battle-synergy-text').innerHTML = `${powerData.synergyName}<br><span style="font-size:13px; color:#ff9a9e;">🏟️ 今日環境：${currentEnvironment.name} (${currentEnvironment.desc})</span>`;
+            
+            document.getElementById('battle-synergy-text').innerHTML = `${powerData.synergyName}<br><span style="font-size:13px; color:#ff9a9e; text-shadow:none;">🏟️ 今日環境：${currentEnvironment.name} (${currentEnvironment.desc})</span>`;
             document.getElementById('battle-synergy-text').style.color = powerData.synergyColor;
 
             let squadHtml = "";
@@ -684,9 +633,11 @@
                     let base = rarityCombatPower[card.rarity] || 0;
                     let aff = affection[card.name] || 1;
                     let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
+                    
                     let finalCardPwr = Math.floor(base * mult);
                     if (currentEnvironment.bonusTeam === card.team) finalCardPwr = Math.floor(finalCardPwr * 1.2);
                     else if (currentEnvironment.bonusTeam === "All") finalCardPwr = Math.floor(finalCardPwr * 1.1);
+
                     squadHtml += `<div class="squad-slot filled" onclick="openCardSelector(${i})"><div class="slot-remove" onclick="removeCardFromSlot(event, ${i})">✖</div><div style="font-size:10px; color:#aaa; margin-top:10px;">${card.team}</div><div style="font-size:16px; font-weight:bold; color:white; margin:5px 0;">${card.name}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold;">⚡ ${finalCardPwr}</div></div>`;
                 } else { squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})"><div style="font-size:36px; color:#aaa; margin-bottom:5px;">+</div><div style="font-size:12px; color:#fbc2eb;">點擊選擇</div></div>`; }
             }
@@ -695,46 +646,65 @@
             let stagesHtml = "";
             battleStagesConfig.forEach(stage => {
                 let isCleared = battleRecord.cleared.includes(stage.id);
-                let btnHtml = isCleared ? `<button disabled style="background:#555;">已通關</button>` : `<button onclick="startBattle(${stage.id}, ${stage.req})">發起挑戰</button>`;
-                stagesHtml += `<div class="battle-stage ${isCleared ? 'completed' : ''}"><div class="stage-info"><div>${stage.name}</div><div style="font-size:12px; color:#aaa;">要求戰力：${stage.req}</div><div style="font-size:12px; color:var(--gold);">🎁 獎勵：${stage.rewardText}</div></div>${btnHtml}</div>`;
+                let btnHtml = isCleared ? `<button class="btn-challenge" disabled style="background:#555;">已通關</button>` : `<button class="btn-challenge" onclick="startBattle(${stage.id}, ${stage.req})">發起挑戰</button>`;
+                stagesHtml += `<div class="battle-stage ${isCleared ? 'completed' : ''}"><div class="stage-info"><div class="stage-name">${stage.name}</div><div class="stage-req">要求戰力：${stage.req}</div><div class="stage-reward">🎁 獎勵：${stage.rewardText}</div></div>${btnHtml}</div>`;
             });
             document.getElementById('battle-stages-container').innerHTML = stagesHtml;
         }
 
         function openCardSelector(slotIndex) {
             selectorSlotIndex = slotIndex; let html = ""; let keys = Object.keys(collection);
-            if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">尚未解鎖任何卡片</div>'; } 
+            if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">您還沒有解鎖任何卡片喔，先去抽卡吧！</div>'; } 
             else {
+                keys.sort((a, b) => {
+                    let getPwr = (card) => {
+                        let base = rarityCombatPower[card.rarity] || 0;
+                        let aff = affection[card.name] || 1;
+                        let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
+                        let pwr = Math.floor(base * mult);
+                        if (currentEnvironment.bonusTeam === card.team) pwr = Math.floor(pwr * 1.2);
+                        else if (currentEnvironment.bonusTeam === "All") pwr = Math.floor(pwr * 1.1);
+                        return pwr;
+                    };
+                    return getPwr(collection[b]) - getPwr(collection[a]);
+                });
                 keys.forEach(k => {
                     let card = collection[k]; let isUsed = manualSquad.includes(k); let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
-                    html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div></div>`;
+                    let statusHtml = isUsed ? "<div style='color:red; font-size:12px; margin-top:5px; font-weight:bold;'>出戰中</div>" : "";
+                    let aff = affection[card.name] || 1; let mult = 1; if (aff === 10) mult = 1.25; else if (aff >= 5) mult = 1.1;
+                    
+                    let finalCardPwr = Math.floor((rarityCombatPower[card.rarity] || 0) * mult);
+                    let envIcon = "";
+                    if (currentEnvironment.bonusTeam === card.team) { finalCardPwr = Math.floor(finalCardPwr * 1.2); envIcon = " <span style='color:#f1c40f;'>☀️UP</span>"; }
+                    else if (currentEnvironment.bonusTeam === "All") { finalCardPwr = Math.floor(finalCardPwr * 1.1); envIcon = " <span style='color:#f1c40f;'>☀️UP</span>"; }
+
+                    html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}${envIcon}</div>${statusHtml}</div>`;
                 });
             }
             document.getElementById('selector-list').innerHTML = html; document.getElementById('selector-modal').style.display = 'block';
         }
 
-        function selectCardForSlot(index, cardKey) { manualSquad[index] = cardKey; localStorage.setItem('cheer_squad_v13', JSON.stringify(manualSquad)); document.getElementById('selector-modal').style.display = 'none'; renderBattleModal(); }
+        function selectCardForSlot(index, cardKey) { if (manualSquad.includes(cardKey)) return; manualSquad[index] = cardKey; localStorage.setItem('cheer_squad_v13', JSON.stringify(manualSquad)); document.getElementById('selector-modal').style.display = 'none'; renderBattleModal(); }
         function removeCardFromSlot(event, index) { event.stopPropagation(); manualSquad[index] = null; localStorage.setItem('cheer_squad_v13', JSON.stringify(manualSquad)); renderBattleModal(); }
-        
         function startBattle(stageId, reqPower) {
-            if (manualSquad.filter(k => k === null).length > 0) { alert("請先填滿陣容！"); return; }
+            let emptyCount = manualSquad.filter(k => k === null).length; if (emptyCount > 0) { alert("請先將 5 個應援欄位排滿，才能發起挑戰！"); return; }
             const currentPower = calculateSquadPower().finalPower;
             if (currentPower >= reqPower) {
-                alert(`🎉 應援成功！`); let stage = battleStagesConfig.find(s => s.id === stageId);
+                alert(`🎉 應援成功！天團展現了驚人的戰力！`); let stage = battleStagesConfig.find(s => s.id === stageId);
                 if (stage.rewardType === "tickets") { tickets += stage.rewardVal; } else if (stage.rewardType === "fragments") { fragments += stage.rewardVal; } else if (stage.rewardType === "both") { tickets += stage.rewardValT; fragments += stage.rewardValF; }
-                battleRecord.cleared.push(stageId); localStorage.setItem('cheer_battles_v13', JSON.stringify(battleRecord));
+                localStorage.setItem('cheer_fragments_v13', fragments); battleRecord.cleared.push(stageId); localStorage.setItem('cheer_battles_v13', JSON.stringify(battleRecord));
                 updateStamina(); renderBattleModal(); 
-            } else { alert(`❌ 戰力不足！需要 ${reqPower}，目前 ${currentPower}。`); }
+            } else { alert(`❌ 戰力不足！需要 ${reqPower} 戰力，目前天團僅有 ${currentPower}。\n💡 提示：餵食珍奶提升好感度，或換上同球隊女孩獲取團隊加成！`); }
         }
 
         // ==========================================
-        // 其他介面功能
+        // 其他介面與圖鑑管理
         // ==========================================
         function checkGameCompletion() {
             let uniqueOwned = Object.keys(collection).length;
             if (uniqueOwned >= totalUniquePossible) {
                 isGameOver = true; localStorage.setItem('cheer_gameover_v13', 'true');
-                document.getElementById('display-area').innerHTML = `<div style="background: linear-gradient(135deg, #111, #2b1b24); padding: 40px; border-radius: 20px; color: #fff; max-width: 650px; margin: 20px auto; box-shadow: 0 0 50px rgba(255, 126, 179, 0.6); border: 4px solid var(--pink);"><h2 style="font-size: 34px; color: var(--gold); margin-bottom: 20px; text-shadow: 0 0 15px var(--gold);">👑 終極大滿貫・完美通關！ 🎉</h2><p style="font-size: 18px; line-height: 1.6;">你已成功解鎖全圖鑑共 <span style="color:var(--pink); font-weight:bold;">${totalUniquePossible}</span> 款卡片！</p></div>`;
+                document.getElementById('display-area').innerHTML = `<div style="background: linear-gradient(135deg, #111, #2b1b24); padding: 40px; border-radius: 20px; color: #fff; max-width: 650px; margin: 20px auto; box-shadow: 0 0 50px rgba(255, 126, 179, 0.6); border: 4px solid var(--pink);"><h2 style="font-size: 34px; color: var(--gold); margin-bottom: 20px; text-shadow: 0 0 15px var(--gold);">👑 終極大滿貫・完美通關！ 🎉</h2><p style="font-size: 18px; line-height: 1.6;">不可思議！你已成功解鎖全台灣職棒 6 大球隊、包含所有極度稀有的限量卡與 1/1 寶石卡，共 <span style="color:var(--pink); font-weight:bold;">${totalUniquePossible}</span> 款啦啦隊女孩全圖鑑！</p><div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 25px 0; border: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 18px; color: #aaa;">神級圖鑑締造紀錄</span><br><span style="font-size: 20px;">生涯累計耗費：</span><span style="color:var(--gold); font-size:40px; font-weight:bold; text-shadow: 0 0 10px var(--gold);">${totalPulls}</span> 抽！</div></div>`;
             }
         }
 
@@ -755,51 +725,76 @@
 
         function renderLog() {
             document.getElementById('total-pulls-display').innerText = totalPulls; const logList = document.getElementById('log-list'); logList.innerHTML = '';
-            if(pullLog.length === 0) { logList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px;">尚未獲得稀有卡片</div>'; return; }
+            if(pullLog.length === 0) { logList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px;">尚未抽出極稀有大獎...</div>'; return; }
             pullLog.forEach(log => {
-                logList.innerHTML += `<div class="log-item"><div style="text-align:left;"><div style="font-size:12px; color:#aaa;">${log.team} ${log.type}</div><div style="font-size:20px; font-weight:bold;">${log.name}</div></div><div class="log-pull-num">第 ${log.pullNumber} 抽</div></div>`;
+                let nameColor = "#fff"; let rarityBorder = "#704762";
+                if(log.rarity === 'mythic') { nameColor = "var(--gold)"; rarityBorder = "var(--gold)"; } else if(log.rarity === 'legendary') { nameColor = "var(--pink)"; rarityBorder = "var(--pink)"; } else if(log.rarity === 'relic') { nameColor = "#e67e22"; rarityBorder = "#e67e22"; } else if(log.rarity === 'limited-red') { nameColor = "#ff3b3b"; rarityBorder = "#ff3b3b"; } else if(log.rarity === 'limited-gold') { nameColor = "#ffd700"; rarityBorder = "#ffd700"; } else if(log.rarity === 'limited-silver') { nameColor = "#c0c0c0"; rarityBorder = "#c0c0c0"; }
+                let serialText = log.serialNum ? ` <span style="color:#aaa; font-size:12px;">(No.${log.serialNum})</span>` : "";
+                logList.innerHTML += `<div class="log-item" style="border-color: ${rarityBorder};"><div style="text-align:left;"><div style="font-size:12px; color:#aaa; margin-bottom: 2px;"><span style="background:${log.teamColor}; color:white; padding:2px 6px; border-radius:4px;">${log.team}</span> ${log.type}</div><div style="font-size:22px; font-weight:bold; color:${nameColor};">${log.name}${serialText}</div></div><div class="log-pull-num">第 <span style="color:var(--gold); font-size:18px;">${log.pullNumber}</span> 抽</div></div>`;
             });
         }
 
         function onAlbumFilterChange() { albumTeam = document.getElementById('filter-team').value; albumType = document.getElementById('filter-type').value; albumPage = 1; renderAlbumPage(); }
         function changeAlbumPage(direction) { const members = db[albumTeam].members; const totalPages = Math.ceil(members.length / cardsPerPage); let newPage = albumPage + direction; if (newPage >= 1 && newPage <= totalPages) { albumPage = newPage; renderAlbumPage(); } }
 
+        const teamTitles = { "Passion Sisters": "💛黃衫軍應援隊長", "Uni Girls": "🧡獅王終極護衛", "Fubon Angels": "💙悍將終極守護神", "Dragons Beauties": "❤️狂龍百獸之王", "Rakuten Girls": "🐒桃猿最強戰力", "Wing Stars": "💚雄鷹展翅之光" };
+
         function renderAlbumPage() {
             const grid = document.getElementById('album-grid'); const pageInfo = document.getElementById('album-page-info'); const stats = document.getElementById('collection-stats'); const bannerContainer = document.getElementById('album-complete-banner');
             grid.innerHTML = ''; bannerContainer.innerHTML = '';
             const members = db[albumTeam].members; const totalPages = Math.ceil(members.length / cardsPerPage) || 1; pageInfo.innerText = `${albumPage} / ${totalPages}`;
-            let uniqueCardsOwned = Object.keys(collection).length;
-            stats.innerHTML = `目前解鎖總圖鑑數：${uniqueCardsOwned} / ${totalUniquePossible}`;
+            let totalCardsOwned = 0; let uniqueCardsOwned = Object.keys(collection).length; Object.values(collection).forEach(c => totalCardsOwned += c.count);
+
+            let completedTeamsHtml = "";
+            Object.keys(db).forEach(t => { let isBaseCompleted = true; db[t].members.forEach(m => { if(!collection[`${t}_普卡_${m}`]) isBaseCompleted = false; }); if(isBaseCompleted) completedTeamsHtml += `<span style="margin: 0 5px; background:var(--gold); color:black; padding: 2px 8px; border-radius:10px; font-weight:bold; font-size:14px; box-shadow:0 0 5px var(--gold);">${teamTitles[t]}</span>`; });
+            let titleSection = completedTeamsHtml ? `<div style="margin-top:10px;">🏅 獲得專屬稱號: ${completedTeamsHtml}</div>` : "";
+            stats.innerHTML = `目前解鎖總圖鑑數：${uniqueCardsOwned} / ${totalUniquePossible} 款 | 總持有卡片：${totalCardsOwned} 張${titleSection}`;
+
+            let isSeriesComplete = true; members.forEach(m => { if (!collection[`${albumTeam}_${albumType}_${m}`]) isSeriesComplete = false; });
+            if (isSeriesComplete) { bannerContainer.innerHTML = `<div class="complete-banner">🏆 已完成蒐集！恭喜集齊【${albumTeam}】的【${albumType}】全系列！✨</div>`; }
+
             const startIndex = (albumPage - 1) * cardsPerPage; const pageMembers = members.slice(startIndex, startIndex + cardsPerPage);
             pageMembers.forEach(name => {
                 const key = `${albumTeam}_${albumType}_${name}`; const hasCard = collection[key] && collection[key].count > 0;
                 const cardData = hasCard ? collection[key] : { team: albumTeam, teamColor: db[albumTeam].color, name: name, type: albumType, rarity: typeToRarity[albumType], serialNum: null };
                 const wrapper = document.createElement('div'); wrapper.className = 'album-item-wrapper'; 
                 wrapper.innerHTML = getCardHTML(cardData, false, !hasCard);
-                if (hasCard) { 
-                    const badge = document.createElement('div'); badge.className = 'album-count-badge'; badge.innerText = `x${collection[key].count}`; wrapper.appendChild(badge);
-                    wrapper.style.cursor = 'pointer'; wrapper.onclick = function() { viewCardInViewer(collection[key]); };
-                } else {
-                    const lockOverlay = document.createElement('div'); lockOverlay.className = 'lock-overlay'; lockOverlay.innerText = '❓ 未解鎖'; wrapper.appendChild(lockOverlay);
-                }
+                if (!hasCard) { const lockOverlay = document.createElement('div'); lockOverlay.className = 'lock-overlay'; lockOverlay.innerText = '❓ 未解鎖'; wrapper.appendChild(lockOverlay);
+                } else { const badge = document.createElement('div'); badge.className = 'album-count-badge'; badge.innerText = `x${collection[key].count}`; wrapper.appendChild(badge); wrapper.style.cursor = 'pointer'; wrapper.onclick = function() { viewCardInViewer(collection[key]); }; }
                 grid.appendChild(wrapper);
             });
         }
 
-        let currentViewedCard = null;
+        // ❤️ 餵食珍奶專屬檢視器
         function viewCardInViewer(cardData) { 
             const viewerModal = document.getElementById('card-viewer-modal'); const viewerContent = document.getElementById('card-viewer-content'); 
+            
             let aff = affection[cardData.name] || 1;
+            let affText = aff === 10 ? "MAX" : aff;
+            let btnDisabled = aff === 10 ? "disabled" : "";
+            let btnText = aff === 10 ? "好感度已達 MAX" : "🎁 餵食珍奶 (+1 Lv) 消耗 50 碎片";
+
             let html = getCardHTML(cardData, false, false);
-            html += `<div style="margin-top: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; border: 1px solid var(--pink); text-align: center;" onclick="event.stopPropagation()">
-                <div style="color: var(--pink); font-weight: bold;">❤️ 好感度: Lv.${aff === 10 ? "MAX" : aff}</div>
-                <button class="btn-frag" ${aff === 10 ? "disabled" : ""} onclick="sendGift('${cardData.name}')" style="margin-top:10px;">🎁 餵食珍奶 (50 碎片)</button>
-            </div>`;
-            viewerContent.innerHTML = html; viewerModal.style.display = "flex"; currentViewedCard = cardData;
+            html += `
+                <div style="margin-top: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; border: 1px solid var(--pink); text-align: center; cursor: default;" onclick="event.stopPropagation()">
+                    <div style="color: var(--pink); font-weight: bold; font-size: 18px; margin-bottom: 5px;">❤️ 本命好感度: Lv.${affText}</div>
+                    <div style="color: #aaa; font-size: 12px; margin-bottom: 10px;">(Lv.5 應援戰力 +10% | Lv.10 戰力 +25% 並解鎖專屬特效)</div>
+                    <button class="btn-frag" ${btnDisabled} onclick="sendGift('${cardData.name}')" style="font-size: 14px; padding: 8px 15px;">${btnText}</button>
+                </div>
+            `;
+            
+            viewerContent.innerHTML = html; 
+            viewerModal.style.display = "flex"; 
+            currentViewedCard = cardData; // 存儲以供刷新
         }
         function closeCardViewer() { document.getElementById('card-viewer-modal').style.display = "none"; currentViewedCard = null; }
 
-        function clearCollection() { if(confirm("確定要重置嗎？")) { localStorage.clear(); location.reload(); } }
+        function clearCollection() {
+            if(confirm("確定要清空所有資料嗎？（所有進度、體力、限量庫存、好感度將全數重置）")) {
+                collection = {}; totalPulls = 0; pullLog = []; tickets = MAX_TICKETS; fragments = 0; lastUpdateTime = Date.now(); isGameOver = false; manualSquad = [null, null, null, null, null]; affection = {};
+                localStorage.clear(); saveStamina(); location.reload();
+            }
+        }
         
         updateStamina(); if (isGameOver) { checkGameCompletion(); }
     </script>
