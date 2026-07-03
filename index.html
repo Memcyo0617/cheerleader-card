@@ -81,6 +81,12 @@
         .showcase-slot-empty:hover { background: rgba(255,126,179,0.1); border-color: var(--pink); color: var(--pink); }
         .showcase-value { font-size: 24px; color: var(--gold); font-weight: bold; text-shadow: 0 0 10px var(--gold); margin-top: 20px; text-align: center; }
 
+        .chart-container { width: 100%; margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .chart-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .chart-bar-bg { flex-grow: 1; height: 20px; background: #2b1b24; border-radius: 10px; overflow: hidden; border: 1px solid #553549; }
+        .chart-bar-fill { height: 100%; border-radius: 10px; transition: width 1s ease-out; }
+        .chart-label { width: 120px; text-align: right; color: var(--pink); font-weight: bold; }
+        .chart-perc { width: 50px; text-align: left; color: white; }
     </style>
 </head>
 <body>
@@ -178,7 +184,15 @@
     <div id="lounge-modal" class="modal"><button class="close-btn" onclick="toggleModal('lounge-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 800px;"><h2 style="color: #a1c4fd; text-align:center;">🏠 女孩專屬休息室</h2><p style="color:#aaa; text-align:center;">只有好感度達到 MAX (Lv.10) 的本命女孩會出現在這裡喔！</p><div id="lounge-area" class="lounge-area"></div></div></div>
     <div id="auction-modal" class="modal"><button class="close-btn" onclick="closeAuction()">✖ 離開拍賣</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">⚖️ 黑市限時拍賣</h2><div class="auction-panel"><div style="color:#aaa; font-size:14px; margin-bottom:10px;">本次競標拍品：</div><div id="auction-card-display" style="transform: scale(0.8); margin: -30px 0;"></div><div id="auction-timer-display" class="auction-timer">等待開拍...</div><div style="color:white; font-size:16px;">當前最高出價 (碎片)：</div><div id="auction-price-display" class="auction-current-bid">0</div><div id="auction-log-display" class="auction-log"></div><div style="display:flex; justify-content:center; gap:10px;"><button id="btn-bid-50" class="btn-team" onclick="placeBid(50)" disabled>加價 50</button><button id="btn-bid-200" class="btn-pu" onclick="placeBid(200)" disabled>加價 200</button></div><div style="margin-top:10px; color:#00f2fe; font-size:14px;">你的碎片：<span id="auction-my-fragments">0</span></div></div></div></div>
     <div id="event-modal" class="modal" style="z-index: 300;"><div class="modal-content"><div class="event-title">🚨 突發狀況！</div><div id="event-desc" class="event-desc">...</div><button id="btn-event-a" class="event-btn" onclick="resolveEvent(0)">選項 A</button><button id="btn-event-b" class="event-btn" onclick="resolveEvent(1)">選項 B</button></div></div>
-    <div id="rates-modal" class="modal"><button class="close-btn" onclick="toggleModal('rates-modal')">✖ 關閉</button><div class="modal-content"><h2 style="color: var(--pink);">📊 抽卡機率分布</h2><p>已略過顯示，原邏輯未變。</p></div></div>
+   <div id="rates-modal" class="modal">
+    <button class="close-btn" onclick="toggleModal('rates-modal')">✖ 關閉</button>
+    <div class="modal-content">
+        <h2 style="color: var(--pink);">📊 抽卡機率視覺化分布</h2>
+        <div class="chart-container" id="rate-chart-body">
+            </div>
+        <p style="color:#aaa; font-size:12px; margin-top:20px;">* 機率越高，條狀圖越長，大獎分布一目瞭然。</p>
+    </div>
+</div>
     <div id="log-modal" class="modal"><button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄</h2><div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div><div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div></div></div>
     <div id="battle-modal" class="modal"><button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 850px;"><h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 每日應援挑戰賽</h2><div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;"><div style="font-size:16px; color:white;">當前天團 總應援戰力</div><div id="battle-total-power" class="power-text">0</div><div id="battle-synergy-text" class="synergy-text">散裝應援團 (無加成)</div><div id="battle-squad" class="squad-container"></div></div><div id="battle-log-panel" class="battle-log-panel"><h3 style="color:var(--pink); margin-top:0; text-align:center;">🎬 應援實況轉播</h3><div id="battle-log-content"></div><button id="btn-finish-battle" class="btn-battle" style="display:none; width:100%; margin-top:15px;" onclick="resetBattleView()">確認戰果</button></div><div id="battle-stages-container"></div></div></div>
     <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
@@ -423,6 +437,33 @@
         
         // 啟動初始化
         updateStamina(); initMainGirl();
+
+        const rateData = [
+    { name: "普卡 (Common)", prob: 50.0, color: "#bdc3c7" },
+    { name: "亮面特卡 (Rare)", prob: 30.0, color: "#886a7d" },
+    { name: "平行閃卡 (Epic)", prob: 10.0, color: "#00f2fe" },
+    { name: "實戰衣物 (Relic)", prob: 5.0, color: "#e67e22" },
+    { name: "簽名卡 (Legendary)", prob: 4.0, color: "#ff7eb3" },
+    { name: "限量卡 (Limited)", prob: 0.5, color: "#ffd700" },
+    { name: "寶石卡 (Mythic)", prob: 0.5, color: "#fff" }
+];
+
+function renderRateChart() {
+    const container = document.getElementById('rate-chart-body');
+    container.innerHTML = '';
+    rateData.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'chart-row';
+        row.innerHTML = `
+            <div class="chart-label">${item.name}</div>
+            <div class="chart-bar-bg">
+                <div class="chart-bar-fill" style="width: ${item.prob * 2}%; background-color: ${item.color}; box-shadow: 0 0 10px ${item.color}"></div>
+            </div>
+            <div class="chart-perc">${item.prob}%</div>
+        `;
+        container.appendChild(row);
+    });
+}
     </script>
 </body>
 </html>
