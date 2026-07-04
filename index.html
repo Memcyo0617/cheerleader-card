@@ -514,18 +514,27 @@
            // 無盡模式 UI 取代原本的 stages
             let buffTags = endlessBuffs.length === 0 ? "無" : endlessBuffs.map(b => `<span style="background:#222; padding:2px 6px; border-radius:4px; margin-right:5px; font-size:12px; border:1px solid #555; color:#84fab0;">${b.desc}</span>`).join('');
             
+            // 🆕 動態判斷是否顯示掃蕩按鈕
+            const currentReq = getEndlessReq();
+            let sweepBtnHtml = "";
+            if (powerData.finalPower >= currentReq * 2) {
+                sweepBtnHtml = `<button class="btn-frag" style="padding: 12px 15px; font-size: 15px; margin-right: 10px; background: linear-gradient(45deg, #9b59b6, #8e44ad); color: white;" onclick="sweepEndlessBattle()">🚀 戰力碾壓掃蕩</button>`;
+            }
+            
             let endlessHtml = `
                 <div id="endless-container" style="background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 12px; padding: 20px; margin-top: 15px;">
                     <h3 style="color:var(--gold); margin-top:0;">🏆 無盡應援巡迴賽 - 第 <span style="font-size:24px; color:#fff;">${endlessFloor}</span> 站</h3>
-                    <div style="font-size:14px; color:#ccc; margin-bottom:15px; line-height:1.8;">目前累積 Buff：<br>${buffTags}</div>
+                    <div style="font-size:14px; color:#ccc; margin-bottom:15px; line-height:1.8; max-height:60px; overflow-y:auto;">目前累積 Buff：<br>${buffTags}</div>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="font-size:16px; color:white;">本站要求戰力：<span style="color:#ff4b2b; font-size:24px; font-weight:bold; margin-left:10px;">${getEndlessReq()}</span></div>
-                        <button class="btn-battle" style="padding: 12px 25px; font-size: 16px;" onclick="startEndlessBattle()">消耗⚡1 挑戰本站</button>
+                        <div style="font-size:16px; color:white;">本站要求戰力：<span style="color:#ff4b2b; font-size:24px; font-weight:bold; margin-left:10px;">${currentReq}</span></div>
+                        <div style="display:flex;">
+                            ${sweepBtnHtml}
+                            <button class="btn-battle" style="padding: 12px 25px; font-size: 16px;" onclick="startEndlessBattle()">消耗⚡1 挑戰</button>
+                        </div>
                     </div>
                 </div>
             `;
-            document.getElementById('battle-stages-container').innerHTML = endlessHtml; 
-        }
+            document.getElementById('battle-stages-container').innerHTML = endlessHtml;
 
         async function startEndlessBattle() { 
             // 確保陣列不為空
@@ -601,6 +610,61 @@
             }
         }
 
+        async function sweepEndlessBattle() {
+            let emptyCount = manualSquad.filter(k => k === null).length; 
+            if (emptyCount === 9) return alert("請至少上陣 1 位女孩！"); 
+            if (battleEnergy < 1) return alert("⚡ 應援力不足！請等待回復。"); 
+
+            const powerData = calculateSquadPower();
+            let currentPower = powerData.finalPower;
+            let currentReq = getEndlessReq();
+
+            if (currentPower < currentReq * 2) {
+                return alert("戰力碾壓優勢不足 (需大於要求戰力 2 倍)！請手動挑戰。");
+            }
+
+            // 🧮 對數公式計算極限樓層: 300 * 1.3^(F-1) = currentPower 
+            // 預留 2 關作為緩衝區，避免一次跳到直接打不贏的地方
+            let maxFloor = Math.floor(Math.log(currentPower / 300) / Math.log(1.3)) + 1;
+            let skipCount = maxFloor - endlessFloor - 2; 
+
+            if (skipCount <= 0) {
+                return alert("已經逼近戰力極限，無法再進行安全掃蕩了！");
+            }
+
+            if (confirm(`系統偵測到您的戰力高達 ${currentPower}！\n是否消耗 ⚡1 應援力，直接掃蕩跳過 ${skipCount} 站？\n\n🎁 掃蕩獎勵：將自動為您獲取 ${skipCount * 120} 碎片與 ${skipCount} 個隨機戰鬥 Buff！`)) {
+                
+                battleEnergy -= 1;
+                
+                // 給予碎片獎勵 (每跳過一關給 120)
+                let rewardFragments = skipCount * 120;
+                fragments += rewardFragments;
+
+                // 給予隨機 Buff (剔除單次資源，只給永久屬性)
+                const buffPool = [
+                    { type: "global", target: "all", value: 0.1, desc: "全隊戰力 +10%", icon: "🌟" },
+                    { type: "global", target: "all", value: 0.05, desc: "全隊戰力 +5%", icon: "⭐" },
+                    { type: "attr", target: "活力", value: 0.2, desc: "活力戰力 +20%", icon: "🔥" },
+                    { type: "attr", target: "甜美", value: 0.2, desc: "甜美戰力 +20%", icon: "🎀" },
+                    { type: "attr", target: "酷炫", value: 0.2, desc: "酷炫戰力 +20%", icon: "❄️" }
+                ];
+
+                for (let i = 0; i < skipCount; i++) {
+                    let randomBuff = buffPool[Math.floor(Math.random() * buffPool.length)];
+                    endlessBuffs.push(randomBuff);
+                }
+
+                endlessFloor += skipCount;
+                localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
+                localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
+                saveStamina(); 
+                updateStamina(); 
+                
+                alert(`🚀 掃蕩成功！\n直達第 ${endlessFloor} 站！\n狂賺 ${rewardFragments} 碎片，陣容已載入 ${skipCount} 個隨機 Buff！`);
+                resetBattleView();
+            }
+        }
+            
         function showBuffSelection() {
             const pool = [
                 { type: "global", target: "all", value: 0.1, desc: "全隊戰力 +10%", icon: "🌟" },
