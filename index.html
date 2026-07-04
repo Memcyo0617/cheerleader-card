@@ -274,9 +274,9 @@
 
         // 🆕 V15 派遣系統資料結構
         const dispatchZonesConfig = [
-            { id: 'zone1', name: '球場外發傳單', baseRate: 0.5 }, // 每分鐘基底產量
-            { id: 'zone2', name: '商場一日店長', baseRate: 1.5 },
-            { id: 'zone3', name: '大巨蛋特區展覽', baseRate: 3.0 }
+            { id: 'zone1', name: '球場外發傳單', baseRate: 0.2 }, // 每分鐘基底產量
+            { id: 'zone2', name: '商場一日店長', baseRate: 0.6 },
+            { id: 'zone3', name: '大巨蛋特區展覽', baseRate: 1.2 }
         ];
         let dispatchState = JSON.parse(localStorage.getItem('cheer_dispatch_v15')) || {
             zone1: null, zone2: null, zone3: null
@@ -306,7 +306,7 @@
                                 if(ds.fatigue < 0) ds.fatigue = 0;
                                 
                                 let card = collection[ds.cardKey];
-                                let rarityMult = {"common":1, "rare":2, "epic":4, "limited-silver":6, "limited-gold":8, "limited-red":12, "relic":8, "legendary":10, "mythic":20}[card.rarity] || 1;
+                                let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "legendary":3.0, "mythic":3.5}[card.rarity] || 1;
                                 let affMult = affection[card.name] || 1; 
                                 let zoneBase = dispatchZonesConfig.find(z => z.id === zid).baseRate;
                                 
@@ -582,7 +582,28 @@
             document.getElementById('selector-modal').style.display = 'block'; 
         }
         function collectDispatch(zoneId) { let ds = dispatchState[zoneId]; if(!ds) return; let amount = Math.floor(ds.collected); if(amount > 0) { fragments += amount; ds.collected -= amount; saveStamina(); updateStamina(); renderDispatch(); alert(`成功從派遣任務中領取 ${amount} 枚心願碎片！`); } else { alert(`還沒有足夠的碎片可以領取喔！`); } }
-        function restoreFatigue(zoneId) { let ds = dispatchState[zoneId]; if(!ds) return; if(fragments >= 20) { fragments -= 20; ds.fatigue = 100; saveStamina(); updateStamina(); renderDispatch(); alert(`消耗 20 碎片購買能量飲料，女孩體力已完全恢復！`); } else { alert(`碎片不足 20 枚，無法購買能量飲料！`); } }
+       function restoreFatigue(zoneId) { 
+            let ds = dispatchState[zoneId]; 
+            if(!ds) return; 
+            
+            let card = collection[ds.cardKey];
+            let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
+            let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zoneId] || 1;
+            
+            // 基礎水錢 20，根據卡片身價與工作地點翻倍
+            let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
+
+            if(fragments >= potionCost) { 
+                fragments -= potionCost; 
+                ds.fatigue = 100; 
+                saveStamina(); 
+                updateStamina(); 
+                renderDispatch(); 
+                alert(`花費了 ${potionCost} 碎片購買高級能量飲，${card.name} 的體力已完全恢復！`); 
+            } else { 
+                alert(`碎片不足！需要 ${potionCost} 碎片才能幫她買飲料。`); 
+            } 
+        }
         function recallDispatch(zoneId) { let ds = dispatchState[zoneId]; if(ds && Math.floor(ds.collected) >= 1) { fragments += Math.floor(ds.collected); alert(`召回成功！結算獲得 ${Math.floor(ds.collected)} 枚碎片。`); } dispatchState[zoneId] = null; saveStamina(); updateStamina(); renderDispatch(); }
 
         // 🚶‍♀️ 休息室 2D (僅保留視覺功能)
