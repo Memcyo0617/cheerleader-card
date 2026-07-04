@@ -1,9 +1,9 @@
-<!DOCTYPE html>   
+<!DOCTYPE html> 
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V15 九宮格佈局與派遣經濟)</title>
+    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V16 終極無盡版)</title>
     <style>
         :root { --bg-color: #2b1b24; --panel-bg: #3d2635; --text-main: #ffe6f2; --gold: #ffd700; --pink: #ff7eb3; --silver: #bdc3c7; --team-ps: #f39c12; --team-db: #e74c3c; --team-ug: #e67e22; --team-rg: #c0392b; --team-fa: #3498db; --team-ws: #2ecc71; --attr-v: #f39c12; --attr-s: #ff7eb3; --attr-c: #00f2fe; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; text-align: center; overflow-x: hidden; }
@@ -43,7 +43,6 @@
         .album-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; } .album-filters select { background: #553549; color: white; border: 1px solid var(--pink); padding: 8px 15px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer;} .album-grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; max-width: 820px; margin: 0 auto; } .album-item-wrapper { position: relative; } .album-count-badge { position: absolute; top: -10px; right: -10px; background: var(--pink); color: white; font-weight: bold; border-radius: 50%; width: 28px; height: 28px; line-height: 28px; font-size: 14px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; } .album-pagination { margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 20px; } .album-page-info { font-size: 18px; font-weight: bold; color: var(--pink); }
         .log-item { background:#4a2f41; border:1px solid #704762; border-radius:8px; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;} .log-pull-num { background:#2b1b24; padding:5px 15px; border-radius:20px; color:#fff; font-weight:bold; font-size:14px; border:1px solid #704762; }
         
-        /* 🆕 V15 九宮格佈局 */
         .power-text { color: #ff4b2b; font-size: 38px; font-weight: bold; text-shadow: 0 0 15px rgba(255, 75, 43, 0.8); margin: 5px 0; } .synergy-text { color: #00f2fe; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 5px #00f2fe; line-height: 1.4;} 
         .squad-grid-3x3 { display: grid; grid-template-columns: repeat(3, 100px); gap: 10px; justify-content: center; margin: 20px auto; }
         .squad-slot { width: 100px; height: 135px; border: 2px dashed #704762; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; background: rgba(0,0,0,0.5); transition: 0.2s; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); } .squad-slot:hover { border-color: var(--pink); background: rgba(255,126,179,0.1); } .squad-slot.filled { border-style: solid; border-color: var(--gold); background: #2b1b24; box-shadow: 0 4px 8px rgba(0,0,0,0.5); } .slot-remove { position: absolute; top: -8px; right: -8px; background: red; color: white; border-radius: 50%; width: 24px; height: 24px; line-height: 24px; font-size: 12px; cursor: pointer; border: 2px solid #fff; z-index: 10; } 
@@ -68,33 +67,8 @@
         .lounge-bubble { position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.9); color: #333; padding: 5px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; border: 2px solid var(--pink); box-shadow: 0 2px 5px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 5; }
         .lounge-bubble.show { opacity: 1; top: -55px; }
 
-        /* 🆕 V15 派遣系統樣式 */
-       .dispatch-zone { 
-            position: relative; /* 確保絕對定位的子元素以這裡為基準 */
-            background: rgba(0,0,0,0.6); 
-            border: 1px solid var(--pink); 
-            padding: 25px 15px 15px 15px; /* 增加 padding-top 讓標籤有空間 */
-            border-radius: 12px; 
-            margin-top: 15px; /* 與上方拉開距離 */
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            text-align: left; 
-        }
-        .dispatch-zone-label {
-            position: absolute;
-            top: -12px; /* 完美卡在邊框上 */
-            left: 15px;
-            background: #222;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.8);
-            z-index: 10;
+        .dispatch-zone { position: relative; background: rgba(0,0,0,0.6); border: 1px solid var(--pink); padding: 25px 15px 15px 15px; border-radius: 12px; margin-top: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; text-align: left; }
+        .dispatch-zone-label { position: absolute; top: -12px; left: 15px; background: #222; padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; color: var(--gold); border: 1px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.8); z-index: 10; }
         .dispatch-info { flex-grow: 1; margin-left: 15px; }
         .fatigue-bar-container { background: #222; border-radius: 8px; height: 12px; width: 100%; margin-top: 8px; overflow: hidden; border: 1px solid #555; }
         .fatigue-fill { background: linear-gradient(90deg, #2ecc71, #27ae60); height: 100%; transition: width 0.5s; }
@@ -106,7 +80,7 @@
 </head>
 <body>
 
-    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V15)</h1>
+    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V16)</h1>
     
     <div class="resource-bar">
         <span>🎫 抽卡券: <span id="ui-tickets" class="stamina-count">10</span>/10 <span id="ui-timer" class="stamina-timer"></span></span>
@@ -147,7 +121,7 @@
     </div>
 
     <div class="controls">
-        <button class="btn-battle" onclick="toggleModal('battle-modal')">⚔️ 九宮格應援挑戰</button>
+        <button class="btn-battle" onclick="toggleModal('battle-modal')">⚔️ 無盡應援巡迴賽</button>
         <button class="btn-dispatch" onclick="toggleModal('dispatch-modal')">🗺️ 女孩派遣任務 (賺碎片)</button>
         <button class="btn-rates" onclick="toggleModal('rates-modal')">📊 機率表</button>
         <button class="btn-log" onclick="toggleModal('log-modal')">🏆 大獎紀錄</button>
@@ -163,6 +137,7 @@
         <button id="btn-next" class="btn-next" onclick="showNextCard()">翻開下一張！ ➡️</button>
     </div>
 
+    <!-- 看板娘 -->
     <div id="main-girl-widget" class="main-girl-widget" style="display:none;">
         <div id="main-girl-bubble" class="speech-bubble"></div>
         <div class="main-girl-avatar-container" onclick="pokeMainGirl()">
@@ -172,6 +147,7 @@
         </div>
     </div>
 
+    <!-- 頂級展示櫃 -->
     <div id="showcase-modal" class="modal">
         <button class="close-btn" onclick="toggleModal('showcase-modal')">✖ 關閉</button>
         <div class="modal-content" style="max-width: 900px;">
@@ -183,6 +159,7 @@
         </div>
     </div>
 
+    <!-- 卡片選擇器 (共用) -->
     <div id="selector-modal" class="modal" style="z-index: 200;">
         <div class="modal-content" style="max-width: 700px; background: rgba(30,15,25,0.98); border: 2px solid var(--gold);">
             <h3 id="selector-title" style="color: var(--gold);">🔍 選擇卡片</h3>
@@ -205,8 +182,10 @@
         </div>
     </div>
 
+    <!-- 碎片商城 -->
     <div id="shop-modal" class="modal"><button class="close-btn" onclick="toggleModal('shop-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 500px; text-align: center;"><h2 style="color: #00f2fe; text-shadow: 0 0 10px rgba(0,242,254,0.5);">🛒 心願碎片商城</h2><div style="font-size: 18px; margin-bottom: 20px;">目前擁有碎片：<span style="color: #00f2fe; font-size: 26px; font-weight: bold;" id="shop-fragments-display">0</span></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: var(--gold);">⚖️ 黑市限時拍賣會</h3><p style="font-size:12px; color:#aaa;">(註：流標的限量卡會回溯至卡池中，不會憑空消失)</p><button class="btn-auction" onclick="toggleModal('shop-modal'); toggleModal('auction-modal'); initAuction();">進入拍賣會</button></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: #fbc2eb;">🎀 隨機應援包</h3><button class="btn-frag" onclick="buyShopItem('random')">兌換 (消耗 100 碎片)</button></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: #fbc2eb;">🎯 指定球隊保底包</h3><select id="shop-team-select" class="team-picker" style="margin-bottom: 10px; width: 80%;"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><br><button class="btn-team" onclick="buyShopItem('team')">兌換 (消耗 150 碎片)</button></div></div></div>
     
+    <!-- 休息室 -->
     <div id="lounge-modal" class="modal">
         <button class="close-btn" onclick="toggleModal('lounge-modal')">✖ 關閉</button>
         <div class="modal-content" style="max-width: 800px;">
@@ -216,7 +195,7 @@
         </div>
     </div>
 
-    <!-- 🆕 V15 派遣任務 Modal -->
+    <!-- 派遣任務 -->
     <div id="dispatch-modal" class="modal">
         <button class="close-btn" onclick="toggleModal('dispatch-modal')">✖ 關閉</button>
         <div class="modal-content" style="max-width: 700px;">
@@ -226,9 +205,13 @@
         </div>
     </div>
 
+    <!-- 拍賣會 -->
     <div id="auction-modal" class="modal"><button class="close-btn" onclick="closeAuction()">✖ 離開拍賣</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">⚖️ 黑市限時拍賣</h2><div class="auction-panel"><div style="color:#aaa; font-size:14px; margin-bottom:10px;">本次競標拍品：</div><div id="auction-card-display" style="transform: scale(0.8); margin: -30px 0;"></div><div id="auction-timer-display" class="auction-timer">等待開拍...</div><div style="color:white; font-size:16px;">當前最高出價 (碎片)：</div><div id="auction-price-display" class="auction-current-bid">0</div><div id="auction-log-display" class="auction-log"></div><div style="display:flex; justify-content:center; gap:10px;"><button id="btn-bid-50" class="btn-team" onclick="placeBid(50)" disabled>加價 50</button><button id="btn-bid-200" class="btn-pu" onclick="placeBid(200)" disabled>加價 200</button></div><div style="margin-top:10px; color:#00f2fe; font-size:14px;">你的碎片：<span id="auction-my-fragments">0</span></div></div></div></div>
+    
+    <!-- 突發狀況 -->
     <div id="event-modal" class="modal" style="z-index: 300;"><div class="modal-content"><div class="event-title">🚨 突發狀況！</div><div id="event-desc" class="event-desc">...</div><button id="btn-event-a" class="event-btn" onclick="resolveEvent(0)">選項 A</button><button id="btn-event-b" class="event-btn" onclick="resolveEvent(1)">選項 B</button></div></div>
     
+    <!-- 機率表 -->
     <div id="rates-modal" class="modal">
         <button class="close-btn" onclick="toggleModal('rates-modal')">✖ 關閉</button>
         <div class="modal-content">
@@ -236,61 +219,71 @@
             <div class="chart-container" id="rate-chart-body"></div>
         </div>
     </div>
-
+    
+    <!-- 大獎紀錄 -->
+    <div id="log-modal" class="modal"><button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄</h2><div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div><div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div></div></div>
+    
+    <!-- 九宮格無盡應援挑戰 -->
+    <div id="battle-modal" class="modal"><button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 850px;"><h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 無盡應援巡迴賽</h2><div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;"><div style="font-size:16px; color:white;">九宮格 總應援戰力</div><div id="battle-total-power" class="power-text">0</div><div id="battle-synergy-text" class="synergy-text">佈局計算中...</div><div id="battle-squad" class="squad-grid-3x3"></div></div><div id="battle-log-panel" class="battle-log-panel"><h3 style="color:var(--pink); margin-top:0; text-align:center;">🎬 應援實況轉播</h3><div id="battle-log-content"></div><button id="btn-finish-battle" class="btn-battle" style="display:none; width:100%; margin-top:15px;" onclick="resetBattleView()">確認</button></div><div id="battle-stages-container"></div></div></div>
+    
+    <!-- 戰利品選擇 Modal -->
     <div id="buff-modal" class="modal" style="z-index: 250;">
         <div class="modal-content" style="max-width: 600px; background: rgba(20,10,20,0.98); border: 2px solid #84fab0; box-shadow: 0 0 20px rgba(132, 250, 176, 0.4);">
             <h2 style="color: #84fab0; text-align:center;">🎉 應援大成功！請選擇一項獎勵</h2>
             <div id="buff-options-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;"></div>
         </div>
     </div>
-    <div id="log-modal" class="modal"><button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄</h2><div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div><div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div></div></div>
-    
-    <!-- 🆕 V15 應援挑戰 (九宮格) -->
-    <div id="battle-modal" class="modal"><button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 850px;"><h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 九宮格應援挑戰賽</h2><div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;"><div style="font-size:16px; color:white;">九宮格 總應援戰力</div><div id="battle-total-power" class="power-text">0</div><div id="battle-synergy-text" class="synergy-text">佈局計算中...</div><div id="battle-squad" class="squad-grid-3x3"></div></div><div id="battle-log-panel" class="battle-log-panel"><h3 style="color:var(--pink); margin-top:0; text-align:center;">🎬 應援實況轉播</h3><div id="battle-log-content"></div><button id="btn-finish-battle" class="btn-battle" style="display:none; width:100%; margin-top:15px;" onclick="resetBattleView()">確認戰果</button></div><div id="battle-stages-container"></div><div style="text-align: right; margin-top: 15px;"><button class="btn-box" style="font-size: 13px; padding: 6px 15px; background: linear-gradient(45deg, #7f8c8d, #bdc3c7); color: white;" onclick="resetBattleProgress()">🔄 消耗 5 券重置賽程</button></div></div></div>
-    
+
+    <!-- 收藏卡冊 -->
     <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
+    
     <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
 
     <script>
-
-        let endlessFloor = parseInt(localStorage.getItem('cheer_endless_floor_v16')) || 1;
-        let endlessBuffs = JSON.parse(localStorage.getItem('cheer_endless_buffs_v16')) || [];
-        let currentBuffOptions = [];
         const db = { "Passion Sisters": { color: "var(--team-ps)", members: ["凱蒂", "貴貴", "希希", "短今", "峮峮", "晴兒", "波波", "畇二", "妮可", "林可", "君白", "曼容", "小迪", "沛婕", "汶汶", "怡琪", "Wendy", "夏蕾", "少鹽", "邊荷律", "牛奶", "芊芊", "衣宸", "瑄", "莎莎", "維尼", "璇璇", "桃子", "金渡兒", "JJUBI", "珮含", "容容"] }, "Uni Girls": { color: "var(--team-ug)", members: ["妮妮", "Yuki", "Mina", "瑟七", "賴賴", "少少", "芮絲", "曼萍", "Joy", "柔一", "Maggie", "斐棋", "一七", "侯芳", "包子", "千紘", "希美", "趙娟週", "文慧真", "安惠志", "藤本彩花", "子筑", "安琪", "妍蓁", "培根", "姿琳"] }, "Fubon Angels": { color: "var(--team-fa)", members: ["潔米", "慈妹", "檸檬", "Jessy", "丹丹", "秀秀子", "Tiffany", "安娜", "沁沁", "維心", "奶昔", "大頭", "卡洛琳", "栗子", "南珉貞", "李雅英", "李珠珢", "禾羽", "潔潔", "雅惟", "李晧禎", "貝兒", "小芊", "呱呱", "Laynee", "陳愉", "朴星垠"] }, "Dragons Beauties": { color: "var(--team-db)", members: ["心璇", "馬妹", "小映", "口水", "Like", "張晴", "芮妮", "霖霖", "小蛙", "蘿拉", "寧寧", "詩雅", "璦昀", "沛沛", "林襄", "李多慧", "Yuri", "菲菲", "群群", "佩霓", "靜靜", "金娜妍", "權喜原", "貝拉", "姵宸", "瑄瑄"] }, "Rakuten Girls": { color: "var(--team-rg)", members: ["岱縈", "琳妲","孟潔", "卉妮", "若潼", "筠熹", "穎樂", "熊霓", "穆又甯", "宋宋", "禹菡", "貝佳頤", "言梓璇", "溫妮", "Kira", "崔荷潾", "Mika", "高橋佳帆", "笑笑", "彭彭", "廉世彬", "禹洙漢", "河智媛", "高佳彬", "金佳垠"] }, "Wing Stars": { color: "var(--team-ws)", members: ["安芝儇", "朴旻曙", "螢螢", "圈圈", "恬魚", "昆昆", "李樂", "JC", "黃澄澄", "妡0", "艾琳", "一粒", "瑈瑈", "林浠", "筱雯", "毛毛", "芃芃", "玖玖", "米亞", "米妮", "尼莫", "千千", "ET", "會晴", "芋頭", "Nina"] } };
         const allGirlsFlat = []; for (let t in db) { db[t].members.forEach(m => allGirlsFlat.push({team: t, name: m, color: db[t].color})); }
         function getAttribute(name) { const attrs = [ {type: '活力', color: 'var(--attr-v)', class: 'attr-vitality'}, {type: '甜美', color: 'var(--attr-s)', class: 'attr-sweet'}, {type: '酷炫', color: 'var(--attr-c)', class: 'attr-cool'} ]; let hash = 0; for(let i=0; i<name.length; i++) hash += name.charCodeAt(i); return attrs[hash % 3]; }
-        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" }; const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 }; const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 }; const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25, "1/1 寶石簽名卡": 1 };
-        let battleRound = parseInt(localStorage.getItem('cheer_b_round_v15')) || 1; function getBattleStages() { let mult = 1 + ((battleRound - 1) * 0.1); return [ { id: 1, name: "街頭應援快閃", req: Math.floor(300 * mult), rewardText: "+2 券", rewardType: "tickets", rewardVal: 2 }, { id: 2, name: "主場例行賽", req: Math.floor(1500 * mult), rewardText: "+50 碎片", rewardType: "fragments", rewardVal: 50 }, { id: 3, name: "明星賽大巨蛋", req: Math.floor(5000 * mult), rewardText: "+3 券 & 100 碎片", rewardType: "both", rewardValT: 3, rewardValF: 100 }, { id: 4, name: "台灣大賽G7", req: Math.floor(15000 * mult), rewardText: "+10 券 & 500 碎片", rewardType: "both", rewardValT: 10, rewardValF: 500 } ]; }
-        const stadiumEnvironments = [ { name: "☀️ 臺南球場", bonusTeam: "Uni Girls", desc: "統一獅戰力 +20%" }, { name: "⛈️ 洲際球場", bonusTeam: "Passion Sisters", desc: "中信兄弟戰力 +20%" }, { name: "🏟️ 大巨蛋", bonusTeam: "All", desc: "全員戰力 +10%" }, { name: "🦅 澄清湖", bonusTeam: "Wing Stars", desc: "台鋼戰力 +20%" }, { name: "⚾ 桃園球場", bonusTeam: "Rakuten Girls", desc: "樂天戰力 +20%" }, { name: "🐉 天母球場", bonusTeam: "Dragons Beauties", desc: "味全龍戰力 +20%" }, { name: "☀️ 新莊球場", bonusTeam: "Fubon Angels", desc: "富邦悍將戰力 +20%" } ]; let currentEnvironment = stadiumEnvironments[0];
+        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" }; 
+        const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 }; 
+        const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 }; 
+        const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25, "1/1 寶石簽名卡": 1 };
+        
+        const stadiumEnvironments = [ { name: "☀️ 臺南球場", bonusTeam: "Uni Girls", desc: "統一獅戰力 +20%" }, { name: "⛈️ 洲際球場", bonusTeam: "Passion Sisters", desc: "中信兄弟戰力 +20%" }, { name: "🏟️ 大巨蛋", bonusTeam: "All", desc: "全員戰力 +10%" }, { name: "🦅 澄清湖", bonusTeam: "Wing Stars", desc: "台鋼戰力 +20%" }, { name: "⚾ 桃園球場", bonusTeam: "Rakuten Girls", desc: "樂天戰力 +20%" }, { name: "🐉 天母球場", bonusTeam: "Dragons Beauties", desc: "味全龍戰力 +20%" }, { name: "☀️ 新莊球場", bonusTeam: "Fubon Angels", desc: "富邦悍將戰力 +20%" } ]; 
+        let currentEnvironment = stadiumEnvironments[0];
 
-        // 存檔區 (切換至 v15 防衝突)
-        let collection = JSON.parse(localStorage.getItem('cheer_collection_v15')) || JSON.parse(localStorage.getItem('cheer_collection_v13')) || {}; 
-        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v15')) || parseInt(localStorage.getItem('cheer_total_pulls_v13')) || 0; 
-        let pullLog = JSON.parse(localStorage.getItem('cheer_pull_log_v15')) || JSON.parse(localStorage.getItem('cheer_pull_log_v13')) || []; 
-        let fragments = parseInt(localStorage.getItem('cheer_fragments_v15')) || parseInt(localStorage.getItem('cheer_fragments_v13')) || 0; 
-        let affection = JSON.parse(localStorage.getItem('cheer_affection_v15')) || JSON.parse(localStorage.getItem('cheer_affection_v13')) || {}; 
-        let limitedInventory = JSON.parse(localStorage.getItem('cheer_inventory_v15')) || JSON.parse(localStorage.getItem('cheer_inventory_v13')) || {}; 
+        let collection = JSON.parse(localStorage.getItem('cheer_collection_v16')) || JSON.parse(localStorage.getItem('cheer_collection_v15')) || {}; 
+        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v16')) || parseInt(localStorage.getItem('cheer_total_pulls_v15')) || 0; 
+        let pullLog = JSON.parse(localStorage.getItem('cheer_pull_log_v16')) || JSON.parse(localStorage.getItem('cheer_pull_log_v15')) || []; 
+        let fragments = parseInt(localStorage.getItem('cheer_fragments_v16')) || parseInt(localStorage.getItem('cheer_fragments_v15')) || 0; 
+        let affection = JSON.parse(localStorage.getItem('cheer_affection_v16')) || JSON.parse(localStorage.getItem('cheer_affection_v15')) || {}; 
+        let limitedInventory = JSON.parse(localStorage.getItem('cheer_inventory_v16')) || JSON.parse(localStorage.getItem('cheer_inventory_v15')) || {}; 
         if (Object.keys(limitedInventory).length === 0) { for (let t in db) { db[t].members.forEach(m => { for (let tier in limitedTiersConfig) { limitedInventory[`${t}_${tier}_${m}`] = limitedTiersConfig[tier]; } }); } } 
-        let battleRecord = JSON.parse(localStorage.getItem('cheer_battles_v15')) || { date: new Date().toDateString(), cleared: [] }; 
+        let manualSquad = JSON.parse(localStorage.getItem('cheer_squad_v16')) || JSON.parse(localStorage.getItem('cheer_squad_v15')) || new Array(9).fill(null);
+        let showcaseSquad = JSON.parse(localStorage.getItem('cheer_showcase_v16')) || JSON.parse(localStorage.getItem('cheer_showcase_v15')) || [null, null, null]; 
         
-        // 🆕 陣型改為 9 格 (3x3)
-        let manualSquad = JSON.parse(localStorage.getItem('cheer_squad_v15')) || new Array(9).fill(null);
+        // Endless Mode vars
+        let endlessFloor = parseInt(localStorage.getItem('cheer_endless_floor_v16')) || 1;
+        let endlessBuffs = JSON.parse(localStorage.getItem('cheer_endless_buffs_v16')) || [];
+        let currentBuffOptions = [];
         
-        const MAX_TICKETS = 10; const REGEN_MS = 60 * 1000; let tickets = parseInt(localStorage.getItem('cheer_tickets_v15')) || MAX_TICKETS; let lastUpdateTime = parseInt(localStorage.getItem('cheer_time_v15')) || Date.now();
-        const MAX_ENERGY = 5; const ENERGY_REGEN_MS = 3 * 60 * 1000; let battleEnergy = parseInt(localStorage.getItem('cheer_b_energy_v15')); if (isNaN(battleEnergy)) battleEnergy = MAX_ENERGY; let lastEnergyUpdateTime = parseInt(localStorage.getItem('cheer_b_time_v15')) || Date.now();
+        const MAX_TICKETS = 10; const REGEN_MS = 60 * 1000; 
+        let tickets = parseInt(localStorage.getItem('cheer_tickets_v16')) || MAX_TICKETS; 
+        let lastUpdateTime = parseInt(localStorage.getItem('cheer_time_v16')) || Date.now();
+        const MAX_ENERGY = 5; const ENERGY_REGEN_MS = 3 * 60 * 1000; 
+        let battleEnergy = parseInt(localStorage.getItem('cheer_b_energy_v16')); 
+        if (isNaN(battleEnergy)) battleEnergy = MAX_ENERGY; 
+        let lastEnergyUpdateTime = parseInt(localStorage.getItem('cheer_b_time_v16')) || Date.now();
+        
         let cardQueue = []; let albumTeam = "Passion Sisters"; let albumType = "普卡"; let albumPage = 1; const cardsPerPage = 9; let totalUniquePossible = 0; Object.keys(db).forEach(t => totalUniquePossible += db[t].members.length * Object.keys(typeToRarity).length); let currentPUHour = -1;
-        let mainGirlName = localStorage.getItem('cheer_maingirl_v15') || null; let showcaseSquad = JSON.parse(localStorage.getItem('cheer_showcase_v15')) || [null, null, null]; 
+        let mainGirlName = localStorage.getItem('cheer_maingirl_v16') || null; 
         let selectorMode = 'battle'; let selectorSlotIndex = 0;
 
-        // 🆕 V15 派遣系統資料結構
         const dispatchZonesConfig = [
-            { id: 'zone1', name: '球場外發傳單', baseRate: 0.2 }, // 每分鐘基底產量
+            { id: 'zone1', name: '球場外發傳單', baseRate: 0.2 }, 
             { id: 'zone2', name: '商場一日店長', baseRate: 0.6 },
             { id: 'zone3', name: '大巨蛋特區展覽', baseRate: 1.2 }
         ];
-        let dispatchState = JSON.parse(localStorage.getItem('cheer_dispatch_v15')) || {
-            zone1: null, zone2: null, zone3: null
-        };
+        let dispatchState = JSON.parse(localStorage.getItem('cheer_dispatch_v16')) || JSON.parse(localStorage.getItem('cheer_dispatch_v15')) || { zone1: null, zone2: null, zone3: null };
 
         function updateStamina() {
             const now = Date.now();
@@ -302,7 +295,6 @@
             document.getElementById('ui-energy').innerText = battleEnergy;
             if (battleEnergy < MAX_ENERGY) { let remainE = ENERGY_REGEN_MS - (now - lastEnergyUpdateTime); let mE = Math.floor(remainE / 60000); let sE = Math.floor((remainE % 60000) / 1000); document.getElementById('ui-energy-timer').innerText = `(${mE}:${sE.toString().padStart(2, '0')})`; } else { document.getElementById('ui-energy-timer').innerText = `(MAX)`; }
             
-            // 🆕 V15 派遣收益與體力消耗 (每分鐘結算)
             let dispatchUpdated = false;
             for (let zid in dispatchState) {
                 let ds = dispatchState[zid];
@@ -312,15 +304,12 @@
                         let minsToProcess = Math.floor(diffMin);
                         for(let m=0; m<minsToProcess; m++){
                             if (ds.fatigue > 0) {
-                                ds.fatigue -= 0.5; // 每分鐘消耗 0.5 體力 (滿體力可掛 200 分鐘)
+                                ds.fatigue -= 0.5; 
                                 if(ds.fatigue < 0) ds.fatigue = 0;
-                                
                                 let card = collection[ds.cardKey];
                                 let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "legendary":3.0, "mythic":3.5}[card.rarity] || 1;
                                 let affMult = affection[card.name] || 1; 
                                 let zoneBase = dispatchZonesConfig.find(z => z.id === zid).baseRate;
-                                
-                                // 公式：基底 × 稀有度加成 × 好感度加成
                                 ds.collected += (zoneBase * rarityMult * (1 + affMult * 0.1));
                             }
                         }
@@ -338,15 +327,17 @@
             let hour = Math.floor(Date.now() / 3600000); if (hour !== currentPUHour) { currentPUHour = hour; let puGirl = getCurrentPUGirl(); document.getElementById('pu-girl-name').innerText = puGirl.name; document.getElementById('pu-girl-team').innerText = puGirl.team; }
         } setInterval(updateStamina, 1000);
 
-        function saveStamina() { localStorage.setItem('cheer_tickets_v15', tickets); localStorage.setItem('cheer_time_v15', lastUpdateTime); localStorage.setItem('cheer_fragments_v15', fragments); localStorage.setItem('cheer_b_energy_v15', battleEnergy); localStorage.setItem('cheer_b_time_v15', lastEnergyUpdateTime); localStorage.setItem('cheer_maingirl_v15', mainGirlName || ''); localStorage.setItem('cheer_showcase_v15', JSON.stringify(showcaseSquad)); localStorage.setItem('cheer_dispatch_v15', JSON.stringify(dispatchState)); }
+        function saveStamina() { localStorage.setItem('cheer_tickets_v16', tickets); localStorage.setItem('cheer_time_v16', lastUpdateTime); localStorage.setItem('cheer_fragments_v16', fragments); localStorage.setItem('cheer_b_energy_v16', battleEnergy); localStorage.setItem('cheer_b_time_v16', lastEnergyUpdateTime); localStorage.setItem('cheer_maingirl_v16', mainGirlName || ''); localStorage.setItem('cheer_showcase_v16', JSON.stringify(showcaseSquad)); localStorage.setItem('cheer_dispatch_v16', JSON.stringify(dispatchState)); localStorage.setItem('cheer_squad_v16', JSON.stringify(manualSquad)); localStorage.setItem('cheer_endless_floor_v16', endlessFloor); localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs)); }
 
-        const randomEvents = [ { desc: "路上遇到一位死忠球迷，他的門票被風吹走了...", btnA: "送他一張普卡", btnB: "贊助他 20 碎片買票", resA: () => { let r=Math.random(); if(r<0.5){ tickets+=2; return "球迷感動回贈了 2 張券！"; }else{ fragments+=10; return "獲得 10 碎片。"; } }, resB: () => { if(fragments<20) return "碎片不足..."; fragments-=20; battleEnergy=Math.min(MAX_ENERGY, battleEnergy+2); return "助人為快樂之本，應援力 +2⚡"; } }, { desc: "經過黑市時，商人神秘兮兮地向你招手...", btnA: "用 30 碎片買未知盲盒", btnB: "拒絕並離開", resA: () => { if(fragments<30) return "碎片不足..."; fragments-=30; let r=Math.random(); if(r<0.2){ tickets+=5; return "大賺！盲盒裡有 5 張券！"; }else{ return "打開只有空氣..."; } }, resB: () => { return "你平安無事地離開了。"; } } ]; let currentEvent = null; function checkRandomEvent() { if(Math.random() < 0.10) { currentEvent = randomEvents[Math.floor(Math.random() * randomEvents.length)]; document.getElementById('event-desc').innerText = currentEvent.desc; document.getElementById('btn-event-a').innerText = currentEvent.btnA; document.getElementById('btn-event-b').innerText = currentEvent.btnB; document.getElementById('event-modal').style.display = 'block'; } } function resolveEvent(choiceIndex) { if(!currentEvent) return; alert(choiceIndex === 0 ? currentEvent.resA() : currentEvent.resB()); saveStamina(); updateStamina(); document.getElementById('event-modal').style.display = 'none'; currentEvent = null; }
+        const randomEvents = [ { desc: "路上遇到一位死忠球迷...", btnA: "送他一張普卡", btnB: "贊助他 20 碎片買票", resA: () => { let r=Math.random(); if(r<0.5){ tickets+=2; return "球迷感動回贈了 2 張券！"; }else{ fragments+=10; return "獲得 10 碎片。"; } }, resB: () => { if(fragments<20) return "碎片不足..."; fragments-=20; battleEnergy=Math.min(MAX_ENERGY, battleEnergy+2); return "助人為快樂之本，應援力 +2⚡"; } }, { desc: "經過黑市時，商人神秘兮兮地向你招手...", btnA: "用 30 碎片買未知盲盒", btnB: "拒絕並離開", resA: () => { if(fragments<30) return "碎片不足..."; fragments-=30; let r=Math.random(); if(r<0.2){ tickets+=5; return "大賺！盲盒裡有 5 張券！"; }else{ return "打開只有空氣..."; } }, resB: () => { return "你平安無事地離開了。"; } } ]; let currentEvent = null; function checkRandomEvent() { if(Math.random() < 0.10) { currentEvent = randomEvents[Math.floor(Math.random() * randomEvents.length)]; document.getElementById('event-desc').innerText = currentEvent.desc; document.getElementById('btn-event-a').innerText = currentEvent.btnA; document.getElementById('btn-event-b').innerText = currentEvent.btnB; document.getElementById('event-modal').style.display = 'block'; } } function resolveEvent(choiceIndex) { if(!currentEvent) return; alert(choiceIndex === 0 ? currentEvent.resA() : currentEvent.resB()); saveStamina(); updateStamina(); document.getElementById('event-modal').style.display = 'none'; currentEvent = null; }
 
         function buyShopItem(type) { if (type === 'random') { if (fragments >= 100) { fragments -= 100; saveStamina(); updateStamina(); toggleModal('shop-modal'); startOpening('pack', 'free'); } else { alert("碎片不足 100 片！"); } } else if (type === 'team') { if (fragments >= 150) { fragments -= 150; saveStamina(); updateStamina(); let t = document.getElementById('shop-team-select').value; toggleModal('shop-modal'); startOpening('team', 'free', t); } else { alert("碎片不足 150 片！"); } } }
-        let currentViewedCard = null; function sendGift(girlName) { if (fragments >= 50) { let aff = affection[girlName] || 1; if (aff >= 10) return; fragments -= 50; affection[girlName] = aff + 1; saveStamina(); localStorage.setItem('cheer_affection_v15', JSON.stringify(affection)); updateStamina(); if (currentViewedCard) viewCardInViewer(currentViewedCard); renderAlbumPage(); if (mainGirlName === girlName) initMainGirl(); } else { alert("碎片不足 50 片！"); } }
+        let currentViewedCard = null; function sendGift(girlName) { if (fragments >= 50) { let aff = affection[girlName] || 1; if (aff >= 10) return; fragments -= 50; affection[girlName] = aff + 1; saveStamina(); localStorage.setItem('cheer_affection_v16', JSON.stringify(affection)); updateStamina(); if (currentViewedCard) viewCardInViewer(currentViewedCard); renderAlbumPage(); if (mainGirlName === girlName) initMainGirl(); } else { alert("碎片不足 50 片！"); } }
         function playGachaSound(rarity) { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); if (rarity === 'common' || rarity === 'rare') { osc.type = 'triangle'; osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1); osc.start(); osc.stop(ctx.currentTime + 0.1); } else { osc.type = 'square'; osc.frequency.setValueAtTime(600, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.1); osc.frequency.setValueAtTime(1200, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6); osc.start(); osc.stop(ctx.currentTime + 0.6); } } catch(e) {} }
         function getCurrentPUGirl() { let hour = Math.floor(Date.now() / 3600000); return allGirlsFlat[hour % allGirlsFlat.length]; } function getRandomGirl(forceTeam = null) { const teams = Object.keys(db); const team = forceTeam ? forceTeam : teams[Math.floor(Math.random() * teams.length)]; const members = db[team].members; return { team, name: members[Math.floor(Math.random() * members.length)], color: db[team].color }; } function shuffle(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
-        function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) { let girl; if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } else { girl = getRandomGirl(forceTeam); } let finalType = type; let finalRarity = rarity; let serialNum = ""; if (limitedTiersConfig[type] !== undefined) { let limitKey = `${girl.team}_${type}_${girl.name}`; if (limitedInventory[limitKey] > 0) { let max = limitedTiersConfig[type]; let current = max - limitedInventory[limitKey] + 1; serialNum = `${current}/${max}`; limitedInventory[limitKey] -= 1; localStorage.setItem('cheer_inventory_v15', JSON.stringify(limitedInventory)); } else { finalType = "平行閃卡"; finalRarity = "epic"; desc = ""; } } cardQueue.push({ team: girl.team, teamColor: girl.color, name: girl.name, type: finalType, rarity: finalRarity, desc, serialNum }); }
+        
+        function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) { let girl; if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } else { girl = getRandomGirl(forceTeam); } let finalType = type; let finalRarity = rarity; let serialNum = ""; if (limitedTiersConfig[type] !== undefined) { let limitKey = `${girl.team}_${type}_${girl.name}`; if (limitedInventory[limitKey] > 0) { let max = limitedTiersConfig[type]; let current = max - limitedInventory[limitKey] + 1; serialNum = `${current}/${max}`; limitedInventory[limitKey] -= 1; localStorage.setItem('cheer_inventory_v16', JSON.stringify(limitedInventory)); } else { finalType = "平行閃卡"; finalRarity = "epic"; desc = ""; } } cardQueue.push({ team: girl.team, teamColor: girl.color, name: girl.name, type: finalType, rarity: finalRarity, desc, serialNum }); }
+        
         function rollSpecialSlot(isTeamPack = false) { const rng = Math.random(); if (isTeamPack) { if(rng < 0.001) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.005) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.015) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.035) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.050) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.090) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.240) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" }; } else { if(rng < 0.005) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.010) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.030) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.070) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.110) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.200) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.500) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" }; } }
         
         function startOpening(mode, costType = 'tickets', targetTeam = null) {
@@ -368,10 +359,10 @@
         function showNextCard() {
             const container = document.getElementById('card-container'); const status = document.getElementById('queue-status'); const btn = document.getElementById('btn-next'); const dupAlert = document.getElementById('duplicate-alert'); dupAlert.innerText = "";
             if (cardQueue.length === 0) { container.innerHTML = ""; status.innerText = "卡包已見底！"; btn.style.display = "none"; document.getElementById('status-text').innerText = "繼續尋找本命女孩吧！"; return; }
-            const data = cardQueue.pop(); totalPulls++; localStorage.setItem('cheer_total_pulls_v15', totalPulls); const key = `${data.team}_${data.type}_${data.name}`;
+            const data = cardQueue.pop(); totalPulls++; localStorage.setItem('cheer_total_pulls_v16', totalPulls); const key = `${data.team}_${data.type}_${data.name}`;
             
-            if (!collection[key]) { collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] }; } else { collection[key].count++; if (data.serialNum) { if (!collection[key].serials) collection[key].serials = []; collection[key].serials.push(data.serialNum); dupAlert.style.color = "var(--gold)"; dupAlert.style.textShadow = "0 0 5px var(--gold)"; dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！`; } else { let earnedPoints = rarityPoints[data.rarity] || 1; fragments += earnedPoints; localStorage.setItem('cheer_fragments_v15', fragments); dupAlert.style.color = "#00f2fe"; dupAlert.style.textShadow = "0 0 5px #00f2fe"; dupAlert.innerText = `♻️ 獲得重複卡片，轉換為 +${earnedPoints} 碎片！`; updateStamina(); } }
-            localStorage.setItem('cheer_collection_v15', JSON.stringify(collection)); if (['relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { pullLog.unshift({ ...data, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v15', JSON.stringify(pullLog)); }
+            if (!collection[key]) { collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] }; } else { collection[key].count++; if (data.serialNum) { if (!collection[key].serials) collection[key].serials = []; collection[key].serials.push(data.serialNum); dupAlert.style.color = "var(--gold)"; dupAlert.style.textShadow = "0 0 5px var(--gold)"; dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！`; } else { let earnedPoints = rarityPoints[data.rarity] || 1; fragments += earnedPoints; localStorage.setItem('cheer_fragments_v16', fragments); dupAlert.style.color = "#00f2fe"; dupAlert.style.textShadow = "0 0 5px #00f2fe"; dupAlert.innerText = `♻️ 獲得重複卡片，轉換為 +${earnedPoints} 碎片！`; updateStamina(); } }
+            localStorage.setItem('cheer_collection_v16', JSON.stringify(collection)); if (['relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { pullLog.unshift({ ...data, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v16', JSON.stringify(pullLog)); }
             
             if (mainGirlName === data.name && ['epic', 'relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { popMainGirlBubble("哇！你剛剛抽到了我的超稀有卡耶！太神啦✨！", 5000); }
             status.innerText = `剩餘未翻開卡片：${cardQueue.length} 張`; container.innerHTML = getCardHTML(data, true, false); playGachaSound(data.rarity);
@@ -396,41 +387,69 @@
         function popMainGirlBubble(msg, duration) { const bubble = document.getElementById('main-girl-bubble'); bubble.innerText = msg; bubble.classList.remove('active'); void bubble.offsetWidth; bubble.classList.add('active'); if(bubbleTimeout) clearTimeout(bubbleTimeout); bubbleTimeout = setTimeout(() => { bubble.classList.remove('active'); }, duration); }
 
         function renderShowcase() { const container = document.getElementById('showcase-container'); container.innerHTML = ''; let totalValue = 0; for (let i = 0; i < 3; i++) { let key = showcaseSquad[i]; if (key && collection[key]) { let card = collection[key]; let base = rarityCombatPower[card.rarity] || 0; let aff = affection[card.name] || 1; let mult = aff===10?1.5:(aff>=5?1.2:1); let cardValue = Math.floor(base * mult * 100); totalValue += cardValue; let html = `<div class="acrylic-brick" onclick="openShowcaseSelector(${i})"><div class="acrylic-screw screw-tl"></div><div class="acrylic-screw screw-tr"></div><div class="acrylic-screw screw-bl"></div><div class="acrylic-screw screw-br"></div>${getCardHTML(card, false, false)}<div style="text-align:center; color:var(--gold); font-size:12px; font-weight:bold; margin-top:8px; text-shadow:0 0 5px #000;">估值: ${cardValue.toLocaleString()}</div></div>`; container.innerHTML += html; } else { container.innerHTML += `<div class="showcase-slot-empty" onclick="openShowcaseSelector(${i})"><div style="font-size:36px; margin-bottom:10px;">+</div><div>點擊放入藏品</div></div>`; } } document.getElementById('showcase-total-value').innerText = `總館藏估值：${totalValue.toLocaleString()} 點`; }
-       function openShowcaseSelector(slotIndex) { 
-            selectorMode = 'showcase'; 
-            selectorSlotIndex = slotIndex; 
-            document.getElementById('selector-title').innerText = "🔍 挑選展示卡片"; 
-            document.getElementById('btn-remove-showcase').style.display = showcaseSquad[slotIndex] ? 'block' : 'none'; 
-            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
-            updateSelectorList();
-            document.getElementById('selector-modal').style.display = 'block'; 
+        
+        function updateSelectorList() {
+            let filterType = document.getElementById('selector-filter').value;
+            let html = "";
+            let keys = Object.keys(collection);
+            
+            if (filterType !== 'all') { keys = keys.filter(k => collection[k].type === filterType); }
+
+            if (keys.length === 0) {
+                html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1; padding: 30px;">找不到符合條件的卡片！</div>';
+            } else {
+                keys.sort((a, b) => (rarityCombatPower[collection[b].rarity]||0) - (rarityCombatPower[collection[a].rarity]||0));
+                
+                keys.forEach(k => {
+                    let card = collection[k];
+                    let isUsed = false;
+                    if (selectorMode === 'showcase') {
+                        isUsed = showcaseSquad.includes(k);
+                    } else {
+                        isUsed = manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k);
+                    }
+                    
+                    let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
+                    let attr = getAttribute(card.name);
+                    let finalCardPwr = Math.floor(rarityCombatPower[card.rarity] || 0);
+                    let powerHtml = selectorMode === 'battle' ? `<div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}</div>` : '';
+
+                    html += `
+                        <div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')">
+                            <div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div> 
+                            <div class="attr-badge ${attr.class}" style="position:relative; top:0; right:0; display:inline-block; font-size:9px;">${attr.type}</div>
+                            <div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div>
+                            <div style="font-size:11px; color:#fbc2eb;">${card.type}</div>
+                            ${powerHtml}
+                            ${isUsed ? "<div style='color:red; font-size:12px; font-weight:bold; margin-top:5px;'>佔用中</div>" : ""}
+                        </div>`;
+                });
+            }
+            document.getElementById('selector-list').innerHTML = html;
         }
-        function openCardSelector(slotIndex) { 
-            selectorMode = 'battle'; 
-            selectorSlotIndex = slotIndex; 
-            document.getElementById('selector-title').innerText = "🔍 選擇上陣女孩"; 
-            document.getElementById('btn-remove-showcase').style.display = 'none'; 
-            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
-            updateSelectorList();
-            document.getElementById('selector-modal').style.display = 'block'; 
-        }
+
+        function openShowcaseSelector(slotIndex) { selectorMode = 'showcase'; selectorSlotIndex = slotIndex; document.getElementById('selector-title').innerText = "🔍 挑選展示卡片"; document.getElementById('btn-remove-showcase').style.display = showcaseSquad[slotIndex] ? 'block' : 'none'; document.getElementById('selector-filter').value = 'all'; updateSelectorList(); document.getElementById('selector-modal').style.display = 'block'; }
+        function openCardSelector(slotIndex) { selectorMode = 'battle'; selectorSlotIndex = slotIndex; document.getElementById('selector-title').innerText = "🔍 選擇上陣女孩"; document.getElementById('btn-remove-showcase').style.display = 'none'; document.getElementById('selector-filter').value = 'all'; updateSelectorList(); document.getElementById('selector-modal').style.display = 'block'; }
+        function openDispatchSelector(zoneId) { dispatchTargetZone = zoneId; selectorMode = 'dispatch'; selectorSlotIndex = 0; document.getElementById('selector-title').innerText = "🗺️ 選擇要派遣的女孩"; document.getElementById('btn-remove-showcase').style.display = 'none'; document.getElementById('selector-filter').value = 'all'; updateSelectorList(); document.getElementById('selector-modal').style.display = 'block'; }
         
         function selectCardForSlot(index, cardKey) { 
-            if (selectorMode === 'battle') { if (manualSquad.includes(cardKey)) return; manualSquad[index] = cardKey; localStorage.setItem('cheer_squad_v15', JSON.stringify(manualSquad)); renderBattleModal(); } 
+            if (selectorMode === 'battle') { if (manualSquad.includes(cardKey)) return; manualSquad[index] = cardKey; localStorage.setItem('cheer_squad_v16', JSON.stringify(manualSquad)); renderBattleModal(); } 
             else if (selectorMode === 'showcase') { if (showcaseSquad.includes(cardKey)) return; showcaseSquad[index] = cardKey; saveStamina(); renderShowcase(); } 
             else if (selectorMode === 'dispatch') { dispatchState[dispatchTargetZone] = { cardKey: cardKey, startTime: Date.now(), lastUpdate: Date.now(), collected: 0, fatigue: 100 }; saveStamina(); renderDispatch(); }
             document.getElementById('selector-modal').style.display = 'none'; 
         }
-        
-        // 🆕 V15 九宮格戰鬥力計算 (包含局部連動)
+
+        function removeShowcaseCard() { showcaseSquad[selectorSlotIndex] = null; saveStamina(); renderShowcase(); document.getElementById('selector-modal').style.display = 'none'; }
+        function removeCardFromSlot(event, index) { event.stopPropagation(); manualSquad[index] = null; localStorage.setItem('cheer_squad_v16', JSON.stringify(manualSquad)); renderBattleModal(); }
+
+        // 無盡模式與九宮格戰鬥
         function calculateSquadPower() { 
             let finalPower = 0; 
             let cardPowers = new Array(9).fill(0);
-            let finalIndividualPowers = new Array(9).fill(0); // 🆕 用來儲存每張卡的最終戰力
+            let finalIndividualPowers = new Array(9).fill(0); 
             let cards = manualSquad.map(k => k ? collection[k] : null);
             let activatedLinks = 0;
 
-           // 階段一：計算單卡面板 (🆕 V16 加入無盡模式的 Buff 結算)
             for (let i = 0; i < 9; i++) {
                 if (cards[i]) {
                     let base = rarityCombatPower[cards[i].rarity] || 0;
@@ -447,7 +466,6 @@
                 }
             }
 
-            // 階段二與三：計算相鄰連動與環境加成
             for(let i=0; i<9; i++){
                 if(!cards[i]) continue;
                 let power = cardPowers[i];
@@ -470,21 +488,18 @@
                 if (currentEnvironment.bonusTeam === cards[i].team) fp = Math.floor(fp * 1.2);
                 else if (currentEnvironment.bonusTeam === "All") fp = Math.floor(fp * 1.1);
                 
-                finalIndividualPowers[i] = fp; // 🆕 記錄該格子的最終戰力
+                finalIndividualPowers[i] = fp; 
                 finalPower += fp;
             }
 
-            // 🆕 顯示時將雙向計算的連線數除以 2，還原真實視覺連線數
             let displaySynergy = activatedLinks > 0 ? `<span style='color:var(--gold);'>🧩 觸發 ${activatedLinks / 2} 條局部陣型連線</span>` : "<span style='color:#aaa;'>無相鄰加成連線</span>";
-            
-            // 🆕 多回傳 finalIndividualPowers 供渲染使用
             return { finalPower, displaySynergy, finalIndividualPowers }; 
         }
+
         function getEndlessReq() {
             return Math.floor(300 * Math.pow(1.3, endlessFloor - 1));
         }
 
-       // 🆕 渲染無盡戰鬥介面
         function renderBattleModal() { 
             const powerData = calculateSquadPower(); 
             document.getElementById('battle-total-power').innerText = powerData.finalPower; 
@@ -509,12 +524,10 @@
                     squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})"><div style="font-size:24px; color:#aaa; margin-bottom:5px;">+</div><div style="font-size:10px; color:#fbc2eb;">點擊選擇</div></div>`; 
                 } 
             } 
-            document.getElementById('battle-squad').innerHTML = squadHtml;
+            document.getElementById('battle-squad').innerHTML = squadHtml; 
             
-           // 無盡模式 UI 取代原本的 stages
             let buffTags = endlessBuffs.length === 0 ? "無" : endlessBuffs.map(b => `<span style="background:#222; padding:2px 6px; border-radius:4px; margin-right:5px; font-size:12px; border:1px solid #555; color:#84fab0;">${b.desc}</span>`).join('');
             
-            // 🆕 動態判斷是否顯示掃蕩按鈕
             const currentReq = getEndlessReq();
             let sweepBtnHtml = "";
             if (powerData.finalPower >= currentReq * 2) {
@@ -534,26 +547,21 @@
                     </div>
                 </div>
             `;
-            document.getElementById('battle-stages-container').innerHTML = endlessHtml;
+            document.getElementById('battle-stages-container').innerHTML = endlessHtml; 
+        }
 
         async function startEndlessBattle() { 
-            // 確保陣列不為空
             let squad = manualSquad.filter(k => k !== null);
             if (squad.length === 0) return alert("請至少上陣 1 位女孩！"); 
             if (battleEnergy < 1) return alert("⚡ 應援力不足！"); 
             
-            battleEnergy -= 1; 
-            saveStamina(); 
-            updateStamina(); 
-            
+            battleEnergy -= 1; saveStamina(); updateStamina(); 
             document.getElementById('battle-stages-container').style.display = 'none'; 
             const logPanel = document.getElementById('battle-log-panel'); 
             const logContent = document.getElementById('battle-log-content'); 
             const btnFinish = document.getElementById('btn-finish-battle'); 
             
-            logPanel.style.display = 'block'; 
-            logContent.innerHTML = ''; 
-            btnFinish.style.display = 'none'; 
+            logPanel.style.display = 'block'; logContent.innerHTML = ''; btnFinish.style.display = 'none'; 
 
             try {
                 const reqPower = getEndlessReq();
@@ -567,45 +575,31 @@
                 ]; 
 
                 for(let text of logs) { 
-                    let p = document.createElement('div'); 
-                    p.className = 'log-line'; 
-                    p.innerHTML = text; 
+                    let p = document.createElement('div'); p.className = 'log-line'; p.innerHTML = text; 
                     logContent.appendChild(p); 
-                    await new Promise(r => setTimeout(r, 800)); // 使用原生的 Promise 等待
+                    await new Promise(r => setTimeout(r, 800)); 
                 } 
 
                 if (currentPower >= reqPower) { 
-                    let winMsg = document.createElement('div'); 
-                    winMsg.className = 'log-win'; 
-                    winMsg.innerText = "🎉 突破成功！準備挑選戰利品！"; 
-                    logContent.appendChild(winMsg); 
+                    let winMsg = document.createElement('div'); winMsg.className = 'log-win'; winMsg.innerText = "🎉 突破成功！準備挑選戰利品！"; logContent.appendChild(winMsg); 
                     await new Promise(r => setTimeout(r, 1000));
                     showBuffSelection();
                 } else { 
-                    let lossMsg = document.createElement('div'); 
-                    lossMsg.className = 'log-loss'; 
-                    lossMsg.innerText = "❌ 戰力不足，巡迴終止..."; 
-                    logContent.appendChild(lossMsg);
-                    
+                    let lossMsg = document.createElement('div'); lossMsg.className = 'log-loss'; lossMsg.innerText = "❌ 戰力不足，巡迴終止..."; logContent.appendChild(lossMsg);
                     let rewardFrag = endlessFloor * 80;
-                    let endMsg = document.createElement('div'); 
-                    endMsg.style = "color:#aaa; text-align:center; margin-top:10px; font-weight:bold;"; 
-                    endMsg.innerText = `🏁 結算獎勵：獲得 ${rewardFrag} 碎片。巡迴進度重置。`; 
-                    logContent.appendChild(endMsg);
+                    let endMsg = document.createElement('div'); endMsg.style = "color:#aaa; text-align:center; margin-top:10px; font-weight:bold;"; endMsg.innerText = `🏁 結算獎勵：獲得 ${rewardFrag} 碎片。巡迴進度重置。`; logContent.appendChild(endMsg);
                     
                     fragments += rewardFrag;
-                    endlessFloor = 1; 
-                    endlessBuffs = [];
+                    endlessFloor = 1; endlessBuffs = [];
                     localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
                     localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
-                    saveStamina(); 
-                    updateStamina(); 
+                    saveStamina(); updateStamina(); 
                     btnFinish.style.display = 'block';
                 } 
                 checkRandomEvent(); 
             } catch (err) {
                 console.error("戰鬥錯誤:", err);
-                logContent.innerHTML += `<div style="color:red;">系統錯誤，請重啟挑戰。</div>`;
+                logContent.innerHTML += `<div style="color:red; margin-top:20px; font-weight:bold;">系統錯誤: ${err.message}</div>`;
                 btnFinish.style.display = 'block';
             }
         }
@@ -623,8 +617,6 @@
                 return alert("戰力碾壓優勢不足 (需大於要求戰力 2 倍)！請手動挑戰。");
             }
 
-            // 🧮 對數公式計算極限樓層: 300 * 1.3^(F-1) = currentPower 
-            // 預留 2 關作為緩衝區，避免一次跳到直接打不贏的地方
             let maxFloor = Math.floor(Math.log(currentPower / 300) / Math.log(1.3)) + 1;
             let skipCount = maxFloor - endlessFloor - 2; 
 
@@ -635,12 +627,9 @@
             if (confirm(`系統偵測到您的戰力高達 ${currentPower}！\n是否消耗 ⚡1 應援力，直接掃蕩跳過 ${skipCount} 站？\n\n🎁 掃蕩獎勵：將自動為您獲取 ${skipCount * 120} 碎片與 ${skipCount} 個隨機戰鬥 Buff！`)) {
                 
                 battleEnergy -= 1;
-                
-                // 給予碎片獎勵 (每跳過一關給 120)
                 let rewardFragments = skipCount * 120;
                 fragments += rewardFragments;
 
-                // 給予隨機 Buff (剔除單次資源，只給永久屬性)
                 const buffPool = [
                     { type: "global", target: "all", value: 0.1, desc: "全隊戰力 +10%", icon: "🌟" },
                     { type: "global", target: "all", value: 0.05, desc: "全隊戰力 +5%", icon: "⭐" },
@@ -657,14 +646,13 @@
                 endlessFloor += skipCount;
                 localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
                 localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
-                saveStamina(); 
-                updateStamina(); 
+                saveStamina(); updateStamina(); 
                 
                 alert(`🚀 掃蕩成功！\n直達第 ${endlessFloor} 站！\n狂賺 ${rewardFragments} 碎片，陣容已載入 ${skipCount} 個隨機 Buff！`);
                 resetBattleView();
             }
         }
-            
+
         function showBuffSelection() {
             const pool = [
                 { type: "global", target: "all", value: 0.1, desc: "全隊戰力 +10%", icon: "🌟" },
@@ -676,10 +664,7 @@
                 { type: "reward", target: "fragments", value: 300, desc: "獲得 300 碎片", icon: "💎" },
                 { type: "reward", target: "energy", value: 3, desc: "回復 3 點應援力", icon: "⚡" }
             ];
-            
-            shuffle(pool);
-            currentBuffOptions = pool.slice(0, 3);
-            
+            shuffle(pool); currentBuffOptions = pool.slice(0, 3);
             let container = document.getElementById('buff-options-container');
             container.innerHTML = '';
             currentBuffOptions.forEach((buff, idx) => {
@@ -699,28 +684,15 @@
                 if (buff.target === 'tickets') tickets += buff.value;
                 if (buff.target === 'fragments') fragments += buff.value;
                 if (buff.target === 'energy') battleEnergy = Math.min(MAX_ENERGY, battleEnergy + buff.value);
-            } else {
-                endlessBuffs.push(buff);
-            }
-            
-            endlessFloor++;
-            localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
-            localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
+            } else { endlessBuffs.push(buff); }
+            endlessFloor++; localStorage.setItem('cheer_endless_floor_v16', endlessFloor); localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
             saveStamina(); updateStamina();
-            
-            document.getElementById('buff-modal').style.display = 'none';
-            resetBattleView();
+            document.getElementById('buff-modal').style.display = 'none'; resetBattleView();
         }
+        function resetBattleView() { document.getElementById('battle-log-panel').style.display = 'none'; document.getElementById('battle-stages-container').style.display = 'block'; renderBattleModal(); }
 
-        function resetBattleView() { 
-            document.getElementById('battle-log-panel').style.display = 'none'; 
-            document.getElementById('battle-stages-container').style.display = 'block'; 
-            renderBattleModal(); 
-        }
-
-        // 🆕 V15 派遣系統與體力機制
-        let dispatchTargetZone = null;
-       function renderDispatch() {
+        // 派遣
+        function renderDispatch() {
             const container = document.getElementById('dispatch-zones-container');
             container.innerHTML = '';
             dispatchZonesConfig.forEach(zone => {
@@ -731,7 +703,6 @@
                     let fatigueClass = state.fatigue < 20 ? 'low' : '';
                     let floorCollected = Math.floor(state.collected);
                     
-                    // 🆕 在渲染 UI 前，先計算這張卡在這個區域的真實補水價格
                     let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
                     let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zone.id] || 1;
                     let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
@@ -756,196 +727,58 @@
                         <button class="btn-dispatch" onclick="openDispatchSelector('${zone.id}')">選擇女孩派遣</button>
                     `;
                 }
-                container.innerHTML += `
-                    <div class="dispatch-zone">
-                        <div class="dispatch-zone-label">📍 ${zone.name} (基底 ${zone.baseRate}/分)</div>
-                        ${contentHtml}
-                    </div>
-                `;
+                container.innerHTML += `<div class="dispatch-zone"><div class="dispatch-zone-label">📍 ${zone.name} (基底 ${zone.baseRate}/分)</div>${contentHtml}</div>`;
             });
         }
-        // 🆕 共用的卡片列表渲染邏輯 (支援篩選器)
-        function updateSelectorList() {
-            let filterType = document.getElementById('selector-filter').value;
-            let html = "";
-            let keys = Object.keys(collection);
-            
-            // 執行篩選
-            if (filterType !== 'all') {
-                keys = keys.filter(k => collection[k].type === filterType);
-            }
-
-            if (keys.length === 0) {
-                html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1; padding: 30px;">找不到符合條件的卡片！</div>';
-            } else {
-                // 依照戰力(稀有度)排序
-                keys.sort((a, b) => (rarityCombatPower[collection[b].rarity]||0) - (rarityCombatPower[collection[a].rarity]||0));
-                
-                keys.forEach(k => {
-                    let card = collection[k];
-                   let isUsed = false;
-        if (selectorMode === 'showcase') {
-            // 在挑選展示櫃時，只檢查是否已經在展示櫃裡
-            isUsed = showcaseSquad.includes(k);
-        } else {
-            // 在挑選戰鬥或派遣時，不檢查 showcaseSquad
-            isUsed = manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k);
-        }
-        
-        let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
-                    
-                    let attr = getAttribute(card.name);
-                    let finalCardPwr = Math.floor(rarityCombatPower[card.rarity] || 0);
-                    
-                    // 根據模式決定是否顯示戰力
-                    let powerHtml = selectorMode === 'battle' ? `<div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}</div>` : '';
-
-                    html += `
-                        <div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')">
-                            <div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div> 
-                            <div class="attr-badge ${attr.class}" style="position:relative; top:0; right:0; display:inline-block; font-size:9px;">${attr.type}</div>
-                            <div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div>
-                            <div style="font-size:11px; color:#fbc2eb;">${card.type}</div>
-                            ${powerHtml}
-                            ${isUsed ? "<div style='color:red; font-size:12px; font-weight:bold; margin-top:5px;'>佔用中</div>" : ""}
-                        </div>`;
-                });
-            }
-            document.getElementById('selector-list').innerHTML = html;
-        }
-      function openDispatchSelector(zoneId) { 
-            dispatchTargetZone = zoneId; 
-            selectorMode = 'dispatch'; 
-            selectorSlotIndex = 0; // 派遣不挑選陣列索引
-            document.getElementById('selector-title').innerText = "🗺️ 選擇要派遣的女孩"; 
-            document.getElementById('btn-remove-showcase').style.display = 'none'; 
-            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
-            updateSelectorList();
-            document.getElementById('selector-modal').style.display = 'block'; 
-        }
         function collectDispatch(zoneId) { let ds = dispatchState[zoneId]; if(!ds) return; let amount = Math.floor(ds.collected); if(amount > 0) { fragments += amount; ds.collected -= amount; saveStamina(); updateStamina(); renderDispatch(); alert(`成功從派遣任務中領取 ${amount} 枚心願碎片！`); } else { alert(`還沒有足夠的碎片可以領取喔！`); } }
-       function restoreFatigue(zoneId) { 
-            let ds = dispatchState[zoneId]; 
-            if(!ds) return; 
-            
+        function restoreFatigue(zoneId) { 
+            let ds = dispatchState[zoneId]; if(!ds) return; 
             let card = collection[ds.cardKey];
             let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
             let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zoneId] || 1;
-            
-            // 基礎水錢 20，根據卡片身價與工作地點翻倍
             let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
-
-            if(fragments >= potionCost) { 
-                fragments -= potionCost; 
-                ds.fatigue = 100; 
-                saveStamina(); 
-                updateStamina(); 
-                renderDispatch(); 
-                alert(`花費了 ${potionCost} 碎片購買高級能量飲，${card.name} 的體力已完全恢復！`); 
-            } else { 
-                alert(`碎片不足！需要 ${potionCost} 碎片才能幫她買飲料。`); 
-            } 
+            if(fragments >= potionCost) { fragments -= potionCost; ds.fatigue = 100; saveStamina(); updateStamina(); renderDispatch(); alert(`花費了 ${potionCost} 碎片購買高級能量飲，${card.name} 的體力已完全恢復！`); } else { alert(`碎片不足！需要 ${potionCost} 碎片才能幫她買飲料。`); } 
         }
         function recallDispatch(zoneId) { let ds = dispatchState[zoneId]; if(ds && Math.floor(ds.collected) >= 1) { fragments += Math.floor(ds.collected); alert(`召回成功！結算獲得 ${Math.floor(ds.collected)} 枚碎片。`); } dispatchState[zoneId] = null; saveStamina(); updateStamina(); renderDispatch(); }
 
-        // 🚶‍♀️ 休息室 2D (僅保留視覺功能)
-        let loungeGirls = []; let loungeAnimFrame = null;
-        const LOUNGE_MAX_CAPACITY = 8; // 設定休息室最大同屏人數
-       function renderLounge() { 
-            const area = document.getElementById('lounge-area'); 
-            area.innerHTML = ''; 
-            if (loungeAnimFrame) cancelAnimationFrame(loungeAnimFrame); 
-            loungeGirls = []; 
-            
+        // 休息室 2D 物理
+        let loungeGirls = []; let loungeAnimFrame = null; const LOUNGE_MAX_CAPACITY = 8;
+        function renderLounge() { 
+            const area = document.getElementById('lounge-area'); area.innerHTML = ''; if (loungeAnimFrame) cancelAnimationFrame(loungeAnimFrame); loungeGirls = []; 
             let maxAffGirls = Object.keys(affection).filter(g => affection[g] >= 10); 
-            if (maxAffGirls.length === 0) { 
-                area.innerHTML = '<div style="color:#aaa; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">尚未有女孩好感度達到 MAX (Lv.10)。</div>'; 
-                return; 
-            } 
-            
-            // 🆕 隨機洗牌並限制出場人數
-            shuffle(maxAffGirls);
-            let displayGirls = maxAffGirls.slice(0, LOUNGE_MAX_CAPACITY);
-
-            const areaWidth = area.clientWidth || 760; 
-            const areaHeight = area.clientHeight || 400; 
-            
+            if (maxAffGirls.length === 0) { area.innerHTML = '<div style="color:#aaa; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">尚未有女孩好感度達到 MAX (Lv.10)。</div>'; return; } 
+            shuffle(maxAffGirls); let displayGirls = maxAffGirls.slice(0, LOUNGE_MAX_CAPACITY);
+            const areaWidth = area.clientWidth || 760; const areaHeight = area.clientHeight || 400; 
             displayGirls.forEach((name, index) => { 
-                let el = document.createElement('div'); 
-                el.className = 'lounge-char'; 
-                el.id = `lounge-char-${index}`; 
+                let el = document.createElement('div'); el.className = 'lounge-char'; el.id = `lounge-char-${index}`; 
                 el.innerHTML = `<img src="images/${name}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div class="lounge-fallback" style="display:none;">🌸</div><div class="lounge-name">${name}</div><div class="lounge-bubble" id="lounge-bubble-${index}"></div>`; 
-                
-                // 盡量讓初始位置分散
-                let x = Math.random() * (areaWidth - 100) + 20; 
-                let y = Math.random() * (areaHeight - 100) + 20; 
-                let vx = (Math.random() - 0.5) * 1.5; 
-                let vy = (Math.random() - 0.5) * 1.5; 
-                
-                el.style.left = x + 'px'; el.style.top = y + 'px'; 
-                el.onclick = () => showLoungeBubble(index); 
-                area.appendChild(el); 
+                let x = Math.random() * (areaWidth - 100) + 20; let y = Math.random() * (areaHeight - 100) + 20; 
+                let vx = (Math.random() - 0.5) * 1.5; let vy = (Math.random() - 0.5) * 1.5; 
+                el.style.left = x + 'px'; el.style.top = y + 'px'; el.onclick = () => showLoungeBubble(index); area.appendChild(el); 
                 loungeGirls.push({ name, el, x, y, vx, vy, pausedUntil: 0, bubbleEl: document.getElementById(`lounge-bubble-${index}`) }); 
             }); 
             requestAnimationFrame(updateLounge); 
         }
         function updateLounge() { 
-            const area = document.getElementById('lounge-area'); 
-            if (!area || area.offsetWidth === 0) { loungeAnimFrame = null; return; } 
-            const w = area.offsetWidth; 
-            const h = area.offsetHeight; 
-            const now = Date.now(); 
-            
-            // 計算畫面上活躍的泡泡數量
+            const area = document.getElementById('lounge-area'); if (!area || area.offsetWidth === 0) { loungeAnimFrame = null; return; } 
+            const w = area.offsetWidth; const h = area.offsetHeight; const now = Date.now(); 
             let activeBubbles = document.querySelectorAll('.lounge-bubble.show').length;
-
             loungeGirls.forEach(g => { 
                 if (now < g.pausedUntil) return; 
                 g.x += g.vx; g.y += g.vy; 
-                
-                // 邊界反彈
-                if (g.x <= 0) { g.x = 0; g.vx *= -1; } 
-                if (g.x >= w - 60) { g.x = w - 60; g.vx *= -1; } 
-                if (g.y <= 0) { g.y = 0; g.vy *= -1; } 
-                if (g.y >= h - 60) { g.y = h - 60; g.vy *= -1; } 
-                
-                g.el.style.left = g.x + 'px'; 
-                g.el.style.top = g.y + 'px'; 
+                if (g.x <= 0) { g.x = 0; g.vx *= -1; } if (g.x >= w - 60) { g.x = w - 60; g.vx *= -1; } 
+                if (g.y <= 0) { g.y = 0; g.vy *= -1; } if (g.y >= h - 60) { g.y = h - 60; g.vy *= -1; } 
+                g.el.style.left = g.x + 'px'; g.el.style.top = g.y + 'px'; 
             }); 
-
-            // 碰撞與排斥處理
             for (let i = 0; i < loungeGirls.length; i++) { 
                 for (let j = i + 1; j < loungeGirls.length; j++) { 
-                    let g1 = loungeGirls[i]; 
-                    let g2 = loungeGirls[j]; 
-                    if (now < g1.pausedUntil || now < g2.pausedUntil) continue; 
-                    
-                    let dx = g1.x - g2.x;
-                    let dy = g1.y - g2.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy); 
-                    
+                    let g1 = loungeGirls[i]; let g2 = loungeGirls[j]; if (now < g1.pausedUntil || now < g2.pausedUntil) continue; 
+                    let dx = g1.x - g2.x; let dy = g1.y - g2.y; let dist = Math.sqrt(dx * dx + dy * dy); 
                     if (dist < 60) { 
-                        // 🆕 加入排斥力 (Soft Push Resolution)，防止黏死
-                        let overlap = 60 - dist;
-                        let nx = dx / dist; // 標準化法向量 X
-                        let ny = dy / dist; // 標準化法向量 Y
-                        
-                        g1.x += nx * (overlap / 2);
-                        g1.y += ny * (overlap / 2);
-                        g2.x -= nx * (overlap / 2);
-                        g2.y -= ny * (overlap / 2);
-
-                        // 反轉速度與增加暫停
-                        g1.pausedUntil = now + 2000; 
-                        g2.pausedUntil = now + 2000; 
-                        g1.vx *= -1; g1.vy *= -1; 
-                        g2.vx *= -1; g2.vy *= -1; 
-                        
-                        // 🆕 限制泡泡生成機率，如果畫面上已經太吵了就不顯示
-                        if (activeBubbles < 3 && Math.random() < 0.5) {
-                            showLoungeBubble(i, "💬"); 
-                            showLoungeBubble(j, "❤️"); 
-                        }
+                        let overlap = 60 - dist; let nx = dx / dist; let ny = dy / dist; 
+                        g1.x += nx * (overlap / 2); g1.y += ny * (overlap / 2); g2.x -= nx * (overlap / 2); g2.y -= ny * (overlap / 2);
+                        g1.pausedUntil = now + 2000; g2.pausedUntil = now + 2000; g1.vx *= -1; g1.vy *= -1; g2.vx *= -1; g2.vy *= -1; 
+                        if (activeBubbles < 3 && Math.random() < 0.5) { showLoungeBubble(i, "💬"); showLoungeBubble(j, "❤️"); }
                     } 
                 } 
             } 
@@ -953,47 +786,33 @@
         }
         function showLoungeBubble(index, customText = null) { let g = loungeGirls[index]; if(!g) return; let text = customText || dialogTree.lv10[Math.floor(Math.random() * dialogTree.lv10.length)]; g.bubbleEl.innerText = text; g.bubbleEl.classList.add('show'); g.pausedUntil = Date.now() + 2500; setTimeout(() => { if(g.bubbleEl) g.bubbleEl.classList.remove('show'); }, 2500); }
 
-        // 🆕 V15 修正 1/1 黑洞的回溯機制
+        // 拍賣會
         let auctionItem = null; let currentBid = 0; let auctionTimer = null; let timeRemain = 0;
         function initAuction() { 
             if (auctionTimer) clearInterval(auctionTimer); document.getElementById('auction-my-fragments').innerText = fragments; cardQueue = []; 
-            const sp = rollSpecialSlot(true); generateCard(sp.type, sp.rarity, sp.desc); auctionItem = cardQueue.pop(); 
-            auctionItem.originalType = auctionItem.type; // 紀錄原始型態以防覆寫
-            if (!['relic', 'legendary', 'mythic'].includes(auctionItem.rarity) && !auctionItem.rarity.startsWith('limited')) { 
-                auctionItem.type = "專屬簽名卡"; auctionItem.rarity = "legendary"; auctionItem.serialNum = null; auctionItem.desc = "✍親筆"; 
-            } 
+            const sp = rollSpecialSlot(true); generateCard(sp.type, sp.rarity, sp.desc); auctionItem = cardQueue.pop(); auctionItem.originalType = auctionItem.type; 
+            if (!['relic', 'legendary', 'mythic'].includes(auctionItem.rarity) && !auctionItem.rarity.startsWith('limited')) { auctionItem.type = "專屬簽名卡"; auctionItem.rarity = "legendary"; auctionItem.serialNum = null; auctionItem.desc = "✍親筆"; } 
             document.getElementById('auction-card-display').innerHTML = getCardHTML(auctionItem, true, false); currentBid = 500; timeRemain = 25; updateAuctionUI(); 
-            auctionTimer = setInterval(() => { 
-                timeRemain--; 
-                if (timeRemain <= 0) { endAuction(); } 
-                else { if (Math.random() < 0.3) { currentBid += Math.random() > 0.8 ? 100 : 50; logAuction(`NPC 神秘富豪 出價 ${currentBid} 碎片`); updateAuctionUI(); } document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; } 
-            }, 1000); 
+            auctionTimer = setInterval(() => { timeRemain--; if (timeRemain <= 0) { endAuction(); } else { if (Math.random() < 0.3) { currentBid += Math.random() > 0.8 ? 100 : 50; logAuction(`NPC 神秘富豪 出價 ${currentBid} 碎片`); updateAuctionUI(); } document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; } }, 1000); 
         }
         function placeBid(amount) { let newBid = currentBid + amount; if (fragments < newBid) return alert("碎片不足以支付本次競標！"); currentBid = newBid; logAuction(`你 出價 ${currentBid} 碎片！`); updateAuctionUI(); }
         function updateAuctionUI() { document.getElementById('auction-price-display').innerText = currentBid; document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; document.getElementById('btn-bid-50').disabled = (fragments < currentBid + 50); document.getElementById('btn-bid-200').disabled = (fragments < currentBid + 200); }
         function logAuction(msg) { let logDiv = document.getElementById('auction-log-display'); logDiv.innerHTML += `<div>[即時] ${msg}</div>`; logDiv.scrollTop = logDiv.scrollHeight; }
-        
         function endAuction() { 
             clearInterval(auctionTimer); document.getElementById('auction-timer-display').innerText = "拍賣結束！"; document.getElementById('btn-bid-50').disabled = true; document.getElementById('btn-bid-200').disabled = true; 
             let logText = document.getElementById('auction-log-display').innerHTML; 
             if (logText.includes(`你 出價 ${currentBid}`)) { 
-                alert(`恭喜！你以 ${currentBid} 碎片拍下了 ${auctionItem.name} 的 ${auctionItem.type}！`); 
-                fragments -= currentBid; saveStamina(); updateStamina(); document.getElementById('auction-my-fragments').innerText = fragments; totalPulls++; localStorage.setItem('cheer_total_pulls_v15', totalPulls); const key = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`; 
+                alert(`恭喜！你以 ${currentBid} 碎片拍下了 ${auctionItem.name} 的 ${auctionItem.type}！`); fragments -= currentBid; saveStamina(); updateStamina(); document.getElementById('auction-my-fragments').innerText = fragments; totalPulls++; localStorage.setItem('cheer_total_pulls_v16', totalPulls); const key = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`; 
                 if (!collection[key]) { collection[key] = { ...auctionItem, count: 1, serials: auctionItem.serialNum ? [auctionItem.serialNum] : [] }; } else { collection[key].count++; if(auctionItem.serialNum) { if(!collection[key].serials) collection[key].serials=[]; collection[key].serials.push(auctionItem.serialNum); } } 
-                localStorage.setItem('cheer_collection_v15', JSON.stringify(collection)); pullLog.unshift({ ...auctionItem, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v15', JSON.stringify(pullLog)); 
+                localStorage.setItem('cheer_collection_v16', JSON.stringify(collection)); pullLog.unshift({ ...auctionItem, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v16', JSON.stringify(pullLog)); 
             } else { 
                 alert(`可惜！商品被 NPC 買走了。`); 
-                // 🆕 回溯機制：如果流標且是限量卡，加回庫存
-                if (auctionItem.serialNum) {
-                    let limitType = auctionItem.originalType || auctionItem.type;
-                    let limitKey = `${auctionItem.team}_${limitType}_${auctionItem.name}`;
-                    limitedInventory[limitKey] = (limitedInventory[limitKey] || 0) + 1;
-                    localStorage.setItem('cheer_inventory_v15', JSON.stringify(limitedInventory));
-                }
+                if (auctionItem.serialNum) { let limitType = auctionItem.originalType || auctionItem.type; let limitKey = `${auctionItem.team}_${limitType}_${auctionItem.name}`; limitedInventory[limitKey] = (limitedInventory[limitKey] || 0) + 1; localStorage.setItem('cheer_inventory_v16', JSON.stringify(limitedInventory)); }
             } 
         }
         function closeAuction() { clearInterval(auctionTimer); document.getElementById('auction-modal').style.display = 'none'; document.getElementById('auction-log-display').innerHTML = ''; }
 
+        // Modals
         function toggleModal(modalId) { const modal = document.getElementById(modalId); if (modal.style.display === "block") { modal.style.display = "none"; } else { modal.style.display = "block"; if(modalId === 'collection-modal') renderAlbumPage(); if(modalId === 'log-modal') renderLog(); if(modalId === 'battle-modal') { currentEnvironment = stadiumEnvironments[Math.floor(Math.random() * stadiumEnvironments.length)]; renderBattleModal(); } if(modalId === 'shop-modal') document.getElementById('shop-fragments-display').innerText = fragments; if(modalId === 'lounge-modal') renderLounge(); if(modalId === 'dispatch-modal') renderDispatch(); if(modalId === 'showcase-modal') renderShowcase(); if(modalId === 'rates-modal') renderRateChart(); } }
         function renderLog() { document.getElementById('total-pulls-display').innerText = totalPulls; const logList = document.getElementById('log-list'); logList.innerHTML = ''; if(pullLog.length === 0) { logList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px;">尚未抽出極稀有大獎...</div>'; return; } pullLog.forEach(log => { let nameColor = "#fff"; let rarityBorder = "#704762"; if(log.rarity === 'mythic') { nameColor = "var(--gold)"; rarityBorder = "var(--gold)"; } else if(log.rarity === 'legendary') { nameColor = "var(--pink)"; rarityBorder = "var(--pink)"; } else if(log.rarity === 'relic') { nameColor = "#e67e22"; rarityBorder = "#e67e22"; } else if(log.rarity === 'limited-red') { nameColor = "#ff3b3b"; rarityBorder = "#ff3b3b"; } else if(log.rarity === 'limited-gold') { nameColor = "#ffd700"; rarityBorder = "#ffd700"; } else if(log.rarity === 'limited-silver') { nameColor = "#c0c0c0"; rarityBorder = "#c0c0c0"; } let serialText = log.serialNum ? ` <span style="color:#aaa; font-size:12px;">(No.${log.serialNum})</span>` : ""; logList.innerHTML += `<div class="log-item" style="border-color: ${rarityBorder};"><div style="text-align:left;"><div style="font-size:12px; color:#aaa; margin-bottom: 2px;"><span style="background:${log.teamColor}; color:white; padding:2px 6px; border-radius:4px;">${log.team}</span> ${log.type}</div><div style="font-size:22px; font-weight:bold; color:${nameColor};">${log.name}${serialText}</div></div><div class="log-pull-num">第 <span style="color:var(--gold); font-size:18px;">${log.pullNumber}</span> 抽</div></div>`; }); }
         function onAlbumFilterChange() { albumTeam = document.getElementById('filter-team').value; albumType = document.getElementById('filter-type').value; albumPage = 1; renderAlbumPage(); } function changeAlbumPage(direction) { const members = db[albumTeam].members; const totalPages = Math.ceil(members.length / cardsPerPage); let newPage = albumPage + direction; if (newPage >= 1 && newPage <= totalPages) { albumPage = newPage; renderAlbumPage(); } }
@@ -1006,7 +825,9 @@
         const rateData = [ { name: "普卡 (Common)", prob: 50.0, color: "#bdc3c7" }, { name: "亮面特卡 (Rare)", prob: 30.0, color: "#886a7d" }, { name: "平行閃卡 (Epic)", prob: 10.0, color: "#00f2fe" }, { name: "實戰衣物 (Relic)", prob: 5.0, color: "#e67e22" }, { name: "簽名卡 (Legendary)", prob: 4.0, color: "#ff7eb3" }, { name: "限量卡 (Limited)", prob: 0.5, color: "#ffd700" }, { name: "寶石卡 (Mythic)", prob: 0.5, color: "#fff" } ];
         function renderRateChart() { const container = document.getElementById('rate-chart-body'); container.innerHTML = ''; rateData.forEach(item => { const row = document.createElement('div'); row.className = 'chart-row'; row.innerHTML = `<div class="chart-label">${item.name}</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width: ${item.prob * 2}%; background-color: ${item.color}; box-shadow: 0 0 10px ${item.color}"></div></div><div class="chart-perc">${item.prob}%</div>`; container.appendChild(row); }); }
 
-        updateStamina(); initMainGirl();
+        // 初始化啟動
+        updateStamina(); 
+        initMainGirl();
     </script>
 </body>
 </html>
