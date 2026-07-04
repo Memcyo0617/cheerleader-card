@@ -236,7 +236,13 @@
             <div class="chart-container" id="rate-chart-body"></div>
         </div>
     </div>
-    
+
+    <div id="buff-modal" class="modal" style="z-index: 250;">
+        <div class="modal-content" style="max-width: 600px; background: rgba(20,10,20,0.98); border: 2px solid #84fab0; box-shadow: 0 0 20px rgba(132, 250, 176, 0.4);">
+            <h2 style="color: #84fab0; text-align:center;">🎉 應援大成功！請選擇一項獎勵</h2>
+            <div id="buff-options-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;"></div>
+        </div>
+    </div>
     <div id="log-modal" class="modal"><button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄</h2><div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div><div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div></div></div>
     
     <!-- 🆕 V15 應援挑戰 (九宮格) -->
@@ -246,6 +252,10 @@
     <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
 
     <script>
+
+        let endlessFloor = parseInt(localStorage.getItem('cheer_endless_floor_v16')) || 1;
+        let endlessBuffs = JSON.parse(localStorage.getItem('cheer_endless_buffs_v16')) || [];
+        let currentBuffOptions = [];
         const db = { "Passion Sisters": { color: "var(--team-ps)", members: ["凱蒂", "貴貴", "希希", "短今", "峮峮", "晴兒", "波波", "畇二", "妮可", "林可", "君白", "曼容", "小迪", "沛婕", "汶汶", "怡琪", "Wendy", "夏蕾", "少鹽", "邊荷律", "牛奶", "芊芊", "衣宸", "瑄", "莎莎", "維尼", "璇璇", "桃子", "金渡兒", "JJUBI", "珮含", "容容"] }, "Uni Girls": { color: "var(--team-ug)", members: ["妮妮", "Yuki", "Mina", "瑟七", "賴賴", "少少", "芮絲", "曼萍", "Joy", "柔一", "Maggie", "斐棋", "一七", "侯芳", "包子", "千紘", "希美", "趙娟週", "文慧真", "安惠志", "藤本彩花", "子筑", "安琪", "妍蓁", "培根", "姿琳"] }, "Fubon Angels": { color: "var(--team-fa)", members: ["潔米", "慈妹", "檸檬", "Jessy", "丹丹", "秀秀子", "Tiffany", "安娜", "沁沁", "維心", "奶昔", "大頭", "卡洛琳", "栗子", "南珉貞", "李雅英", "李珠珢", "禾羽", "潔潔", "雅惟", "李晧禎", "貝兒", "小芊", "呱呱", "Laynee", "陳愉", "朴星垠"] }, "Dragons Beauties": { color: "var(--team-db)", members: ["心璇", "馬妹", "小映", "口水", "Like", "張晴", "芮妮", "霖霖", "小蛙", "蘿拉", "寧寧", "詩雅", "璦昀", "沛沛", "林襄", "李多慧", "Yuri", "菲菲", "群群", "佩霓", "靜靜", "金娜妍", "權喜原", "貝拉", "姵宸", "瑄瑄"] }, "Rakuten Girls": { color: "var(--team-rg)", members: ["岱縈", "琳妲","孟潔", "卉妮", "若潼", "筠熹", "穎樂", "熊霓", "穆又甯", "宋宋", "禹菡", "貝佳頤", "言梓璇", "溫妮", "Kira", "崔荷潾", "Mika", "高橋佳帆", "笑笑", "彭彭", "廉世彬", "禹洙漢", "河智媛", "高佳彬", "金佳垠"] }, "Wing Stars": { color: "var(--team-ws)", members: ["安芝儇", "朴旻曙", "螢螢", "圈圈", "恬魚", "昆昆", "李樂", "JC", "黃澄澄", "妡0", "艾琳", "一粒", "瑈瑈", "林浠", "筱雯", "毛毛", "芃芃", "玖玖", "米亞", "米妮", "尼莫", "千千", "ET", "會晴", "芋頭", "Nina"] } };
         const allGirlsFlat = []; for (let t in db) { db[t].members.forEach(m => allGirlsFlat.push({team: t, name: m, color: db[t].color})); }
         function getAttribute(name) { const attrs = [ {type: '活力', color: 'var(--attr-v)', class: 'attr-vitality'}, {type: '甜美', color: 'var(--attr-s)', class: 'attr-sweet'}, {type: '酷炫', color: 'var(--attr-c)', class: 'attr-cool'} ]; let hash = 0; for(let i=0; i<name.length; i++) hash += name.charCodeAt(i); return attrs[hash % 3]; }
@@ -420,12 +430,20 @@
             let cards = manualSquad.map(k => k ? collection[k] : null);
             let activatedLinks = 0;
 
-            // 階段一：計算單卡面板
+           // 階段一：計算單卡面板 (🆕 V16 加入無盡模式的 Buff 結算)
             for (let i = 0; i < 9; i++) {
                 if (cards[i]) {
                     let base = rarityCombatPower[cards[i].rarity] || 0;
                     let aff = affection[cards[i].name] || 1;
-                    cardPowers[i] = Math.floor(base * (aff === 10 ? 1.25 : (aff >= 5 ? 1.1 : 1)));
+                    
+                    let buffMult = 1.0;
+                    endlessBuffs.forEach(b => {
+                        if(b.type === 'global') buffMult += b.value;
+                        if(b.type === 'team' && cards[i].team === b.target) buffMult += b.value;
+                        if(b.type === 'attr' && getAttribute(cards[i].name).type === b.target) buffMult += b.value;
+                    });
+                    
+                    cardPowers[i] = Math.floor(base * (aff === 10 ? 1.25 : (aff >= 5 ? 1.1 : 1)) * buffMult);
                 }
             }
 
@@ -462,7 +480,11 @@
             // 🆕 多回傳 finalIndividualPowers 供渲染使用
             return { finalPower, displaySynergy, finalIndividualPowers }; 
         }
+        function getEndlessReq() {
+            return Math.floor(300 * Math.pow(1.3, endlessFloor - 1));
+        }
 
+       // 🆕 渲染無盡戰鬥介面
         function renderBattleModal() { 
             const powerData = calculateSquadPower(); 
             document.getElementById('battle-total-power').innerText = powerData.finalPower; 
@@ -474,7 +496,7 @@
                 if (key && collection[key]) { 
                     let card = collection[key]; 
                     let attr = getAttribute(card.name); 
-                    let indivPower = powerData.finalIndividualPowers[i]; // 🆕 取得該卡的最終戰力
+                    let indivPower = powerData.finalIndividualPowers[i]; 
                     
                     squadHtml += `<div class="squad-slot filled" onclick="openCardSelector(${i})">
                         <div class="slot-remove" onclick="removeCardFromSlot(event, ${i})">✖</div>
@@ -484,41 +506,116 @@
                         <div style="color:#ff4b2b; font-size:14px; font-weight:bold;">⚡ ${indivPower}</div>
                     </div>`; 
                 } else { 
-                    squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})">
-                        <div style="font-size:24px; color:#aaa; margin-bottom:5px;">+</div>
-                        <div style="font-size:10px; color:#fbc2eb;">點擊選擇</div>
-                    </div>`; 
+                    squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})"><div style="font-size:24px; color:#aaa; margin-bottom:5px;">+</div><div style="font-size:10px; color:#fbc2eb;">點擊選擇</div></div>`; 
                 } 
             } 
-            document.getElementById('battle-squad').innerHTML = squadHtml; 
+            document.getElementById('battle-squad').innerHTML = squadHtml;
             
-            let stagesHtml = ""; 
-            let currentStages = getBattleStages(); 
-            currentStages.forEach(stage => { 
-                let isCleared = battleRecord.cleared.includes(stage.id); 
-                let btnHtml = isCleared ? `<button class="btn-challenge" disabled style="background:#555;">已通關</button>` : `<button class="btn-challenge" onclick="startBattle(${stage.id}, ${stage.req})">消耗⚡1 挑戰</button>`; 
-                stagesHtml += `<div class="battle-stage ${isCleared ? 'completed' : ''}"><div class="stage-info"><div class="stage-name">${stage.name}</div><div class="stage-req">要求戰力：${stage.req}</div><div class="stage-reward">🎁 獎勵：${stage.rewardText}</div></div>${btnHtml}</div>`; 
-            }); 
-            document.getElementById('battle-stages-container').innerHTML = stagesHtml; 
+           // 無盡模式 UI 取代原本的 stages
+            let buffTags = endlessBuffs.length === 0 ? "無" : endlessBuffs.map(b => `<span style="background:#222; padding:2px 6px; border-radius:4px; margin-right:5px; font-size:12px; border:1px solid #555; color:#84fab0;">${b.desc}</span>`).join('');
+            
+            let endlessHtml = `
+                <div id="endless-container" style="background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 12px; padding: 20px; margin-top: 15px;">
+                    <h3 style="color:var(--gold); margin-top:0;">🏆 無盡應援巡迴賽 - 第 <span style="font-size:24px; color:#fff;">${endlessFloor}</span> 站</h3>
+                    <div style="font-size:14px; color:#ccc; margin-bottom:15px; line-height:1.8;">目前累積 Buff：<br>${buffTags}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-size:16px; color:white;">本站要求戰力：<span style="color:#ff4b2b; font-size:24px; font-weight:bold; margin-left:10px;">${getEndlessReq()}</span></div>
+                        <button class="btn-battle" style="padding: 12px 25px; font-size: 16px;" onclick="startEndlessBattle()">消耗⚡1 挑戰本站</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('battle-stages-container').innerHTML = endlessHtml; 
         }
-        function removeCardFromSlot(event, index) { event.stopPropagation(); manualSquad[index] = null; localStorage.setItem('cheer_squad_v15', JSON.stringify(manualSquad)); renderBattleModal(); }
-        function resetBattleProgress() { if (tickets < 5) return alert("🎫 抽卡券不足 5 張！無法重置賽程。"); if (confirm("確定要消耗 5 張抽卡券，將挑戰賽進度與難度重置嗎？")) { tickets -= 5; battleRound = 1; battleRecord.cleared = []; localStorage.setItem('cheer_b_round_v15', battleRound); localStorage.setItem('cheer_battles_v15', JSON.stringify(battleRecord)); saveStamina(); updateStamina(); renderBattleModal(); } }
-        
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-        async function startBattle(stageId, reqPower) { 
+
+        async function startEndlessBattle() { 
             let emptyCount = manualSquad.filter(k => k === null).length; if (emptyCount === 9) return alert("請至少上陣 1 位女孩！"); 
-            if (battleEnergy < 1) return alert("⚡ 應援力不足！請等待回復。"); battleEnergy -= 1; saveStamina(); updateStamina(); document.getElementById('battle-stages-container').style.display = 'none'; const logPanel = document.getElementById('battle-log-panel'); const logContent = document.getElementById('battle-log-content'); const btnFinish = document.getElementById('btn-finish-battle'); logPanel.style.display = 'block'; logContent.innerHTML = ''; btnFinish.style.display = 'none'; const currentPower = calculateSquadPower().finalPower; const stage = getBattleStages().find(s => s.id === stageId); 
-            const logs = [ `📢 【挑戰開始】迎戰關卡：${stage.name}`, `🔥 九宮格陣型展開！總應援戰力凝聚至 ${currentPower} 點...`, `⚔️ 正在與目標戰力 (${reqPower}) 進行最終碰撞...` ]; 
+            if (battleEnergy < 1) return alert("⚡ 應援力不足！請等待回復。"); 
+            
+            battleEnergy -= 1; saveStamina(); updateStamina(); 
+            document.getElementById('battle-stages-container').style.display = 'none'; 
+            const logPanel = document.getElementById('battle-log-panel'); 
+            const logContent = document.getElementById('battle-log-content'); 
+            const btnFinish = document.getElementById('btn-finish-battle'); 
+            
+            logPanel.style.display = 'block'; logContent.innerHTML = ''; btnFinish.style.display = 'none'; 
+            
+            const reqPower = getEndlessReq();
+            const currentPower = calculateSquadPower().finalPower; 
+            
+            const logs = [ `📢 【無盡巡迴】迎戰第 ${endlessFloor} 站！`, `🔥 陣型展開！觸發 ${endlessBuffs.length} 項永久 Buff...`, `⚔️ 總戰力 ${currentPower} VS 目標 ${reqPower}...` ]; 
             for(let text of logs) { let p = document.createElement('div'); p.className = 'log-line'; p.innerHTML = text; logContent.appendChild(p); await delay(800); } 
+            
             if (currentPower >= reqPower) { 
-                let winMsg = document.createElement('div'); winMsg.className = 'log-win'; winMsg.innerText = "🎉 挑戰成功！完美應援！"; logContent.appendChild(winMsg); 
-                if (stage.rewardType === "tickets") { tickets += stage.rewardVal; } else if (stage.rewardType === "fragments") { fragments += stage.rewardVal; } else if (stage.rewardType === "both") { tickets += stage.rewardValT; fragments += stage.rewardValF; } 
-                battleRecord.cleared.push(stageId); if(battleRecord.cleared.length >= 4) { await delay(600); let refreshMsg = document.createElement('div'); refreshMsg.style = "color:var(--gold); font-weight:bold; margin-top:10px; text-align:center;"; refreshMsg.innerText = "🌟 天團勢如破竹！解鎖了新一輪更高難度的巡迴應援！"; logContent.appendChild(refreshMsg); battleRecord.cleared = []; battleRound++; localStorage.setItem('cheer_b_round_v15', battleRound); } 
-                localStorage.setItem('cheer_battles_v15', JSON.stringify(battleRecord)); saveStamina(); updateStamina(); 
-            } else { let lossMsg = document.createElement('div'); lossMsg.className = 'log-loss'; lossMsg.innerText = "❌ 戰力不足，應援失敗..."; logContent.appendChild(lossMsg); } 
-            btnFinish.style.display = 'block'; checkRandomEvent(); 
+                let winMsg = document.createElement('div'); winMsg.className = 'log-win'; winMsg.innerText = "🎉 突破成功！準備挑選戰利品！"; logContent.appendChild(winMsg); 
+                await delay(1000);
+                showBuffSelection();
+            } else { 
+                let lossMsg = document.createElement('div'); lossMsg.className = 'log-loss'; lossMsg.innerText = "❌ 戰力不足，巡迴終止..."; logContent.appendChild(lossMsg);
+                let rewardFrag = endlessFloor * 80;
+                let endMsg = document.createElement('div'); endMsg.style = "color:#aaa; text-align:center; margin-top:10px; font-weight:bold;"; endMsg.innerText = `🏁 結算獎勵：獲得 ${rewardFrag} 碎片。巡迴進度與 Buff 已重置。`; logContent.appendChild(endMsg);
+                
+                fragments += rewardFrag;
+                endlessFloor = 1; endlessBuffs = [];
+                localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
+                localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
+                saveStamina(); updateStamina(); 
+                btnFinish.style.display = 'block';
+            } 
+            checkRandomEvent(); 
         }
-        function resetBattleView() { document.getElementById('battle-log-panel').style.display = 'none'; document.getElementById('battle-stages-container').style.display = 'block'; renderBattleModal(); }
+
+        function showBuffSelection() {
+            const pool = [
+                { type: "global", target: "all", value: 0.1, desc: "全隊戰力 +10%", icon: "🌟" },
+                { type: "global", target: "all", value: 0.05, desc: "全隊戰力 +5%", icon: "⭐" },
+                { type: "attr", target: "活力", value: 0.2, desc: "活力戰力 +20%", icon: "🔥" },
+                { type: "attr", target: "甜美", value: 0.2, desc: "甜美戰力 +20%", icon: "🎀" },
+                { type: "attr", target: "酷炫", value: 0.2, desc: "酷炫戰力 +20%", icon: "❄️" },
+                { type: "reward", target: "tickets", value: 2, desc: "獲得 2 張抽卡券", icon: "🎫" },
+                { type: "reward", target: "fragments", value: 300, desc: "獲得 300 碎片", icon: "💎" },
+                { type: "reward", target: "energy", value: 3, desc: "回復 3 點應援力", icon: "⚡" }
+            ];
+            
+            shuffle(pool);
+            currentBuffOptions = pool.slice(0, 3);
+            
+            let container = document.getElementById('buff-options-container');
+            container.innerHTML = '';
+            currentBuffOptions.forEach((buff, idx) => {
+                container.innerHTML += `
+                    <div style="background: rgba(0,0,0,0.6); border: 2px solid #84fab0; border-radius: 12px; padding: 20px; width: 140px; text-align: center; cursor: pointer; transition: 0.2s;" onclick="selectBuff(${idx})" onmouseover="this.style.background='rgba(132, 250, 176, 0.2)'" onmouseout="this.style.background='rgba(0,0,0,0.6)'">
+                        <div style="font-size: 36px; margin-bottom: 10px;">${buff.icon}</div>
+                        <div style="font-size: 14px; color: white; font-weight: bold;">${buff.desc}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('buff-modal').style.display = 'block';
+        }
+
+        function selectBuff(idx) {
+            let buff = currentBuffOptions[idx];
+            if (buff.type === 'reward') {
+                if (buff.target === 'tickets') tickets += buff.value;
+                if (buff.target === 'fragments') fragments += buff.value;
+                if (buff.target === 'energy') battleEnergy = Math.min(MAX_ENERGY, battleEnergy + buff.value);
+            } else {
+                endlessBuffs.push(buff);
+            }
+            
+            endlessFloor++;
+            localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
+            localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
+            saveStamina(); updateStamina();
+            
+            document.getElementById('buff-modal').style.display = 'none';
+            resetBattleView();
+        }
+
+        function resetBattleView() { 
+            document.getElementById('battle-log-panel').style.display = 'none'; 
+            document.getElementById('battle-stages-container').style.display = 'block'; 
+            renderBattleModal(); 
+        }
 
         // 🆕 V15 派遣系統與體力機制
         let dispatchTargetZone = null;
@@ -585,8 +682,16 @@
                 
                 keys.forEach(k => {
                     let card = collection[k];
-                    let isUsed = showcaseSquad.includes(k) || manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k);
-                    let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
+                   let isUsed = false;
+        if (selectorMode === 'showcase') {
+            // 在挑選展示櫃時，只檢查是否已經在展示櫃裡
+            isUsed = showcaseSquad.includes(k);
+        } else {
+            // 在挑選戰鬥或派遣時，不檢查 showcaseSquad
+            isUsed = manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k);
+        }
+        
+        let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
                     
                     let attr = getAttribute(card.name);
                     let finalCardPwr = Math.floor(rarityCombatPower[card.rarity] || 0);
