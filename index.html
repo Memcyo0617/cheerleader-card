@@ -69,7 +69,32 @@
         .lounge-bubble.show { opacity: 1; top: -55px; }
 
         /* 🆕 V15 派遣系統樣式 */
-        .dispatch-zone { background: rgba(0,0,0,0.6); border: 1px solid var(--pink); padding: 15px; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; text-align: left; }
+       .dispatch-zone { 
+            position: relative; /* 確保絕對定位的子元素以這裡為基準 */
+            background: rgba(0,0,0,0.6); 
+            border: 1px solid var(--pink); 
+            padding: 25px 15px 15px 15px; /* 增加 padding-top 讓標籤有空間 */
+            border-radius: 12px; 
+            margin-top: 15px; /* 與上方拉開距離 */
+            margin-bottom: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            text-align: left; 
+        }
+        .dispatch-zone-label {
+            position: absolute;
+            top: -12px; /* 完美卡在邊框上 */
+            left: 15px;
+            background: #222;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            z-index: 10;
         .dispatch-info { flex-grow: 1; margin-left: 15px; }
         .fatigue-bar-container { background: #222; border-radius: 8px; height: 12px; width: 100%; margin-top: 8px; overflow: hidden; border: 1px solid #555; }
         .fatigue-fill { background: linear-gradient(90deg, #2ecc71, #27ae60); height: 100%; transition: width 0.5s; }
@@ -161,6 +186,19 @@
     <div id="selector-modal" class="modal" style="z-index: 200;">
         <div class="modal-content" style="max-width: 700px; background: rgba(30,15,25,0.98); border: 2px solid var(--gold);">
             <h3 id="selector-title" style="color: var(--gold);">🔍 選擇卡片</h3>
+            <select id="selector-filter" class="team-picker" style="margin-bottom: 15px; width: 100%; max-width: 300px;" onchange="updateSelectorList()">
+                <option value="all">顯示全部卡種</option>
+                <option value="普卡">🌸 普卡</option>
+                <option value="亮面特卡">💫 亮面特卡</option>
+                <option value="平行閃卡">✨ 平行閃卡</option>
+                <option value="限量銀閃卡">⚪ 限量銀閃卡</option>
+                <option value="限量金閃卡">🟡 限量金閃卡</option>
+                <option value="限量紅閃卡">🔴 限量紅閃卡</option>
+                <option value="實戰衣物卡">👕 實戰衣物卡</option>
+                <option value="專屬簽名卡">✍ 專屬簽名卡</option>
+                <option value="唇印簽名卡">💋 唇印簽名卡</option>
+                <option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option>
+            </select>
             <div id="selector-list" class="card-list"></div>
             <button id="btn-cancel-select" class="btn-battle" style="margin-top:20px; width:100%;" onclick="document.getElementById('selector-modal').style.display='none'">取消選擇</button>
             <button id="btn-remove-showcase" class="btn-box" style="margin-top:10px; width:100%; display:none;" onclick="removeShowcaseCard()">卸下此卡磚</button>
@@ -348,10 +386,24 @@
         function popMainGirlBubble(msg, duration) { const bubble = document.getElementById('main-girl-bubble'); bubble.innerText = msg; bubble.classList.remove('active'); void bubble.offsetWidth; bubble.classList.add('active'); if(bubbleTimeout) clearTimeout(bubbleTimeout); bubbleTimeout = setTimeout(() => { bubble.classList.remove('active'); }, duration); }
 
         function renderShowcase() { const container = document.getElementById('showcase-container'); container.innerHTML = ''; let totalValue = 0; for (let i = 0; i < 3; i++) { let key = showcaseSquad[i]; if (key && collection[key]) { let card = collection[key]; let base = rarityCombatPower[card.rarity] || 0; let aff = affection[card.name] || 1; let mult = aff===10?1.5:(aff>=5?1.2:1); let cardValue = Math.floor(base * mult * 100); totalValue += cardValue; let html = `<div class="acrylic-brick" onclick="openShowcaseSelector(${i})"><div class="acrylic-screw screw-tl"></div><div class="acrylic-screw screw-tr"></div><div class="acrylic-screw screw-bl"></div><div class="acrylic-screw screw-br"></div>${getCardHTML(card, false, false)}<div style="text-align:center; color:var(--gold); font-size:12px; font-weight:bold; margin-top:8px; text-shadow:0 0 5px #000;">估值: ${cardValue.toLocaleString()}</div></div>`; container.innerHTML += html; } else { container.innerHTML += `<div class="showcase-slot-empty" onclick="openShowcaseSelector(${i})"><div style="font-size:36px; margin-bottom:10px;">+</div><div>點擊放入藏品</div></div>`; } } document.getElementById('showcase-total-value').innerText = `總館藏估值：${totalValue.toLocaleString()} 點`; }
-        function openShowcaseSelector(slotIndex) { selectorMode = 'showcase'; selectorSlotIndex = slotIndex; document.getElementById('selector-title').innerText = "🔍 挑選展示卡片"; let html = ""; let keys = Object.keys(collection); if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">無卡片，先去抽卡吧！</div>'; } else { keys.sort((a, b) => { let getVal = (c) => rarityCombatPower[c.rarity]||0; return getVal(collection[b]) - getVal(collection[a]); }); keys.forEach(k => { let card = collection[k]; let isUsed = showcaseSquad.includes(k) || manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k); let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : ""; let attr = getAttribute(card.name); html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div> <div class="attr-badge ${attr.class}" style="position:relative; top:0; right:0; display:inline-block; font-size:9px;">${attr.type}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div>${isUsed?"<div style='color:red; font-size:12px; font-weight:bold; margin-top:5px;'>佔用中</div>":""}</div>`; }); } document.getElementById('selector-list').innerHTML = html; document.getElementById('btn-remove-showcase').style.display = showcaseSquad[slotIndex] ? 'block' : 'none'; document.getElementById('selector-modal').style.display = 'block'; }
-        function removeShowcaseCard() { showcaseSquad[selectorSlotIndex] = null; saveStamina(); renderShowcase(); document.getElementById('selector-modal').style.display = 'none'; }
-        
-        function openCardSelector(slotIndex) { selectorMode = 'battle'; selectorSlotIndex = slotIndex; document.getElementById('selector-title').innerText = "🔍 選擇上陣女孩"; document.getElementById('btn-remove-showcase').style.display = 'none'; let html = ""; let keys = Object.keys(collection); if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">無卡片，先去抽卡吧！</div>'; } else { keys.sort((a, b) => { let getPwr = (c) => rarityCombatPower[c.rarity]||0; return getPwr(collection[b]) - getPwr(collection[a]); }); keys.forEach(k => { let card = collection[k]; let isUsed = manualSquad.includes(k) || showcaseSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k); let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : ""; let finalCardPwr = Math.floor((rarityCombatPower[card.rarity]||0)); let attr = getAttribute(card.name); html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')"><div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div> <div class="attr-badge ${attr.class}" style="position:relative; top:0; right:0; display:inline-block; font-size:9px;">${attr.type}</div><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div><div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}</div>${isUsed?"<div style='color:red; font-size:12px; font-weight:bold;'>佔用中</div>":""}</div>`; }); } document.getElementById('selector-list').innerHTML = html; document.getElementById('selector-modal').style.display = 'block'; }
+       function openShowcaseSelector(slotIndex) { 
+            selectorMode = 'showcase'; 
+            selectorSlotIndex = slotIndex; 
+            document.getElementById('selector-title').innerText = "🔍 挑選展示卡片"; 
+            document.getElementById('btn-remove-showcase').style.display = showcaseSquad[slotIndex] ? 'block' : 'none'; 
+            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
+            updateSelectorList();
+            document.getElementById('selector-modal').style.display = 'block'; 
+        }
+        function openCardSelector(slotIndex) { 
+            selectorMode = 'battle'; 
+            selectorSlotIndex = slotIndex; 
+            document.getElementById('selector-title').innerText = "🔍 選擇上陣女孩"; 
+            document.getElementById('btn-remove-showcase').style.display = 'none'; 
+            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
+            updateSelectorList();
+            document.getElementById('selector-modal').style.display = 'block'; 
+        }
         
         function selectCardForSlot(index, cardKey) { 
             if (selectorMode === 'battle') { if (manualSquad.includes(cardKey)) return; manualSquad[index] = cardKey; localStorage.setItem('cheer_squad_v15', JSON.stringify(manualSquad)); renderBattleModal(); } 
@@ -440,7 +492,7 @@
 
         // 🆕 V15 派遣系統與體力機制
         let dispatchTargetZone = null;
-        function renderDispatch() {
+       function renderDispatch() {
             const container = document.getElementById('dispatch-zones-container');
             container.innerHTML = '';
             dispatchZonesConfig.forEach(zone => {
@@ -472,13 +524,63 @@
                 }
                 container.innerHTML += `
                     <div class="dispatch-zone">
-                        <div style="position:absolute; margin-top:-35px; margin-left:-5px; background:#222; padding:2px 8px; border-radius:4px; font-size:12px; color:var(--gold); border:1px solid #555;">📍 ${zone.name} (基底 ${zone.baseRate}/分)</div>
+                        <div class="dispatch-zone-label">📍 ${zone.name} (基底 ${zone.baseRate}/分)</div>
                         ${contentHtml}
                     </div>
                 `;
             });
         }
-        function openDispatchSelector(zoneId) { dispatchTargetZone = zoneId; selectorMode = 'dispatch'; document.getElementById('selector-title').innerText = "🗺️ 選擇要派遣的女孩"; document.getElementById('btn-remove-showcase').style.display = 'none'; let html = ""; let keys = Object.keys(collection); if (keys.length === 0) { html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1;">無卡片可以派遣！</div>'; } else { keys.forEach(k => { let card = collection[k]; let isUsed = showcaseSquad.includes(k) || manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k); let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : ""; html += `<div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(0, '${k}')"><div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div><div style="font-size:11px; color:#fbc2eb;">${card.type}</div>${isUsed?"<div style='color:red; font-size:12px; font-weight:bold;'>佔用中</div>":""}</div>`; }); } document.getElementById('selector-list').innerHTML = html; document.getElementById('selector-modal').style.display = 'block'; }
+        // 🆕 共用的卡片列表渲染邏輯 (支援篩選器)
+        function updateSelectorList() {
+            let filterType = document.getElementById('selector-filter').value;
+            let html = "";
+            let keys = Object.keys(collection);
+            
+            // 執行篩選
+            if (filterType !== 'all') {
+                keys = keys.filter(k => collection[k].type === filterType);
+            }
+
+            if (keys.length === 0) {
+                html = '<div style="color:#aaa; text-align:center; grid-column: 1 / -1; padding: 30px;">找不到符合條件的卡片！</div>';
+            } else {
+                // 依照戰力(稀有度)排序
+                keys.sort((a, b) => (rarityCombatPower[collection[b].rarity]||0) - (rarityCombatPower[collection[a].rarity]||0));
+                
+                keys.forEach(k => {
+                    let card = collection[k];
+                    let isUsed = showcaseSquad.includes(k) || manualSquad.includes(k) || Object.values(dispatchState).some(d => d && d.cardKey === k);
+                    let opacityStyle = isUsed ? "opacity: 0.3; pointer-events: none;" : "";
+                    
+                    let attr = getAttribute(card.name);
+                    let finalCardPwr = Math.floor(rarityCombatPower[card.rarity] || 0);
+                    
+                    // 根據模式決定是否顯示戰力
+                    let powerHtml = selectorMode === 'battle' ? `<div style="color:#ff4b2b; font-size:14px; font-weight:bold; margin-top:5px;">⚡ ${finalCardPwr}</div>` : '';
+
+                    html += `
+                        <div class="card-list-item" style="${opacityStyle}" onclick="selectCardForSlot(${selectorSlotIndex}, '${k}')">
+                            <div style="font-size:10px; background:${card.teamColor}; color:white; border-radius:4px; padding:2px; display:inline-block;">${card.team}</div> 
+                            <div class="attr-badge ${attr.class}" style="position:relative; top:0; right:0; display:inline-block; font-size:9px;">${attr.type}</div>
+                            <div style="font-weight:bold; color:white; margin:8px 0;">${card.name}</div>
+                            <div style="font-size:11px; color:#fbc2eb;">${card.type}</div>
+                            ${powerHtml}
+                            ${isUsed ? "<div style='color:red; font-size:12px; font-weight:bold; margin-top:5px;'>佔用中</div>" : ""}
+                        </div>`;
+                });
+            }
+            document.getElementById('selector-list').innerHTML = html;
+        }
+      function openDispatchSelector(zoneId) { 
+            dispatchTargetZone = zoneId; 
+            selectorMode = 'dispatch'; 
+            selectorSlotIndex = 0; // 派遣不挑選陣列索引
+            document.getElementById('selector-title').innerText = "🗺️ 選擇要派遣的女孩"; 
+            document.getElementById('btn-remove-showcase').style.display = 'none'; 
+            document.getElementById('selector-filter').value = 'all'; // 重置篩選器
+            updateSelectorList();
+            document.getElementById('selector-modal').style.display = 'block'; 
+        }
         function collectDispatch(zoneId) { let ds = dispatchState[zoneId]; if(!ds) return; let amount = Math.floor(ds.collected); if(amount > 0) { fragments += amount; ds.collected -= amount; saveStamina(); updateStamina(); renderDispatch(); alert(`成功從派遣任務中領取 ${amount} 枚心願碎片！`); } else { alert(`還沒有足夠的碎片可以領取喔！`); } }
         function restoreFatigue(zoneId) { let ds = dispatchState[zoneId]; if(!ds) return; if(fragments >= 20) { fragments -= 20; ds.fatigue = 100; saveStamina(); updateStamina(); renderDispatch(); alert(`消耗 20 碎片購買能量飲料，女孩體力已完全恢復！`); } else { alert(`碎片不足 20 枚，無法購買能量飲料！`); } }
         function recallDispatch(zoneId) { let ds = dispatchState[zoneId]; if(ds && Math.floor(ds.collected) >= 1) { fragments += Math.floor(ds.collected); alert(`召回成功！結算獲得 ${Math.floor(ds.collected)} 枚碎片。`); } dispatchState[zoneId] = null; saveStamina(); updateStamina(); renderDispatch(); }
