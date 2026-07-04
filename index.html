@@ -416,9 +416,11 @@
         function calculateSquadPower() { 
             let finalPower = 0; 
             let cardPowers = new Array(9).fill(0);
+            let finalIndividualPowers = new Array(9).fill(0); // 🆕 用來儲存每張卡的最終戰力
             let cards = manualSquad.map(k => k ? collection[k] : null);
             let activatedLinks = 0;
 
+            // 階段一：計算單卡面板
             for (let i = 0; i < 9; i++) {
                 if (cards[i]) {
                     let base = rarityCombatPower[cards[i].rarity] || 0;
@@ -427,6 +429,7 @@
                 }
             }
 
+            // 階段二與三：計算相鄰連動與環境加成
             for(let i=0; i<9; i++){
                 if(!cards[i]) continue;
                 let power = cardPowers[i];
@@ -440,36 +443,63 @@
                 let localMult = 1.0;
                 neighbors.forEach(n => {
                     if(cards[n]){
-                        if(cards[n].team === cards[i].team) { localMult += 0.15; activatedLinks++; } // 15% 同隊相鄰
-                        if(getAttribute(cards[n].name).type === getAttribute(cards[i].name).type) { localMult += 0.10; activatedLinks++; } // 10% 同屬相鄰
+                        if(cards[n].team === cards[i].team) { localMult += 0.15; activatedLinks++; } 
+                        if(getAttribute(cards[n].name).type === getAttribute(cards[i].name).type) { localMult += 0.10; activatedLinks++; } 
                     }
                 });
                 
                 let fp = Math.floor(power * localMult);
                 if (currentEnvironment.bonusTeam === cards[i].team) fp = Math.floor(fp * 1.2);
                 else if (currentEnvironment.bonusTeam === "All") fp = Math.floor(fp * 1.1);
+                
+                finalIndividualPowers[i] = fp; // 🆕 記錄該格子的最終戰力
                 finalPower += fp;
             }
 
-            let displaySynergy = activatedLinks > 0 ? `<span style='color:var(--gold);'>🧩 觸發 ${activatedLinks} 條局部陣型連線</span>` : "<span style='color:#aaa;'>無相鄰加成連線</span>";
-            return { finalPower, displaySynergy }; 
+            // 🆕 顯示時將雙向計算的連線數除以 2，還原真實視覺連線數
+            let displaySynergy = activatedLinks > 0 ? `<span style='color:var(--gold);'>🧩 觸發 ${activatedLinks / 2} 條局部陣型連線</span>` : "<span style='color:#aaa;'>無相鄰加成連線</span>";
+            
+            // 🆕 多回傳 finalIndividualPowers 供渲染使用
+            return { finalPower, displaySynergy, finalIndividualPowers }; 
         }
 
         function renderBattleModal() { 
-            const powerData = calculateSquadPower(); document.getElementById('battle-total-power').innerText = powerData.finalPower; document.getElementById('battle-synergy-text').innerHTML = `${powerData.displaySynergy}<br><span style="font-size:13px; color:#ff9a9e;">🏟️ 今日環境：${currentEnvironment.name} (${currentEnvironment.desc})</span>`; 
+            const powerData = calculateSquadPower(); 
+            document.getElementById('battle-total-power').innerText = powerData.finalPower; 
+            document.getElementById('battle-synergy-text').innerHTML = `${powerData.displaySynergy}<br><span style="font-size:13px; color:#ff9a9e;">🏟️ 今日環境：${currentEnvironment.name} (${currentEnvironment.desc})</span>`; 
+            
             let squadHtml = ""; 
             for (let i = 0; i < 9; i++) { 
                 let key = manualSquad[i]; 
                 if (key && collection[key]) { 
                     let card = collection[key]; 
                     let attr = getAttribute(card.name); 
-                    squadHtml += `<div class="squad-slot filled" onclick="openCardSelector(${i})"><div class="slot-remove" onclick="removeCardFromSlot(event, ${i})">✖</div><div class="attr-badge ${attr.class}" style="top:-5px; right:auto; left:-5px; font-size:9px;">${attr.type}</div><div style="font-size:10px; color:#aaa; margin-top:10px;">${card.team}</div><div style="font-size:14px; font-weight:bold; color:white; margin:5px 0;">${card.name}</div></div>`; 
+                    let indivPower = powerData.finalIndividualPowers[i]; // 🆕 取得該卡的最終戰力
+                    
+                    squadHtml += `<div class="squad-slot filled" onclick="openCardSelector(${i})">
+                        <div class="slot-remove" onclick="removeCardFromSlot(event, ${i})">✖</div>
+                        <div class="attr-badge ${attr.class}" style="top:-5px; right:auto; left:-5px; font-size:9px;">${attr.type}</div>
+                        <div style="font-size:10px; color:#aaa; margin-top:10px;">${card.team}</div>
+                        <div style="font-size:14px; font-weight:bold; color:white; margin:5px 0;">${card.name}</div>
+                        <div style="color:#ff4b2b; font-size:14px; font-weight:bold;">⚡ ${indivPower}</div>
+                    </div>`; 
                 } else { 
-                    squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})"><div style="font-size:24px; color:#aaa; margin-bottom:5px;">+</div><div style="font-size:10px; color:#fbc2eb;">點擊選擇</div></div>`; 
+                    squadHtml += `<div class="squad-slot" onclick="openCardSelector(${i})">
+                        <div style="font-size:24px; color:#aaa; margin-bottom:5px;">+</div>
+                        <div style="font-size:10px; color:#fbc2eb;">點擊選擇</div>
+                    </div>`; 
                 } 
             } 
             document.getElementById('battle-squad').innerHTML = squadHtml; 
-            let stagesHtml = ""; let currentStages = getBattleStages(); currentStages.forEach(stage => { let isCleared = battleRecord.cleared.includes(stage.id); let btnHtml = isCleared ? `<button class="btn-challenge" disabled style="background:#555;">已通關</button>` : `<button class="btn-challenge" onclick="startBattle(${stage.id}, ${stage.req})">消耗⚡1 挑戰</button>`; stagesHtml += `<div class="battle-stage ${isCleared ? 'completed' : ''}"><div class="stage-info"><div class="stage-name">${stage.name}</div><div class="stage-req">要求戰力：${stage.req}</div><div class="stage-reward">🎁 獎勵：${stage.rewardText}</div></div>${btnHtml}</div>`; }); document.getElementById('battle-stages-container').innerHTML = stagesHtml; 
+            
+            let stagesHtml = ""; 
+            let currentStages = getBattleStages(); 
+            currentStages.forEach(stage => { 
+                let isCleared = battleRecord.cleared.includes(stage.id); 
+                let btnHtml = isCleared ? `<button class="btn-challenge" disabled style="background:#555;">已通關</button>` : `<button class="btn-challenge" onclick="startBattle(${stage.id}, ${stage.req})">消耗⚡1 挑戰</button>`; 
+                stagesHtml += `<div class="battle-stage ${isCleared ? 'completed' : ''}"><div class="stage-info"><div class="stage-name">${stage.name}</div><div class="stage-req">要求戰力：${stage.req}</div><div class="stage-reward">🎁 獎勵：${stage.rewardText}</div></div>${btnHtml}</div>`; 
+            }); 
+            document.getElementById('battle-stages-container').innerHTML = stagesHtml; 
         }
         function removeCardFromSlot(event, index) { event.stopPropagation(); manualSquad[index] = null; localStorage.setItem('cheer_squad_v15', JSON.stringify(manualSquad)); renderBattleModal(); }
         function resetBattleProgress() { if (tickets < 5) return alert("🎫 抽卡券不足 5 張！無法重置賽程。"); if (confirm("確定要消耗 5 張抽卡券，將挑戰賽進度與難度重置嗎？")) { tickets -= 5; battleRound = 1; battleRecord.cleared = []; localStorage.setItem('cheer_b_round_v15', battleRound); localStorage.setItem('cheer_battles_v15', JSON.stringify(battleRecord)); saveStamina(); updateStamina(); renderBattleModal(); } }
