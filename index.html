@@ -195,7 +195,9 @@
 </div>
 </div>
     <div id="log-modal" class="modal"><button class="close-btn" onclick="toggleModal('log-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">🏆 極稀有大獎紀錄</h2><div style="text-align:center; color:#ccc; margin-bottom:15px; font-size:16px;">生涯累計抽卡數：<span id="total-pulls-display" style="color:var(--pink); font-weight:bold; font-size:20px;">0</span> 抽</div><div id="log-list" style="max-height: 60vh; overflow-y:auto; padding-right:5px;"></div></div></div>
-    <div id="battle-modal" class="modal"><button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 850px;"><h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 每日應援挑戰賽</h2><div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;"><div style="font-size:16px; color:white;">當前天團 總應援戰力</div><div id="battle-total-power" class="power-text">0</div><div id="battle-synergy-text" class="synergy-text">散裝應援團 (無加成)</div><div id="battle-squad" class="squad-container"></div></div><div id="battle-log-panel" class="battle-log-panel"><h3 style="color:var(--pink); margin-top:0; text-align:center;">🎬 應援實況轉播</h3><div id="battle-log-content"></div><button id="btn-finish-battle" class="btn-battle" style="display:none; width:100%; margin-top:15px;" onclick="resetBattleView()">確認戰果</button></div><div id="battle-stages-container"></div></div></div>
+    <div id="battle-modal" class="modal"><button class="close-btn" onclick="toggleModal('battle-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 850px;"><h2 style="color: #ff4b2b; text-align:center; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);">⚔️ 每日應援挑戰賽</h2><div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #704762;"><div style="font-size:16px; color:white;">當前天團 總應援戰力</div><div id="battle-total-power" class="power-text">0</div><div id="battle-synergy-text" class="synergy-text">散裝應援團 (無加成)</div><div id="battle-squad" class="squad-container"></div></div><div id="battle-log-panel" class="battle-log-panel"><h3 style="color:var(--pink); margin-top:0; text-align:center;">🎬 應援實況轉播</h3><div id="battle-log-content"></div><button id="btn-finish-battle" class="btn-battle" style="display:none; width:100%; margin-top:15px;" onclick="resetBattleView()">確認戰果</button></div><div id="battle-stages-container"></div><div style="text-align: right; margin-top: 15px;">
+                <button class="btn-box" style="font-size: 13px; padding: 6px 15px; background: linear-gradient(45deg, #7f8c8d, #bdc3c7); color: #222;" onclick="resetBattleProgress()">🔄 消耗 5 券重置賽程</button>
+            </div></div></div>
     <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
     <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
 
@@ -205,7 +207,7 @@
         const allGirlsFlat = []; for (let t in db) { db[t].members.forEach(m => allGirlsFlat.push({team: t, name: m, color: db[t].color})); }
         function getAttribute(name) { const attrs = [ {type: '活力', color: 'var(--attr-v)', class: 'attr-vitality'}, {type: '甜美', color: 'var(--attr-s)', class: 'attr-sweet'}, {type: '酷炫', color: 'var(--attr-c)', class: 'attr-cool'} ]; let hash = 0; for(let i=0; i<name.length; i++) hash += name.charCodeAt(i); return attrs[hash % 3]; }
         const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" }; const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 }; const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 }; const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25, "1/1 寶石簽名卡": 1 };
-        let battleRound = parseInt(localStorage.getItem('cheer_b_round_v14')) || 1; function getBattleStages() { let mult = 1 + ((battleRound - 1) * 0.2); return [ { id: 1, name: "街頭應援快閃", req: Math.floor(300 * mult), rewardText: "+2 券", rewardType: "tickets", rewardVal: 2 }, { id: 2, name: "主場例行賽", req: Math.floor(1500 * mult), rewardText: "+50 碎片", rewardType: "fragments", rewardVal: 50 }, { id: 3, name: "明星賽大巨蛋", req: Math.floor(5000 * mult), rewardText: "+3 券 & 100 碎片", rewardType: "both", rewardValT: 3, rewardValF: 100 }, { id: 4, name: "台灣大賽G7", req: Math.floor(15000 * mult), rewardText: "+10 券 & 500 碎片", rewardType: "both", rewardValT: 10, rewardValF: 500 } ]; }
+        let battleRound = parseInt(localStorage.getItem('cheer_b_round_v14')) || 1; function getBattleStages() { let mult = 1 + ((battleRound - 1) * 0.1); return [ { id: 1, name: "街頭應援快閃", req: Math.floor(300 * mult), rewardText: "+2 券", rewardType: "tickets", rewardVal: 2 }, { id: 2, name: "主場例行賽", req: Math.floor(1500 * mult), rewardText: "+50 碎片", rewardType: "fragments", rewardVal: 50 }, { id: 3, name: "明星賽大巨蛋", req: Math.floor(5000 * mult), rewardText: "+3 券 & 100 碎片", rewardType: "both", rewardValT: 3, rewardValF: 100 }, { id: 4, name: "台灣大賽G7", req: Math.floor(15000 * mult), rewardText: "+10 券 & 500 碎片", rewardType: "both", rewardValT: 10, rewardValF: 500 } ]; }
         const stadiumEnvironments = [ { name: "☀️ 臺南球場", bonusTeam: "Uni Girls", desc: "統一獅戰力 +20%" }, { name: "⛈️ 洲際球場", bonusTeam: "Passion Sisters", desc: "中信兄弟戰力 +20%" }, { name: "🏟️ 大巨蛋", bonusTeam: "All", desc: "全員戰力 +10%" }, { name: "🦅 澄清湖", bonusTeam: "Wing Stars", desc: "台鋼戰力 +20%" }, { name: "⚾ 桃園球場", bonusTeam: "Rakuten Girls", desc: "樂天戰力 +20%" }, { name: "🐉 天母球場", bonusTeam: "Dragons Beauties", desc: "味全龍戰力 +20%" }, { name: "☀️ 新莊城堡", bonusTeam: "Fubon Angels", desc: "富邦悍將戰力 +20%" }, ]; let currentEnvironment = stadiumEnvironments[0];
 
         // 存檔區
@@ -221,6 +223,27 @@
         let showcaseSquad = JSON.parse(localStorage.getItem('cheer_showcase_v14')) || [null, null, null];
         let selectorMode = 'battle'; // 'battle' or 'showcase'
 
+        // 🔄 重置挑戰賽進度
+        function resetBattleProgress() {
+            if (tickets < 5) {
+                alert("🎫 抽卡券不足 5 張！無法重置賽程。");
+                return;
+            }
+            if (confirm("確定要消耗 5 張抽卡券，將挑戰賽進度與難度重置回『第 1 輪』嗎？\n(適合卡關時重新刷碎片！)")) {
+                tickets -= 5;
+                battleRound = 1;
+                battleRecord.cleared = [];
+                
+                // 儲存進度並刷新畫面
+                localStorage.setItem('cheer_b_round_v14', battleRound);
+                localStorage.setItem('cheer_battles_v14', JSON.stringify(battleRecord));
+                saveStamina();
+                updateStamina();
+                renderBattleModal();
+                
+                alert("🔄 賽程已成功重置！女孩們準備好從頭開始應援了！");
+            }
+        }
         function updateStamina() {
             if (isGameOver) return; const now = Date.now();
             if (tickets < MAX_TICKETS) { let diff = now - lastUpdateTime; let added = Math.floor(diff / REGEN_MS); if (added > 0) { tickets = Math.min(MAX_TICKETS, tickets + added); lastUpdateTime += added * REGEN_MS; saveStamina(); } } else { lastUpdateTime = now; }
