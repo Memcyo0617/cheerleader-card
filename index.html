@@ -207,7 +207,7 @@
     </div>
 
     <!-- 拍賣會 -->
-    <div id="auction-modal" class="modal"><button class="close-btn" onclick="closeAuction()">✖ 離開拍賣</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">⚖️ 黑市限時拍賣</h2><div class="auction-panel"><div style="color:#aaa; font-size:14px; margin-bottom:10px;">本次競標拍品：</div><div id="auction-card-display" style="transform: scale(0.8); margin: -30px 0;"></div><div id="auction-timer-display" class="auction-timer">等待開拍...</div><div style="color:white; font-size:16px;">當前最高出價 (碎片)：</div><div id="auction-price-display" class="auction-current-bid">0</div><div id="auction-log-display" class="auction-log"></div><div style="display:flex; justify-content:center; gap:10px;"><button id="btn-bid-50" class="btn-team" onclick="placeBid(50)" disabled>加價 50</button><button id="btn-bid-200" class="btn-pu" onclick="placeBid(200)" disabled>加價 200</button></div><div style="margin-top:10px; color:#00f2fe; font-size:14px;">你的碎片：<span id="auction-my-fragments">0</span></div></div></div></div>
+    <div id="auction-modal" class="modal"><button class="close-btn" onclick="closeAuction()">✖ 離開拍賣</button><div class="modal-content" style="max-width: 600px;"><h2 style="color: var(--gold); text-align:center;">⚖️ 黑市限時拍賣</h2><div class="auction-panel"><div style="color:#aaa; font-size:14px; margin-bottom:10px;">本次競標拍品：</div><div id="auction-card-display" style="transform: scale(0.8); height: 350px; margin: 10px auto; display: flex; justify-content: center; align-items: center;"></div></div><div id="auction-timer-display" class="auction-timer">等待開拍...</div><div style="color:white; font-size:16px;">當前最高出價 (碎片)：</div><div id="auction-price-display" class="auction-current-bid">0</div><div id="auction-log-display" class="auction-log"></div><div style="display:flex; justify-content:center; gap:10px;"><button id="btn-bid-50" class="btn-team" onclick="placeBid(50)" disabled>加價 50</button><button id="btn-bid-200" class="btn-pu" onclick="placeBid(200)" disabled>加價 200</button></div><div style="margin-top:10px; color:#00f2fe; font-size:14px;">你的碎片：<span id="auction-my-fragments">0</span></div></div></div></div>
     
     <!-- 突發狀況 -->
     <div id="event-modal" class="modal" style="z-index: 300;"><div class="modal-content"><div class="event-title">🚨 突發狀況！</div><div id="event-desc" class="event-desc">...</div><button id="btn-event-a" class="event-btn" onclick="resolveEvent(0)">選項 A</button><button id="btn-event-b" class="event-btn" onclick="resolveEvent(1)">選項 B</button></div></div>
@@ -790,11 +790,45 @@
         // 拍賣會
         let auctionItem = null; let currentBid = 0; let auctionTimer = null; let timeRemain = 0;
         function initAuction() { 
-            if (auctionTimer) clearInterval(auctionTimer); document.getElementById('auction-my-fragments').innerText = fragments; cardQueue = []; 
-            const sp = rollSpecialSlot(true); generateCard(sp.type, sp.rarity, sp.desc); auctionItem = cardQueue.pop(); auctionItem.originalType = auctionItem.type; 
-            if (!['relic', 'legendary', 'mythic'].includes(auctionItem.rarity) && !auctionItem.rarity.startsWith('limited')) { auctionItem.type = "專屬簽名卡"; auctionItem.rarity = "legendary"; auctionItem.serialNum = null; auctionItem.desc = "✍親筆"; } 
-            document.getElementById('auction-card-display').innerHTML = getCardHTML(auctionItem, true, false); currentBid = 500; timeRemain = 25; updateAuctionUI(); 
-            auctionTimer = setInterval(() => { timeRemain--; if (timeRemain <= 0) { endAuction(); } else { if (Math.random() < 0.3) { currentBid += Math.random() > 0.8 ? 100 : 50; logAuction(`NPC 神秘富豪 出價 ${currentBid} 碎片`); updateAuctionUI(); } document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; } }, 1000); 
+            if (auctionTimer) clearInterval(auctionTimer); 
+            document.getElementById('auction-my-fragments').innerText = fragments; 
+            cardQueue = []; 
+            
+            const sp = rollSpecialSlot(true); 
+            generateCard(sp.type, sp.rarity, sp.desc); 
+            auctionItem = cardQueue.pop(); 
+            auctionItem.originalType = auctionItem.type; 
+            
+            if (!['relic', 'legendary', 'mythic'].includes(auctionItem.rarity) && !auctionItem.rarity.startsWith('limited')) { 
+                auctionItem.type = "專屬簽名卡"; auctionItem.rarity = "legendary"; auctionItem.serialNum = null; auctionItem.desc = "✍親筆"; 
+            } 
+            
+            // 🆕 先把卡片 HTML 塞進去，並強迫移除卡片的 locked 狀態
+            const displayDiv = document.getElementById('auction-card-display');
+            displayDiv.innerHTML = getCardHTML(auctionItem, false, false); 
+            
+            // 🆕 強制讓拍賣會的卡片直接是翻開（flipped）的狀態，讓玩家一眼看清是誰
+            setTimeout(() => {
+                const innerCard = displayDiv.querySelector('.card-inner');
+                if(innerCard) innerCard.classList.add('flipped');
+            }, 100);
+
+            currentBid = 500; 
+            timeRemain = 25; 
+            updateAuctionUI(); 
+            
+            auctionTimer = setInterval(() => { 
+                timeRemain--; 
+                if (timeRemain <= 0) { endAuction(); } 
+                else { 
+                    if (Math.random() < 0.3) { 
+                        currentBid += Math.random() > 0.8 ? 100 : 50; 
+                        logAuction(`NPC 神秘富豪 出價 ${currentBid} 碎片`); 
+                        updateAuctionUI(); 
+                    } 
+                    document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; 
+                } 
+            }, 1000); 
         }
         function placeBid(amount) { let newBid = currentBid + amount; if (fragments < newBid) return alert("碎片不足以支付本次競標！"); currentBid = newBid; logAuction(`你 出價 ${currentBid} 碎片！`); updateAuctionUI(); }
         function updateAuctionUI() { document.getElementById('auction-price-display').innerText = currentBid; document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; document.getElementById('btn-bid-50').disabled = (fragments < currentBid + 50); document.getElementById('btn-bid-200').disabled = (fragments < currentBid + 200); }
