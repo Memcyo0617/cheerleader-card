@@ -794,33 +794,34 @@
             document.getElementById('auction-my-fragments').innerText = fragments; 
             cardQueue = []; 
             
-            const sp = rollSpecialSlot(true); 
+            // 🛠️ V16.1 拍賣會專屬機率池 (獨立於一般抽卡，移除舊版強制升級簽名卡的Bug)
+            const rng = Math.random();
+            let sp = {};
+            if (rng < 0.015) { sp = { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; } // 1.5% 寶石卡
+            else if (rng < 0.050) { sp = { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; } // 3.5% 紅閃
+            else if (rng < 0.120) { sp = { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; } // 7.0% 金閃
+            else if (rng < 0.250) { sp = { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; } // 13.0% 銀閃
+            else if (rng < 0.600) { sp = { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; } // 35.0% 衣物卡重返黑市
+            else { sp = { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; } // 40.0% 簽名卡
+            
             generateCard(sp.type, sp.rarity, sp.desc); 
             auctionItem = cardQueue.pop(); 
             auctionItem.originalType = auctionItem.type; 
             
-            if (!['relic', 'legendary', 'mythic'].includes(auctionItem.rarity) && !auctionItem.rarity.startsWith('limited')) { 
-                auctionItem.type = "專屬簽名卡"; auctionItem.rarity = "legendary"; auctionItem.serialNum = null; auctionItem.desc = "✍親筆"; 
-            } 
-            
-            // 🆕 檢查玩家的 collection 存檔中，有沒有這張卡的 Key
+            // 🆕 檢查玩家存檔持有狀態
             const auctionKey = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`;
             const hasCard = collection[auctionKey] && collection[auctionKey].count > 0;
             let ownershipHtml = "";
             
             if (hasCard) {
-                // 如果已經有了，顯示綠色標籤和目前持有的張數
                 ownershipHtml = `<div style="background: #2ecc71; color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 10px; display: inline-block; border: 1px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">✨ 已解鎖 (持有數: x${collection[auctionKey].count})</div>`;
             } else {
-                // 如果是新卡，顯示亮眼的金色新卡標籤
                 ownershipHtml = `<div style="background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 10px; display: inline-block; border: 1px solid var(--gold); box-shadow: 0 0 10px var(--gold); animation: pulse 1s infinite;">🆕 未持有 (新收藏！)</div>`;
             }
 
-            // 🆕 先把標籤與卡片 HTML 塞進去
             const displayDiv = document.getElementById('auction-card-display');
             displayDiv.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center;">${ownershipHtml}${getCardHTML(auctionItem, false, false)}</div>`; 
             
-            // 讓卡片自動翻轉
             setTimeout(() => {
                 const innerCard = displayDiv.querySelector('.card-inner');
                 if(innerCard) innerCard.classList.add('flipped');
