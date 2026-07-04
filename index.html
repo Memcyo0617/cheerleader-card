@@ -528,40 +528,77 @@
         }
 
         async function startEndlessBattle() { 
-            let emptyCount = manualSquad.filter(k => k === null).length; if (emptyCount === 9) return alert("請至少上陣 1 位女孩！"); 
-            if (battleEnergy < 1) return alert("⚡ 應援力不足！請等待回復。"); 
+            // 確保陣列不為空
+            let squad = manualSquad.filter(k => k !== null);
+            if (squad.length === 0) return alert("請至少上陣 1 位女孩！"); 
+            if (battleEnergy < 1) return alert("⚡ 應援力不足！"); 
             
-            battleEnergy -= 1; saveStamina(); updateStamina(); 
+            battleEnergy -= 1; 
+            saveStamina(); 
+            updateStamina(); 
+            
             document.getElementById('battle-stages-container').style.display = 'none'; 
             const logPanel = document.getElementById('battle-log-panel'); 
             const logContent = document.getElementById('battle-log-content'); 
             const btnFinish = document.getElementById('btn-finish-battle'); 
             
-            logPanel.style.display = 'block'; logContent.innerHTML = ''; btnFinish.style.display = 'none'; 
-            
-            const reqPower = getEndlessReq();
-            const currentPower = calculateSquadPower().finalPower; 
-            
-            const logs = [ `📢 【無盡巡迴】迎戰第 ${endlessFloor} 站！`, `🔥 陣型展開！觸發 ${endlessBuffs.length} 項永久 Buff...`, `⚔️ 總戰力 ${currentPower} VS 目標 ${reqPower}...` ]; 
-            for(let text of logs) { let p = document.createElement('div'); p.className = 'log-line'; p.innerHTML = text; logContent.appendChild(p); await delay(800); } 
-            
-            if (currentPower >= reqPower) { 
-                let winMsg = document.createElement('div'); winMsg.className = 'log-win'; winMsg.innerText = "🎉 突破成功！準備挑選戰利品！"; logContent.appendChild(winMsg); 
-                await delay(1000);
-                showBuffSelection();
-            } else { 
-                let lossMsg = document.createElement('div'); lossMsg.className = 'log-loss'; lossMsg.innerText = "❌ 戰力不足，巡迴終止..."; logContent.appendChild(lossMsg);
-                let rewardFrag = endlessFloor * 80;
-                let endMsg = document.createElement('div'); endMsg.style = "color:#aaa; text-align:center; margin-top:10px; font-weight:bold;"; endMsg.innerText = `🏁 結算獎勵：獲得 ${rewardFrag} 碎片。巡迴進度與 Buff 已重置。`; logContent.appendChild(endMsg);
+            logPanel.style.display = 'block'; 
+            logContent.innerHTML = ''; 
+            btnFinish.style.display = 'none'; 
+
+            try {
+                const reqPower = getEndlessReq();
+                const powerData = calculateSquadPower();
+                const currentPower = powerData.finalPower; 
                 
-                fragments += rewardFrag;
-                endlessFloor = 1; endlessBuffs = [];
-                localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
-                localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
-                saveStamina(); updateStamina(); 
+                const logs = [ 
+                    `📢 【無盡巡迴】迎戰第 ${endlessFloor} 站！`, 
+                    `🔥 陣型展開！觸發 ${endlessBuffs.length} 項永久 Buff...`, 
+                    `⚔️ 總戰力 ${currentPower} VS 目標 ${reqPower}...` 
+                ]; 
+
+                for(let text of logs) { 
+                    let p = document.createElement('div'); 
+                    p.className = 'log-line'; 
+                    p.innerHTML = text; 
+                    logContent.appendChild(p); 
+                    await new Promise(r => setTimeout(r, 800)); // 使用原生的 Promise 等待
+                } 
+
+                if (currentPower >= reqPower) { 
+                    let winMsg = document.createElement('div'); 
+                    winMsg.className = 'log-win'; 
+                    winMsg.innerText = "🎉 突破成功！準備挑選戰利品！"; 
+                    logContent.appendChild(winMsg); 
+                    await new Promise(r => setTimeout(r, 1000));
+                    showBuffSelection();
+                } else { 
+                    let lossMsg = document.createElement('div'); 
+                    lossMsg.className = 'log-loss'; 
+                    lossMsg.innerText = "❌ 戰力不足，巡迴終止..."; 
+                    logContent.appendChild(lossMsg);
+                    
+                    let rewardFrag = endlessFloor * 80;
+                    let endMsg = document.createElement('div'); 
+                    endMsg.style = "color:#aaa; text-align:center; margin-top:10px; font-weight:bold;"; 
+                    endMsg.innerText = `🏁 結算獎勵：獲得 ${rewardFrag} 碎片。巡迴進度重置。`; 
+                    logContent.appendChild(endMsg);
+                    
+                    fragments += rewardFrag;
+                    endlessFloor = 1; 
+                    endlessBuffs = [];
+                    localStorage.setItem('cheer_endless_floor_v16', endlessFloor);
+                    localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs));
+                    saveStamina(); 
+                    updateStamina(); 
+                    btnFinish.style.display = 'block';
+                } 
+                checkRandomEvent(); 
+            } catch (err) {
+                console.error("戰鬥錯誤:", err);
+                logContent.innerHTML += `<div style="color:red;">系統錯誤，請重啟挑戰。</div>`;
                 btnFinish.style.display = 'block';
-            } 
-            checkRandomEvent(); 
+            }
         }
 
         function showBuffSelection() {
