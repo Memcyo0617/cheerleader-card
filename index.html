@@ -608,8 +608,107 @@
 
         // 🚶‍♀️ 休息室 2D (僅保留視覺功能)
         let loungeGirls = []; let loungeAnimFrame = null;
-        function renderLounge() { const area = document.getElementById('lounge-area'); area.innerHTML = ''; if (loungeAnimFrame) cancelAnimationFrame(loungeAnimFrame); loungeGirls = []; let maxAffGirls = Object.keys(affection).filter(g => affection[g] >= 10); if (maxAffGirls.length === 0) { area.innerHTML = '<div style="color:#aaa; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">尚未有女孩好感度達到 MAX (Lv.10)。</div>'; return; } const areaWidth = area.clientWidth || 760; const areaHeight = area.clientHeight || 400; maxAffGirls.forEach((name, index) => { let el = document.createElement('div'); el.className = 'lounge-char'; el.id = `lounge-char-${index}`; el.innerHTML = `<img src="images/${name}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div class="lounge-fallback" style="display:none;">🌸</div><div class="lounge-name">${name}</div><div class="lounge-bubble" id="lounge-bubble-${index}"></div>`; let x = Math.random() * (areaWidth - 80) + 10; let y = Math.random() * (areaHeight - 80) + 10; let vx = (Math.random() - 0.5) * 1.5; let vy = (Math.random() - 0.5) * 1.5; el.style.left = x + 'px'; el.style.top = y + 'px'; el.onclick = () => showLoungeBubble(index); area.appendChild(el); loungeGirls.push({ name, el, x, y, vx, vy, pausedUntil: 0, bubbleEl: document.getElementById(`lounge-bubble-${index}`) }); }); requestAnimationFrame(updateLounge); }
-        function updateLounge() { const area = document.getElementById('lounge-area'); if (!area || area.offsetWidth === 0) { loungeAnimFrame = null; return; } const w = area.offsetWidth; const h = area.offsetHeight; const now = Date.now(); loungeGirls.forEach(g => { if (now < g.pausedUntil) return; g.x += g.vx; g.y += g.vy; if (g.x <= 0) { g.x = 0; g.vx *= -1; } if (g.x >= w - 60) { g.x = w - 60; g.vx *= -1; } if (g.y <= 0) { g.y = 0; g.vy *= -1; } if (g.y >= h - 60) { g.y = h - 60; g.vy *= -1; } g.el.style.left = g.x + 'px'; g.el.style.top = g.y + 'px'; }); for (let i = 0; i < loungeGirls.length; i++) { for (let j = i + 1; j < loungeGirls.length; j++) { let g1 = loungeGirls[i]; let g2 = loungeGirls[j]; if (now < g1.pausedUntil || now < g2.pausedUntil) continue; let dist = Math.sqrt(Math.pow(g1.x - g2.x, 2) + Math.pow(g1.y - g2.y, 2)); if (dist < 60) { g1.pausedUntil = now + 3000; g2.pausedUntil = now + 3000; g1.vx *= -1; g1.vy *= -1; g2.vx *= -1; g2.vy *= -1; showLoungeBubble(i, "💬"); showLoungeBubble(j, "❤️"); } } } loungeAnimFrame = requestAnimationFrame(updateLounge); }
+        const LOUNGE_MAX_CAPACITY = 8; // 設定休息室最大同屏人數
+       function renderLounge() { 
+            const area = document.getElementById('lounge-area'); 
+            area.innerHTML = ''; 
+            if (loungeAnimFrame) cancelAnimationFrame(loungeAnimFrame); 
+            loungeGirls = []; 
+            
+            let maxAffGirls = Object.keys(affection).filter(g => affection[g] >= 10); 
+            if (maxAffGirls.length === 0) { 
+                area.innerHTML = '<div style="color:#aaa; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">尚未有女孩好感度達到 MAX (Lv.10)。</div>'; 
+                return; 
+            } 
+            
+            // 🆕 隨機洗牌並限制出場人數
+            shuffle(maxAffGirls);
+            let displayGirls = maxAffGirls.slice(0, LOUNGE_MAX_CAPACITY);
+
+            const areaWidth = area.clientWidth || 760; 
+            const areaHeight = area.clientHeight || 400; 
+            
+            displayGirls.forEach((name, index) => { 
+                let el = document.createElement('div'); 
+                el.className = 'lounge-char'; 
+                el.id = `lounge-char-${index}`; 
+                el.innerHTML = `<img src="images/${name}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div class="lounge-fallback" style="display:none;">🌸</div><div class="lounge-name">${name}</div><div class="lounge-bubble" id="lounge-bubble-${index}"></div>`; 
+                
+                // 盡量讓初始位置分散
+                let x = Math.random() * (areaWidth - 100) + 20; 
+                let y = Math.random() * (areaHeight - 100) + 20; 
+                let vx = (Math.random() - 0.5) * 1.5; 
+                let vy = (Math.random() - 0.5) * 1.5; 
+                
+                el.style.left = x + 'px'; el.style.top = y + 'px'; 
+                el.onclick = () => showLoungeBubble(index); 
+                area.appendChild(el); 
+                loungeGirls.push({ name, el, x, y, vx, vy, pausedUntil: 0, bubbleEl: document.getElementById(`lounge-bubble-${index}`) }); 
+            }); 
+            requestAnimationFrame(updateLounge); 
+        }
+        function updateLounge() { 
+            const area = document.getElementById('lounge-area'); 
+            if (!area || area.offsetWidth === 0) { loungeAnimFrame = null; return; } 
+            const w = area.offsetWidth; 
+            const h = area.offsetHeight; 
+            const now = Date.now(); 
+            
+            // 計算畫面上活躍的泡泡數量
+            let activeBubbles = document.querySelectorAll('.lounge-bubble.show').length;
+
+            loungeGirls.forEach(g => { 
+                if (now < g.pausedUntil) return; 
+                g.x += g.vx; g.y += g.vy; 
+                
+                // 邊界反彈
+                if (g.x <= 0) { g.x = 0; g.vx *= -1; } 
+                if (g.x >= w - 60) { g.x = w - 60; g.vx *= -1; } 
+                if (g.y <= 0) { g.y = 0; g.vy *= -1; } 
+                if (g.y >= h - 60) { g.y = h - 60; g.vy *= -1; } 
+                
+                g.el.style.left = g.x + 'px'; 
+                g.el.style.top = g.y + 'px'; 
+            }); 
+
+            // 碰撞與排斥處理
+            for (let i = 0; i < loungeGirls.length; i++) { 
+                for (let j = i + 1; j < loungeGirls.length; j++) { 
+                    let g1 = loungeGirls[i]; 
+                    let g2 = loungeGirls[j]; 
+                    if (now < g1.pausedUntil || now < g2.pausedUntil) continue; 
+                    
+                    let dx = g1.x - g2.x;
+                    let dy = g1.y - g2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy); 
+                    
+                    if (dist < 60) { 
+                        // 🆕 加入排斥力 (Soft Push Resolution)，防止黏死
+                        let overlap = 60 - dist;
+                        let nx = dx / dist; // 標準化法向量 X
+                        let ny = dy / dist; // 標準化法向量 Y
+                        
+                        g1.x += nx * (overlap / 2);
+                        g1.y += ny * (overlap / 2);
+                        g2.x -= nx * (overlap / 2);
+                        g2.y -= ny * (overlap / 2);
+
+                        // 反轉速度與增加暫停
+                        g1.pausedUntil = now + 2000; 
+                        g2.pausedUntil = now + 2000; 
+                        g1.vx *= -1; g1.vy *= -1; 
+                        g2.vx *= -1; g2.vy *= -1; 
+                        
+                        // 🆕 限制泡泡生成機率，如果畫面上已經太吵了就不顯示
+                        if (activeBubbles < 3 && Math.random() < 0.5) {
+                            showLoungeBubble(i, "💬"); 
+                            showLoungeBubble(j, "❤️"); 
+                        }
+                    } 
+                } 
+            } 
+            loungeAnimFrame = requestAnimationFrame(updateLounge); 
+        }
         function showLoungeBubble(index, customText = null) { let g = loungeGirls[index]; if(!g) return; let text = customText || dialogTree.lv10[Math.floor(Math.random() * dialogTree.lv10.length)]; g.bubbleEl.innerText = text; g.bubbleEl.classList.add('show'); g.pausedUntil = Date.now() + 2500; setTimeout(() => { if(g.bubbleEl) g.bubbleEl.classList.remove('show'); }, 2500); }
 
         // 🆕 V15 修正 1/1 黑洞的回溯機制
