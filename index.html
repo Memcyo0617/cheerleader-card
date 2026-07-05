@@ -636,9 +636,12 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
         function getCardHTML(card, isSmall = false, isAlbum = false) {
             let aff = affection[card.name] || 1;
             let affText = aff === 10 ? "MAX" : `Lv.${aff}`;
-            let smallClass = isSmall ? "small" : "";
-            let albumClass = isAlbum ? "album" : "";
             
+            // 處理 UI 縮放 (確保卡冊或右下角小圖不會巨大化破版)
+            let scaleStyle = "";
+            if (isSmall) scaleStyle = "transform: scale(0.8); transform-origin: top center;";
+            if (isAlbum) scaleStyle = "transform: scale(0.65); transform-origin: top center; margin-bottom: -100px;";
+
             // 🆕 V16.3 根據不同的神話/限量分支，給予最酷炫的背景與邊框特效
             let bgStyle = "";
             let borderColor = card.teamColor || "var(--pink)";
@@ -648,45 +651,53 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
             if (card.type === "無瑕的 1/1 胚卡") {
                 bgStyle = "background: radial-gradient(circle, #2c3e50 0%, #000000 100%);";
                 borderColor = "#00f2fe";
-                effectOverlay = "<div class='card-glare' style='background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, transparent 100%);'></div>";
+                effectOverlay = "<div style='background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, transparent 100%); position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none;'></div>";
             } else if (card.type === "專屬親筆簽名 1/1") {
                 bgStyle = "background: linear-gradient(135deg, #111 0%, #333 100%);";
                 borderColor = "var(--gold)";
-                effectOverlay = "<div class='card-glare' style='animation: pulse 2s infinite;'></div>";
+                effectOverlay = "<div style='animation: pulse 2s infinite; position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none;'></div>";
             } else if (card.type === "浪漫唇印簽名 1/1") {
                 bgStyle = "background: linear-gradient(135deg, #2c001e 0%, #000000 100%);";
                 borderColor = "#ff007f";
-                effectOverlay = "<div class='card-glare' style='background: rgba(255,0,127,0.1);'></div>";
+                effectOverlay = "<div style='background: rgba(255,0,127,0.1); position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none;'></div>";
             } else if (card.type === "實戰衣物切片 1/1") {
                 bgStyle = "background: radial-gradient(circle, #4a00e0 0%, #8e2de2 100%);";
                 borderColor = "#00ffcc";
-                effectOverlay = "<div class='card-glare' style='box-shadow: inset 0 0 20px #00ffcc;'></div>";
+                effectOverlay = "<div style='box-shadow: inset 0 0 20px #00ffcc; position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none;'></div>";
             } else {
                 // 原本中低階卡的預設背景邏輯
                 bgStyle = `background: linear-gradient(135deg, #111 0%, ${borderColor}22 100%);`;
             }
 
-            // 處理限量編號顯示
-            let serialHtml = card.serialNum ? `<div class="card-serial">${card.serialNum}</div>` : "";
-            let ribbonHtml = ribbonText ? `<div class="card-ribbon">${ribbonText}</div>` : "";
+            // 處理限量編號顯示與特殊徽章
+            let serialHtml = card.serialNum ? `<div class="serial-badge">${card.serialNum}</div>` : "";
+            let ribbonHtml = ribbonText ? `<div class="mythic-badge">${ribbonText}</div>` : "";
+            let relicHtml = card.rarity === 'relic' || card.type.includes("衣物") ? `<div class="relic-patch">衣物</div>` : "";
+            let signHtml = card.rarity === 'legendary' || card.type.includes("簽名") ? `<div class="signature-overlay">${card.name}</div>` : "";
 
+            // 核心修正：加回 .card-back 與 .card-front 的 3D 結構！
             return `
-                <div class="card ${smallClass} ${albumClass}" style="${bgStyle} border-color: ${borderColor};" onclick="viewCardInViewer(${JSON.stringify(card).replace(/"/g, '&quot;')})">
-                    ${effectOverlay}
+                <div class="card-container-3d" style="${scaleStyle}" onclick="viewCardInViewer(${JSON.stringify(card).replace(/"/g, '&quot;')})">
                     <div class="card-inner">
-                        <div class="card-header">
-                            <span class="card-team" style="color:${borderColor};">${card.team}</span>
-                            <span class="card-rarity ${card.rarity}">${card.type}</span>
+                        <div class="card-back">
+                            <div class="card-back-logo">CPBL</div>
+                            <div class="card-back-sub">CHEERLEADER</div>
                         </div>
-                        <div class="card-avatar" style="background-color: ${borderColor}33;">
-                            <div style="font-size: 40px; margin-top: 20px;">🌸</div>
+                        <div class="card-front rarity-${card.rarity}" style="${bgStyle} border-color: ${borderColor};">
+                            ${effectOverlay}
+                            <div class="card-team" style="background-color: ${borderColor}44;">${card.team}</div>
+                            <div class="card-type">${card.type}</div>
+                            <div class="card-image-wrapper">
+                                <img src="images/${card.name}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div style="font-size: 60px; margin-top: 35px; display:none;">🌸</div>
+                            </div>
+                            <div class="card-name">${card.name}</div>
+                            <div style="color: #aaa; font-size:11px; margin-top:auto;">❤️ 好感 ${affText}</div>
+                            ${ribbonHtml}
+                            ${serialHtml}
+                            ${relicHtml}
+                            ${signHtml}
                         </div>
-                        <div class="card-name">${card.name}</div>
-                        <div class="card-footer">
-                            <span style="color: #aaa; font-size:11px;">好感 ${affText}</span>
-                        </div>
-                        ${ribbonHtml}
-                        ${serialHtml}
                     </div>
                 </div>
             `;
