@@ -554,14 +554,65 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
             checkRandomEvent();
         }
 
-        function getCardHTML(data, isGachaReveal = false, isLocked = false) {
-            let nameColor = "#fff"; let signatureHtml = ""; let relicHtml = ""; let mythicBadge = ""; let affLevel = affection[data.name] || 1; let attrData = getAttribute(data.name); let attrBadgeHtml = `<div class="attr-badge ${attrData.class}">${attrData.type}</div>`;
-            if (data.rarity === 'relic') { nameColor = '#f39c12'; relicHtml = `<div class="relic-patch">Patch</div>`; } else if (data.rarity === 'legendary') { nameColor = 'var(--pink)'; let signText = data.type === "唇印簽名卡" ? "<span class='lip-mark'>💋</span> " + data.name : "Sign. " + data.name; signatureHtml = `<div class="signature-overlay">${signText}</div>`; } else if (data.rarity === 'mythic') { nameColor = '#fff'; mythicBadge = `<div class="mythic-badge">1/1</div>`; signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">Sign. ${data.name}</div>`; }
-            let serialBadge = ""; if (data.serials && data.serials.length > 0) { let displaySerials = data.serials.slice(0, 3).join(' / '); let more = data.serials.length > 3 ? '...' : ''; serialBadge = `<div class="serial-badge">編號: ${displaySerials}${more}</div>`; } else if (data.serialNum) { serialBadge = `<div class="serial-badge">No. ${data.serialNum}</div>`; }
-            let lockedClass = isLocked ? "locked-silhouette" : ""; let flipState = isGachaReveal ? "" : "flipped"; let heartBadge = affLevel > 1 ? `<div class="heart-badge">❤️ Lv.${affLevel}</div>` : ""; let maxAffClass = affLevel === 10 ? "affection-max" : "";
-            return `<div class="card-container-3d ${lockedClass}"><div class="card-inner ${flipState}"><div class="card-back ${maxAffClass}"><div class="card-back-logo">CPBL</div><div class="card-back-sub">Cheerleaders</div></div><div class="card-front rarity-${data.rarity} ${maxAffClass}"><div class="card-team" style="background-color: ${data.teamColor};">${data.team}</div>${attrBadgeHtml} ${mythicBadge} ${serialBadge} ${heartBadge}<div class="card-image-wrapper"><img src="images/${data.name}.jpg" alt="${data.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'missing-img\\'>📸<br>缺少圖片</div>';">${relicHtml} ${signatureHtml}</div><div class="card-type">${data.type}</div><div class="card-name" style="color: ${nameColor};">${data.name}</div></div></div></div>`;
-        }
+        function getCardHTML(card, isSmall = false, isAlbum = false) {
+            let aff = affection[card.name] || 1;
+            let affText = aff === 10 ? "MAX" : `Lv.${aff}`;
+            let smallClass = isSmall ? "small" : "";
+            let albumClass = isAlbum ? "album" : "";
+            
+            // 🆕 V16.3 根據不同的神話/限量分支，給予最酷炫的背景與邊框特效
+            let bgStyle = "";
+            let borderColor = card.teamColor || "var(--pink)";
+            let effectOverlay = "";
+            let ribbonText = card.desc || "";
 
+            if (card.type === "無瑕的 1/1 胚卡") {
+                bgStyle = "background: radial-gradient(circle, #2c3e50 0%, #000000 100%);";
+                borderColor = "#00f2fe";
+                effectOverlay = "<div class='card-glare' style='background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, transparent 100%);'></div>";
+            } else if (card.type === "專屬親筆簽名 1/1") {
+                bgStyle = "background: linear-gradient(135deg, #111 0%, #333 100%);";
+                borderColor = "var(--gold)";
+                effectOverlay = "<div class='card-glare' style='animation: pulse 2s infinite;'></div>";
+            } else if (card.type === "浪漫唇印簽名 1/1") {
+                bgStyle = "background: linear-gradient(135deg, #2c001e 0%, #000000 100%);";
+                borderColor = "#ff007f";
+                effectOverlay = "<div class='card-glare' style='background: rgba(255,0,127,0.1);'></div>";
+            } else if (card.type === "實戰衣物切片 1/1") {
+                bgStyle = "background: radial-gradient(circle, #4a00e0 0%, #8e2de2 100%);";
+                borderColor = "#00ffcc";
+                effectOverlay = "<div class='card-glare' style='box-shadow: inset 0 0 20px #00ffcc;'></div>";
+            } else {
+                // 原本中低階卡的預設背景邏輯
+                bgStyle = `background: linear-gradient(135deg, #111 0%, ${borderColor}22 100%);`;
+            }
+
+            // 處理限量編號顯示
+            let serialHtml = card.serialNum ? `<div class="card-serial">${card.serialNum}</div>` : "";
+            let ribbonHtml = ribbonText ? `<div class="card-ribbon">${ribbonText}</div>` : "";
+
+            return `
+                <div class="card ${smallClass} ${albumClass}" style="${bgStyle} border-color: ${borderColor};" onclick="viewCardInViewer(${JSON.stringify(card).replace(/"/g, '&quot;')})">
+                    ${effectOverlay}
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <span class="card-team" style="color:${borderColor};">${card.team}</span>
+                            <span class="card-rarity ${card.rarity}">${card.type}</span>
+                        </div>
+                        <div class="card-avatar" style="background-color: ${borderColor}33;">
+                            <!-- 這裡通常是頭像，單機版用文字或Emoji代替 -->
+                            <div style="font-size: 40px; margin-top: 20px;">🌸</div>
+                        </div>
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-footer">
+                            <span style="color: #aaa; font-size:11px;">好感 ${affText}</span>
+                        </div>
+                        ${ribbonHtml}
+                        ${serialHtml}
+                    </div>
+                </div>
+            `;
+        }
         function showNextCard() {
             const container = document.getElementById('card-container'); const status = document.getElementById('queue-status'); const btn = document.getElementById('btn-next'); const dupAlert = document.getElementById('duplicate-alert'); dupAlert.innerText = "";
             if (cardQueue.length === 0) { container.innerHTML = ""; status.innerText = "卡包已見底！"; btn.style.display = "none"; document.getElementById('status-text').innerText = "繼續尋找本命女孩吧！"; return; }
