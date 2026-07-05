@@ -485,6 +485,11 @@
 function rollSpecialSlot(isTeamPack = false, isPickup = false) { 
             const rng = Math.random(); 
             
+            // 🆕 V16.3 超級安全防呆：確保 starlightPity 絕對不是 NaN 或 undefined
+            if (typeof starlightPity === 'undefined' || isNaN(starlightPity)) {
+                starlightPity = 0.0;
+            }
+            
             // 1. 決定這包的 1/1 基礎機率
             let baseMythic = 0.005; // 預設普通單包 0.5%
             
@@ -492,9 +497,11 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
                 // PU專屬包：基礎 1% + 星軌累計的引力值
                 baseMythic = 0.01 + starlightPity; 
             } else if (isTeamPack) {
-                // 球隊狙擊包：機率較低 (若你原本的設定不同，可自行修改此處的 0.001)
                 baseMythic = 0.001; 
             }
+
+            // 再次安全檢查，避免 baseMythic 出現意外
+            if (isNaN(baseMythic)) baseMythic = 0.01;
 
             // 2. 判定是否中 1/1 神話卡 (改為產出胚卡)
             if (rng < baseMythic) { 
@@ -513,10 +520,9 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
             }
 
             // 3. 遞補判定其他特卡
-            // 把前面 1/1 佔掉的機率區間扣除，確保底下特卡機率是獨立且穩定的
             let currentRng = rng - baseMythic; 
 
-            // 依序由稀有到普通進行判定，只要進入區間就直接 return 該卡種
+            // 依序由稀有到普通進行判定
             if (currentRng < 0.010) {
                 return { type: "限量紅閃卡", rarity: "limited-red", desc: "" };
             }
@@ -527,7 +533,6 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
                 return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" };
             }
             if (currentRng < 0.110) {
-                // 傳說級簽名卡，50% 專屬簽名，50% 唇印簽名
                 return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" };
             }
             if (currentRng < 0.200) {
@@ -538,7 +543,6 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
             }
             
             // 4. 最後保底
-            // 如果連前面 50% 的平行閃卡都沒中，第 5 張特殊位最低限度會給一張亮面特卡
             return { type: "亮面特卡", rarity: "rare", desc: "" };
         }
         
