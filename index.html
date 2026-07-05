@@ -384,12 +384,34 @@
         function updateStamina() {
             const now = Date.now();
             if (tickets < MAX_TICKETS) { let diff = now - lastUpdateTime; let added = Math.floor(diff / REGEN_MS); if (added > 0) { tickets = Math.min(MAX_TICKETS, tickets + added); lastUpdateTime += added * REGEN_MS; saveStamina(); } } else { lastUpdateTime = now; }
-            document.getElementById('ui-tickets').innerText = tickets; document.getElementById('ui-fragments').innerText = fragments;
-            if (tickets < MAX_TICKETS) { let remain = REGEN_MS - (now - lastUpdateTime); let m = Math.floor(remain / 60000); let s = Math.floor((remain % 60000) / 1000); document.getElementById('ui-timer').innerText = `(${m}:${s.toString().padStart(2, '0')})`; } else { document.getElementById('ui-timer').innerText = `(MAX)`; }
+            
+            // 安全更新票券與碎片
+            let uiTickets = document.getElementById('ui-tickets');
+            if (uiTickets) uiTickets.innerText = tickets; 
+            
+            let uiFragments = document.getElementById('ui-fragments');
+            if (uiFragments) uiFragments.innerText = fragments;
+
+            if (tickets < MAX_TICKETS) { let remain = REGEN_MS - (now - lastUpdateTime); let m = Math.floor(remain / 60000); let s = Math.floor((remain % 60000) / 1000); 
+                let uiTimer = document.getElementById('ui-timer');
+                if (uiTimer) uiTimer.innerText = `(${m}:${s.toString().padStart(2, '0')})`; 
+            } else { 
+                let uiTimer = document.getElementById('ui-timer');
+                if (uiTimer) uiTimer.innerText = `(MAX)`; 
+            }
             
             if (battleEnergy < MAX_ENERGY) { let diffE = now - lastEnergyUpdateTime; let addedE = Math.floor(diffE / ENERGY_REGEN_MS); if (addedE > 0) { battleEnergy = Math.min(MAX_ENERGY, battleEnergy + addedE); lastEnergyUpdateTime += addedE * ENERGY_REGEN_MS; saveStamina(); } } else { lastEnergyUpdateTime = now; }
-            document.getElementById('ui-energy').innerText = battleEnergy;
-            if (battleEnergy < MAX_ENERGY) { let remainE = ENERGY_REGEN_MS - (now - lastEnergyUpdateTime); let mE = Math.floor(remainE / 60000); let sE = Math.floor((remainE % 60000) / 1000); document.getElementById('ui-energy-timer').innerText = `(${mE}:${sE.toString().padStart(2, '0')})`; } else { document.getElementById('ui-energy-timer').innerText = `(MAX)`; }
+            
+            let uiEnergy = document.getElementById('ui-energy');
+            if (uiEnergy) uiEnergy.innerText = battleEnergy;
+
+            if (battleEnergy < MAX_ENERGY) { let remainE = ENERGY_REGEN_MS - (now - lastEnergyUpdateTime); let mE = Math.floor(remainE / 60000); let sE = Math.floor((remainE % 60000) / 1000); 
+                let uiEnergyTimer = document.getElementById('ui-energy-timer');
+                if (uiEnergyTimer) uiEnergyTimer.innerText = `(${mE}:${sE.toString().padStart(2, '0')})`; 
+            } else { 
+                let uiEnergyTimer = document.getElementById('ui-energy-timer');
+                if (uiEnergyTimer) uiEnergyTimer.innerText = `(MAX)`; 
+            }
             
             let dispatchUpdated = false;
             for (let zid in dispatchState) {
@@ -416,13 +438,53 @@
             }
             if(dispatchUpdated) {
                 saveStamina();
-                if(document.getElementById('dispatch-modal').style.display === 'block') renderDispatch();
+                let dispatchModal = document.getElementById('dispatch-modal');
+                if(dispatchModal && dispatchModal.style.display === 'block') renderDispatch();
             }
 
-            document.getElementById('btn-pack').disabled = (tickets < 1); document.getElementById('btn-team-pack').disabled = (tickets < 1); document.getElementById('btn-box').disabled = (tickets < 10);
-            let hour = Math.floor(Date.now() / 3600000); if (hour !== currentPUHour) { currentPUHour = hour; let puGirl = getCurrentPUGirl(); document.getElementById('pu-girl-name').innerText = puGirl.name; document.getElementById('pu-girl-team').innerText = puGirl.team; }
-        } setInterval(updateStamina, 1000);
+            let btnPack = document.getElementById('btn-pack');
+            if (btnPack) btnPack.disabled = (tickets < 1); 
+            
+            let btnTeamPack = document.getElementById('btn-team-pack');
+            if (btnTeamPack) btnTeamPack.disabled = (tickets < 1); 
+            
+            let btnBox = document.getElementById('btn-box');
+            if (btnBox) btnBox.disabled = (tickets < 10);
 
+            let hour = Math.floor(Date.now() / 3600000); 
+            if (hour !== currentPUHour) { 
+                currentPUHour = hour; 
+                let puGirl = getCurrentPUGirl(); 
+                let puName = document.getElementById('pu-girl-name');
+                if (puName) puName.innerText = puGirl.name; 
+                let puTeam = document.getElementById('pu-girl-team');
+                if (puTeam) puTeam.innerText = puGirl.team; 
+            }
+
+            // 🆕 V16.3 新增：安全更新「心願星軌」UI (防呆檢查，確保不會 null 崩潰)
+            const pityDisplay = document.getElementById('starlight-pity-display');
+            if (pityDisplay && typeof starlightPity !== 'undefined' && !isNaN(starlightPity)) {
+                let currentChance = (0.01 + starlightPity) * 100;
+                pityDisplay.innerText = currentChance.toFixed(1) + '%';
+            }
+        } 
+        setInterval(updateStamina, 1000);
+
+        function getRandomGirl(forceTeam = null) {
+            let targetTeam = forceTeam;
+            if (!targetTeam) {
+                // 如果沒有指定球隊，就從所有球隊名單裡隨機挑一隊
+                const teams = Object.keys(db);
+                targetTeam = teams[Math.floor(Math.random() * teams.length)];
+            }
+            const girlsInTeam = db[targetTeam].girls;
+            const randomGirlName = girlsInTeam[Math.floor(Math.random() * girlsInTeam.length)];
+            return {
+                name: randomGirlName,
+                team: targetTeam,
+                color: db[targetTeam].color
+            };
+        }
         function saveStamina() { 
             localStorage.setItem('cheer_tickets_v16', tickets); 
             localStorage.setItem('cheer_time_v16', lastUpdateTime); 
