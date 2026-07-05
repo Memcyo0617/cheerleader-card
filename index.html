@@ -470,19 +470,27 @@
         } 
         setInterval(updateStamina, 1000);
 
-        function getRandomGirl(forceTeam = null) {
-            let targetTeam = forceTeam;
-            if (!targetTeam) {
-                // 如果沒有指定球隊，就從所有球隊名單裡隨機挑一隊
-                const teams = Object.keys(db);
-                targetTeam = teams[Math.floor(Math.random() * teams.length)];
+       function getRandomGirl(forceTeam = null) {
+            // 🆕 V16.3 終極防護：直接使用已攤平的 allGirlsFlat 陣列來抽人，絕對不會有結構找不到的問題！
+            let pool = allGirlsFlat;
+            
+            // 如果有指定特定球隊 (例如抽球隊專屬包時)
+            if (forceTeam) {
+                pool = allGirlsFlat.filter(g => g.team === forceTeam);
+                // 防呆：如果萬一傳錯球隊名字導致找不到人，就退回全陣列盲抽，避免崩潰
+                if (pool.length === 0) {
+                    pool = allGirlsFlat;
+                }
             }
-            const girlsInTeam = db[targetTeam].girls;
-            const randomGirlName = girlsInTeam[Math.floor(Math.random() * girlsInTeam.length)];
+            
+            // 從池子裡隨機挑出一位女孩
+            const randomGirl = pool[Math.floor(Math.random() * pool.length)];
+            
+            // 回傳標準格式給 generateCard
             return {
-                name: randomGirlName,
-                team: targetTeam,
-                color: db[targetTeam].color
+                name: randomGirl.name,
+                team: randomGirl.team,
+                color: randomGirl.color || "var(--pink)" // 如果沒設定顏色就給預設粉紅色
             };
         }
         function saveStamina() { 
