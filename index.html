@@ -996,19 +996,22 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
             document.getElementById('auction-my-fragments').innerText = fragments; 
             cardQueue = []; 
             
+            // 🛠️ V16.3 黑市拍賣品池：不再直接販售 1/1 卡與胚卡，只產出紅/金/銀閃與簽名衣物卡
             const rng = Math.random();
             let sp = {};
-            if (rng < 0.015) { sp = { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; } // 1.5%
-            else if (rng < 0.050) { sp = { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; } // 3.5%
-            else if (rng < 0.120) { sp = { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; } // 7.0%
-            else if (rng < 0.250) { sp = { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; } // 13.0%
-            else if (rng < 0.600) { sp = { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; } // 35.0%
-            else { sp = { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; } // 40.0%
+            if (rng < 0.05) { sp = { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; } // 5%
+            else if (rng < 0.15) { sp = { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; } // 10%
+            else if (rng < 0.35) { sp = { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; } // 20%
+            else if (rng < 0.65) { sp = { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; } // 30%
+            else { sp = { type: Math.random() > 0.5 ? "專專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; } // 35%
             
-            generateCard(sp.type, sp.rarity, sp.desc); 
+            // 呼叫底層生成卡片 (此處傳入 false, false 確保依循一般權重，不觸發自選PU與星軌)
+            generateCard(sp.type, sp.rarity, sp.desc, null, false); 
             auctionItem = cardQueue.pop(); 
+            if(!auctionItem) return console.error("黑市卡片生成失敗，請檢查 generateCard 函數。");
             auctionItem.originalType = auctionItem.type; 
             
+            // 🆕 V16.3 持有狀態檢查
             const auctionKey = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`;
             const hasCard = collection[auctionKey] && collection[auctionKey].count > 0;
             let ownershipHtml = "";
@@ -1044,7 +1047,6 @@ function rollSpecialSlot(isTeamPack = false, isPickup = false) {
                 } 
             }, 1000); 
         }
-
         // V16.1 新增：花費碎片手動刷新黑市
         function refreshAuction() {
             if (fragments < 50) return alert("碎片不足 50，無法打點黑市門衛！");
