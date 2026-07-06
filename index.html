@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V16.1 終極無盡版)</title>
+    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V16.2 靈魂刻印版)</title>
     <style>
         :root { --bg-color: #2b1b24; --panel-bg: #3d2635; --text-main: #ffe6f2; --gold: #ffd700; --pink: #ff7eb3; --silver: #bdc3c7; --team-ps: #f39c12; --team-db: #e74c3c; --team-ug: #e67e22; --team-rg: #c0392b; --team-fa: #3498db; --team-ws: #2ecc71; --attr-v: #f39c12; --attr-s: #ff7eb3; --attr-c: #00f2fe; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; text-align: center; overflow-x: hidden; }
@@ -24,8 +24,7 @@
         button.btn-lounge { background: linear-gradient(45deg, #a1c4fd, #c2e9fb); color: #222; box-shadow: 0 4px 15px rgba(161, 196, 253, 0.4); }
         button.btn-dispatch { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4); }
         button.btn-showcase { background: linear-gradient(45deg, #f6d365, #fda085); color: #222; box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4); }
-        button.btn-auction { background: linear-gradient(45deg, #232526, #414345); color: var(--gold); border: 1px solid var(--gold); box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-
+        
         select.team-picker { background: #553549; color: white; border: 1px solid var(--pink); padding: 8px 15px; border-radius: 6px; font-size: 15px; font-weight: bold; margin-right: 10px;}
         #display-area { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; margin-top: 10px; }
         #queue-status { font-size: 14px; color: #ffb3d9; margin-bottom: 10px; } #duplicate-alert { font-weight: bold; margin-top: 10px; height: 20px; transition: color 0.3s; }
@@ -36,7 +35,7 @@
         .affection-max { border-color: var(--pink) !important; box-shadow: 0 0 25px rgba(255,126,179,0.8), inset 0 0 15px rgba(255,126,179,0.5) !important; } .heart-badge { position: absolute; top: 8px; left: 8px; background: rgba(255,126,179,0.9); color: white; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 10px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); border: 1px solid white; }
         .rarity-common { border-color: #886a7d; background: linear-gradient(135deg, #4a2f41, #2b1b24); } .rarity-rare { border-color: var(--silver); background: linear-gradient(135deg, #2c3e50, #1a252f); box-shadow: 0 0 12px rgba(189, 195, 199, 0.4); } .rarity-epic { border-color: #00f2fe; background: linear-gradient(135deg, #2a0845, #6441A5); box-shadow: 0 0 15px rgba(0, 242, 254, 0.6); } 
         .rarity-limited-silver { border-color: #e0e0e0; background: linear-gradient(135deg, #4a4a4a, #1a1a1a); box-shadow: 0 0 20px rgba(224,224,224,0.8), inset 0 0 10px rgba(255,255,255,0.2); } .rarity-limited-gold { border-color: #ffd700; background: linear-gradient(135deg, #5c4000, #1f1500); box-shadow: 0 0 25px rgba(255,215,0,0.9), inset 0 0 15px rgba(255,215,0,0.3); } .rarity-limited-red { border-color: #ff3b3b; background: linear-gradient(135deg, #5c0000, #1f0000); box-shadow: 0 0 25px rgba(255,59,59,0.9), inset 0 0 15px rgba(255,59,59,0.3); } .serial-badge { position: absolute; bottom: 8px; left: 8px; background: linear-gradient(45deg, #000, #333); color: var(--gold); border: 1px solid var(--gold); padding: 3px 6px; font-size: 11px; font-weight:bold; border-radius: 4px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .rarity-relic { border-color: #e67e22; background: linear-gradient(135deg, #5c2c16, #2d1307); } .relic-patch { position: absolute; bottom: 8px; left: 8px; width: 40px; height: 40px; border: 2px solid #e67e22; border-radius: 5px; z-index: 10; background: repeating-linear-gradient(45deg, #ddd, #ddd 3px, #bbb 3px, #bbb 6px); box-shadow: 2px 2px 4px rgba(0,0,0,0.8) inset; display: flex; justify-content: center; align-items: center; font-size: 9px; color: #333; font-weight: bold; } .rarity-legendary { border-color: var(--pink); background: linear-gradient(135deg, #511029, #2b0816); box-shadow: 0 0 20px rgba(255, 126, 179, 0.5); } .rarity-mythic { border-color: #fff; background: linear-gradient(135deg, #111, #333); box-shadow: 0 0 35px rgba(255,255,255,0.8), inset 0 0 20px rgba(255,255,255,0.3); } .mythic-badge { position: absolute; top: 35px; right: 8px; background: var(--gold); color: black; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.8);} .signature-overlay { position: absolute; bottom: 5px; right: 8px; z-index: 10; font-family: "Brush Script MT", "Comic Sans MS", cursive; font-size: 22px; color: var(--gold); transform: rotate(-10deg); text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        .rarity-relic { border-color: #e67e22; background: linear-gradient(135deg, #5c2c16, #2d1307); } .relic-patch { position: absolute; bottom: 8px; left: 8px; width: 40px; height: 40px; border: 2px solid #e67e22; border-radius: 5px; z-index: 10; background: repeating-linear-gradient(45deg, #ddd, #ddd 3px, #bbb 3px, #bbb 6px); box-shadow: 2px 2px 4px rgba(0,0,0,0.8) inset; display: flex; justify-content: center; align-items: center; font-size: 9px; color: #333; font-weight: bold; } .rarity-mythic { border-color: #fff; background: linear-gradient(135deg, #111, #333); box-shadow: 0 0 35px rgba(255,255,255,0.8), inset 0 0 20px rgba(255,255,255,0.3); } .mythic-badge { position: absolute; top: 35px; right: 8px; background: var(--gold); color: black; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.8);} .signature-overlay { position: absolute; bottom: 5px; right: 8px; z-index: 10; font-family: "Brush Script MT", "Comic Sans MS", cursive; font-size: 22px; color: var(--gold); transform: rotate(-10deg); text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         .locked-silhouette .card-front { filter: brightness(0.2) grayscale(100%); border: 4px dashed #555 !important; box-shadow: none !important; background: #111 !important; } .locked-silhouette .card-image-wrapper img { filter: brightness(0) drop-shadow(0 0 2px rgba(255,255,255,0.3)); } .locked-silhouette .card-name { color: #555 !important; text-shadow: none; } .locked-silhouette .relic-patch, .locked-silhouette .signature-overlay, .locked-silhouette .serial-badge, .locked-silhouette .mythic-badge, .locked-silhouette .heart-badge, .locked-silhouette .attr-badge { display: none; } .lock-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #ff4d4d; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 18px; z-index: 15; pointer-events: none; border: 1px solid #ff4d4d; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,10,15,0.96); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; } .modal-content { background: rgba(255,126,179,0.03); border-radius: 12px; margin: 10px auto; padding: 20px; max-width: 900px; border: 1px solid rgba(255,126,179,0.15); } .close-btn { position: sticky; top: 10px; float: right; background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; z-index: 105; font-weight: bold;}
@@ -52,7 +51,6 @@
         .card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; max-height: 50vh; overflow-y: auto; padding: 10px; } .card-list-item { border: 1px solid #704762; border-radius: 8px; padding: 10px; cursor: pointer; background: #3d2635; text-align: center; transition: 0.2s; position: relative;} .card-list-item:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
         #card-viewer-modal { background: rgba(0,0,0,0.85); justify-content: center; align-items: center; flex-direction: column; cursor: pointer; } #card-viewer-content { transform: scale(1.1); margin-bottom: 30px; cursor: default; }
         
-        .auction-panel { background: rgba(0,0,0,0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--gold); max-width: 500px; margin: 0 auto; text-align: center; } .auction-timer { color: #e74c3c; font-size: 24px; font-weight: bold; margin: 10px 0; animation: pulse 1s infinite; } .auction-current-bid { color: var(--gold); font-size: 32px; font-weight: bold; margin: 15px 0; text-shadow: 0 0 10px var(--gold); } .auction-log { background: #111; padding: 10px; border-radius: 8px; height: 100px; overflow-y: auto; font-size: 13px; color: #aaa; text-align: left; margin-bottom: 15px; border: 1px solid #444; }
         #event-modal .modal-content { border-color: #f39c12; box-shadow: 0 0 40px rgba(243, 156, 18, 0.5); background: rgba(20, 10, 10, 0.98); text-align: center; max-width: 500px; } .event-title { color: #f39c12; font-size: 24px; font-weight: bold; margin-bottom: 15px; } .event-desc { font-size: 18px; color: #fff; margin-bottom: 25px; line-height: 1.5; } .event-btn { background: #333; color: white; border: 1px solid #666; padding: 12px; width: 100%; margin-bottom: 10px; font-size: 16px; border-radius: 8px; transition: 0.2s; } .event-btn:hover { background: #555; border-color: var(--gold); }
 
         .main-girl-widget { position: fixed; bottom: 20px; right: 20px; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; transition: transform 0.3s; } .main-girl-widget:hover { transform: scale(1.05); } .speech-bubble { background: rgba(255, 255, 255, 0.95); color: #333; padding: 12px 18px; border-radius: 20px 20px 0 20px; font-size: 15px; font-weight: bold; margin-bottom: 10px; max-width: 220px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 2px solid var(--pink); animation: floatBubble 3s infinite ease-in-out; text-align: left; line-height: 1.4; display: none; transform-origin: bottom right; } .speech-bubble.active { display: block; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); } .main-girl-avatar-container { width: 95px; height: 95px; border-radius: 50%; border: 3px solid var(--pink); overflow: hidden; box-shadow: 0 0 20px rgba(255, 126, 179, 0.6); cursor: pointer; background: var(--panel-bg); display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; padding-bottom: 8px;} #main-girl-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 15%; z-index: 1; display: block; } .main-girl-avatar-icon { font-size: 32px; z-index: 2; position: relative; margin-bottom: 10px;} .main-girl-avatar-name { background: rgba(0,0,0,0.7); color: white; font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: bold; z-index: 2; position: relative; border: 1px solid var(--pink); box-shadow: 0 2px 5px rgba(0,0,0,0.5);} @keyframes floatBubble { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } } @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -80,8 +78,7 @@
 </head>
 <body>
 
-    
-    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V16.1)</h1>
+    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V16.2 靈魂刻印版)</h1>
     
     <div class="resource-bar">
         <span>🎫 抽卡券: <span id="ui-tickets" class="stamina-count">10</span>/10 <span id="ui-timer" class="stamina-timer"></span></span>
@@ -94,7 +91,7 @@
     <div class="controls">
         <button id="btn-pack" onclick="startOpening('pack')">🎀 撕開一包 (1券)</button>
         <button id="btn-box" class="btn-box" onclick="startOpening('box')">🎁 撕開一盒 (10券)</button>
-        <button class="btn-frag" onclick="toggleModal('shop-modal')">🛒 碎片商城 (拍賣)</button>
+        <button class="btn-frag" onclick="toggleModal('shop-modal')">⚖️ 超頻煉金中心</button>
         <button class="btn-showcase" onclick="toggleModal('showcase-modal')">🏆 頂級展示櫃</button>
         <button class="btn-lounge" onclick="toggleModal('lounge-modal')">🏠 專屬休息室</button>
     </div>
@@ -106,6 +103,14 @@
             <span style="font-size: 14px; color: #aaa;">(<span id="pu-girl-team">???</span>)</span>
         </div>
         <button class="btn-pu" onclick="startOpening('pickup')">🌟 抽 PU 專屬包 (消耗 1 券)</button>
+        
+        <div id="orbit-container" style="margin-top: 15px; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--pink); box-shadow: inset 0 0 10px rgba(255,126,179,0.2);">
+            <div style="color:var(--pink); font-size:13px; margin-bottom:8px; font-weight:bold;">🌌 心願星軌 (單抽未中 1/1 胚卡提升降臨機率)</div>
+            <div style="background:#222; border-radius:8px; height:12px; overflow:hidden; border: 1px solid #553549;">
+                <div id="orbit-bar" style="width:1.5%; background:linear-gradient(90deg, #ff7eb3, #00f2fe); height:100%; transition:width 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px rgba(0,242,254,0.8);"></div>
+            </div>
+            <div id="orbit-text" style="font-size:12px; color:#00f2fe; margin-top:8px; text-align:right; font-weight:bold;">當前機率: 1.5%</div>
+        </div>
     </div>
 
     <div class="team-gacha-section">
@@ -170,9 +175,10 @@
                 <option value="限量金閃卡">🟡 限量金閃卡</option>
                 <option value="限量紅閃卡">🔴 限量紅閃卡</option>
                 <option value="實戰衣物卡">👕 實戰衣物卡</option>
-                <option value="專屬簽名卡">✍ 專屬簽名卡</option>
-                <option value="唇印簽名卡">💋 唇印簽名卡</option>
-                <option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option>
+                <option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option>
+                <option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option>
+                <option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option>
+                <option value="1/1 實戰衣物切片">👕 1/1 實戰衣物切片</option>
             </select>
             <div id="selector-list" class="card-list"></div>
             <button id="btn-cancel-select" class="btn-battle" style="margin-top:20px; width:100%;" onclick="document.getElementById('selector-modal').style.display='none'">取消選擇</button>
@@ -180,7 +186,36 @@
         </div>
     </div>
 
-    <div id="shop-modal" class="modal"><button class="close-btn" onclick="toggleModal('shop-modal')">✖ 關閉</button><div class="modal-content" style="max-width: 500px; text-align: center;"><h2 style="color: #00f2fe; text-shadow: 0 0 10px rgba(0,242,254,0.5);">🛒 心願碎片商城</h2><div style="font-size: 18px; margin-bottom: 20px;">目前擁有碎片：<span style="color: #00f2fe; font-size: 26px; font-weight: bold;" id="shop-fragments-display">0</span></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: var(--gold);">⚖️ 黑市限時拍賣會</h3><p style="font-size:12px; color:#aaa;">(註：流標的限量卡會回溯至卡池中，不會憑空消失)</p><button class="btn-auction" onclick="toggleModal('shop-modal'); toggleModal('auction-modal'); initAuction();">進入拍賣會</button></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: #fbc2eb;">🎀 隨機應援包</h3><button class="btn-frag" onclick="buyShopItem('random')">兌換 (消耗 100 碎片)</button></div><div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;"><h3 style="margin-top: 0; color: #fbc2eb;">🎯 指定球隊保底包</h3><select id="shop-team-select" class="team-picker" style="margin-bottom: 10px; width: 80%;"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><br><button class="btn-team" onclick="buyShopItem('team')">兌換 (消耗 150 碎片)</button></div></div></div>
+    <div id="shop-modal" class="modal">
+        <button class="close-btn" onclick="toggleModal('shop-modal')">✖ 關閉</button>
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <h2 style="color: #00f2fe; text-shadow: 0 0 10px rgba(0,242,254,0.5);">🛒 碎片商城與超頻中心</h2>
+            <div style="font-size: 18px; margin-bottom: 20px;">目前擁有碎片：<span style="color: #00f2fe; font-size: 26px; font-weight: bold;" id="shop-fragments-display">0</span></div>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: var(--gold);">⚖️ 終極超頻：等價交換</h3>
+                <p style="font-size:12px; color:#aaa;">(獻祭 1 張重複的 1/1 寶石卡 + 1,000 碎片 = 換取未知女孩的 1/1 胚卡)</p>
+                <select id="alchemy-sacrifice-select" class="team-picker" style="width:100%; margin-bottom:15px;">
+                    <option value="">-- 請選擇要獻祭的重複 1/1 --</option>
+                </select>
+                <button class="btn-auction" style="width:100%; font-size:16px; padding: 12px;" onclick="performAlchemy()">⚡ 執行超頻煉金 (1000 碎片)</button>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #fbc2eb;">🎀 隨機應援包</h3>
+                <button class="btn-frag" onclick="buyShopItem('random')">兌換 (消耗 100 碎片)</button>
+            </div>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #fbc2eb;">🎯 指定球隊保底包</h3>
+                <select id="shop-team-select" class="team-picker" style="margin-bottom: 10px; width: 80%;">
+                    <option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option>
+                    <option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option>
+                    <option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option>
+                </select><br>
+                <button class="btn-team" onclick="buyShopItem('team')">兌換 (消耗 150 碎片)</button>
+            </div>
+        </div>
+    </div>
     
     <div id="lounge-modal" class="modal">
         <button class="close-btn" onclick="toggleModal('lounge-modal')">✖ 關閉</button>
@@ -195,29 +230,8 @@
         <button class="close-btn" onclick="toggleModal('dispatch-modal')">✖ 關閉</button>
         <div class="modal-content" style="max-width: 700px;">
             <h2 style="color: #38ef7d; text-align:center; text-shadow: 0 0 10px rgba(56,239,125,0.5);">🗺️ 女孩派遣任務</h2>
-            <p style="color:#aaa; text-align:center; font-size:14px;">派遣女孩賺取「心願碎片」。稀有度與好感度越高，收益加成越大！<br>記得定時消耗碎片購買「能量飲料」恢復體力，體力歸 0 時將停止收益。</p>
+            <p style="color:#aaa; text-align:center; font-size:14px;">派遣女孩賺取「心願碎片」。稀有度與好感度越高，收益加成越大！<br>注意：未覺醒的 1/1 混沌胚卡無法提供派遣加成。</p>
             <div id="dispatch-zones-container"></div>
-        </div>
-    </div>
-
-    <div id="auction-modal" class="modal">
-        <button class="close-btn" onclick="closeAuction()">✖ 離開拍賣</button>
-        <div class="modal-content" style="max-width: 600px;">
-            <h2 style="color: var(--gold); text-align:center;">⚖️ 黑市限時拍賣</h2>
-            <div class="auction-panel">
-                <div style="color:#aaa; font-size:14px; margin-bottom:10px;">本次競標拍品：</div>
-                <div id="auction-card-display" style="transform: scale(0.8); height: 350px; margin: 10px auto; display: flex; justify-content: center; align-items: center;"></div>
-            </div>
-            <div id="auction-timer-display" class="auction-timer">等待開拍...</div>
-            <div style="color:white; font-size:16px;">當前最高出價 (碎片)：</div>
-            <div id="auction-price-display" class="auction-current-bid">0</div>
-            <div id="auction-log-display" class="auction-log"></div>
-            <div style="display:flex; justify-content:center; gap:10px;">
-                <button id="btn-bid-50" class="btn-team" onclick="placeBid(50)" disabled>加價 50</button>
-                <button id="btn-bid-200" class="btn-pu" onclick="placeBid(200)" disabled>加價 200</button>
-            </div>
-            <button class="btn-box" style="margin-top: 15px; width: 100%; font-size: 14px;" onclick="refreshAuction()">🔄 不滿意？花費 50 碎片 刷新拍賣品</button>
-            <div style="margin-top:10px; color:#00f2fe; font-size:14px;">你的碎片：<span id="auction-my-fragments">0</span></div>
         </div>
     </div>
     
@@ -242,7 +256,7 @@
         </div>
     </div>
 
-    <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 寶石簽名卡">👑 1/1 寶石簽名卡</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
+    <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option><option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option><option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option><option value="1/1 實戰衣物切片">👕 1/1 實戰衣物切片</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
     
     <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
 
@@ -250,39 +264,32 @@
         const db = { "Passion Sisters": { color: "var(--team-ps)", members: ["凱蒂", "貴貴", "希希", "短今", "峮峮", "晴兒", "波波", "畇二", "妮可", "林可", "君白", "曼容", "小迪", "沛婕", "汶汶", "怡琪", "Wendy", "夏蕾", "少鹽", "邊荷律", "牛奶", "芊芊", "衣宸", "瑄", "莎莎", "維尼", "璇璇", "桃子", "金渡兒", "JJUBI", "珮含", "容容"] }, "Uni Girls": { color: "var(--team-ug)", members: ["妮妮", "Yuki", "Mina", "瑟七", "賴賴", "少少", "芮絲", "曼萍", "Joy", "柔一", "Maggie", "斐棋", "一七", "侯芳", "包子", "千紘", "希美", "趙娟週", "文慧真", "安惠志", "藤本彩花", "子筑", "安琪", "妍蓁", "培根", "姿琳"] }, "Fubon Angels": { color: "var(--team-fa)", members: ["潔米", "慈妹", "檸檬", "Jessy", "丹丹", "秀秀子", "Tiffany", "安娜", "沁沁", "維心", "奶昔", "大頭", "卡洛琳", "栗子", "南珉貞", "李雅英", "李珠珢", "禾羽", "潔潔", "雅惟", "李晧禎", "貝兒", "小芊", "呱呱", "Laynee", "陳愉", "朴星垠"] }, "Dragons Beauties": { color: "var(--team-db)", members: ["心璇", "馬妹", "小映", "口水", "Like", "張晴", "芮妮", "霖霖", "小蛙", "蘿拉", "寧寧", "詩雅", "璦昀", "沛沛", "林襄", "李多慧", "Yuri", "菲菲", "群群", "佩霓", "靜靜", "金娜妍", "權喜原", "貝拉", "姵宸", "瑄瑄"] }, "Rakuten Girls": { color: "var(--team-rg)", members: ["岱縈", "琳妲","孟潔", "卉妮", "若潼", "筠熹", "穎樂", "熊霓", "穆又甯", "宋宋", "禹菡", "貝佳頤", "言梓璇", "溫妮", "Kira", "崔荷潾", "Mika", "高橋佳帆", "笑笑", "彭彭", "廉世彬", "禹洙漢", "河智媛", "高佳彬", "金佳垠"] }, "Wing Stars": { color: "var(--team-ws)", members: ["安芝儇", "朴旻曙", "螢螢", "圈圈", "恬魚", "昆昆", "李樂", "JC", "黃澄澄", "妡0", "艾琳", "一粒", "瑈瑈", "林浠", "筱雯", "毛毛", "芃芃", "玖玖", "米亞", "米妮", "尼莫", "千千", "ET", "會晴", "芋頭", "Nina"] } };
         const allGirlsFlat = []; for (let t in db) { db[t].members.forEach(m => allGirlsFlat.push({team: t, name: m, color: db[t].color})); }
         function getAttribute(name) { const attrs = [ {type: '活力', color: 'var(--attr-v)', class: 'attr-vitality'}, {type: '甜美', color: 'var(--attr-s)', class: 'attr-sweet'}, {type: '酷炫', color: 'var(--attr-c)', class: 'attr-cool'} ]; let hash = 0; for(let i=0; i<name.length; i++) hash += name.charCodeAt(i); return attrs[hash % 3]; }
-        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 寶石簽名卡": "mythic" }; 
+        
+        // V16.2 Rarity mapping updated for Mythic variants
+        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "1/1 混沌胚卡": "mythic", "1/1 專屬親筆簽名": "mythic", "1/1 浪漫唇印簽名": "mythic", "1/1 實戰衣物切片": "mythic" }; 
         const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 }; 
         const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 }; 
-        const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25, "1/1 寶石簽名卡": 1 };
+        const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25 };
         
         const stadiumEnvironments = [ { name: "☀️ 臺南球場", bonusTeam: "Uni Girls", desc: "統一獅戰力 +20%" }, { name: "⛈️ 洲際球場", bonusTeam: "Passion Sisters", desc: "中信兄弟戰力 +20%" }, { name: "🏟️ 大巨蛋", bonusTeam: "All", desc: "全員戰力 +10%" }, { name: "🦅 澄清湖", bonusTeam: "Wing Stars", desc: "台鋼戰力 +20%" }, { name: "⚾ 桃園球場", bonusTeam: "Rakuten Girls", desc: "樂天戰力 +20%" }, { name: "🐉 天母球場", bonusTeam: "Dragons Beauties", desc: "味全龍戰力 +20%" }, { name: "☀️ 新莊球場", bonusTeam: "Fubon Angels", desc: "富邦悍將戰力 +20%" } ]; 
         let currentEnvironment = stadiumEnvironments[0];
 
-        let collection = JSON.parse(localStorage.getItem('cheer_collection_v16')) || JSON.parse(localStorage.getItem('cheer_collection_v15')) || {}; 
-        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v16')) || parseInt(localStorage.getItem('cheer_total_pulls_v15')) || 0; 
-        let pullLog = JSON.parse(localStorage.getItem('cheer_pull_log_v16')) || JSON.parse(localStorage.getItem('cheer_pull_log_v15')) || []; 
-        let fragments = parseInt(localStorage.getItem('cheer_fragments_v16')) || parseInt(localStorage.getItem('cheer_fragments_v15')) || 0; 
-        let affection = JSON.parse(localStorage.getItem('cheer_affection_v16')) || JSON.parse(localStorage.getItem('cheer_affection_v15')) || {}; 
+        let collection = JSON.parse(localStorage.getItem('cheer_collection_v16')) || {}; 
+        let totalPulls = parseInt(localStorage.getItem('cheer_total_pulls_v16')) || 0; 
+        let pullLog = JSON.parse(localStorage.getItem('cheer_pull_log_v16')) || []; 
+        let fragments = parseInt(localStorage.getItem('cheer_fragments_v16')) || 0; 
+        let affection = JSON.parse(localStorage.getItem('cheer_affection_v16')) || {}; 
         
-        // 🆕 歷史累計消耗心願碎片追溯與統計
-        let totalSpentFragments = parseInt(localStorage.getItem('cheer_spent_fragments_v16'));
-        if (isNaN(totalSpentFragments)) {
-            totalSpentFragments = 0;
-            for (let girlName in affection) {
-                let lv = affection[girlName];
-                if (lv > 1) {
-                    totalSpentFragments += (lv - 1) * 50;
-                }
-            }
-            localStorage.setItem('cheer_spent_fragments_v16', totalSpentFragments);
-        }
+        // V16.2 Pity System
+        let puPityRate = parseFloat(localStorage.getItem('cheer_pity_v16_2')) || 0;
 
-        let limitedInventory = JSON.parse(localStorage.getItem('cheer_inventory_v16')) || JSON.parse(localStorage.getItem('cheer_inventory_v15')) || {}; 
+        let totalSpentFragments = parseInt(localStorage.getItem('cheer_spent_fragments_v16')) || 0;
+
+        let limitedInventory = JSON.parse(localStorage.getItem('cheer_inventory_v16')) || {}; 
         if (Object.keys(limitedInventory).length === 0) { for (let t in db) { db[t].members.forEach(m => { for (let tier in limitedTiersConfig) { limitedInventory[`${t}_${tier}_${m}`] = limitedTiersConfig[tier]; } }); } } 
-        let manualSquad = JSON.parse(localStorage.getItem('cheer_squad_v16')) || JSON.parse(localStorage.getItem('cheer_squad_v15')) || new Array(9).fill(null);
-        let showcaseSquad = JSON.parse(localStorage.getItem('cheer_showcase_v16')) || JSON.parse(localStorage.getItem('cheer_showcase_v15')) || [null, null, null]; 
+        let manualSquad = JSON.parse(localStorage.getItem('cheer_squad_v16')) || new Array(9).fill(null);
+        let showcaseSquad = JSON.parse(localStorage.getItem('cheer_showcase_v16')) || [null, null, null]; 
         
-        // Endless Mode vars
         let endlessFloor = parseInt(localStorage.getItem('cheer_endless_floor_v16')) || 1;
         let endlessBuffs = JSON.parse(localStorage.getItem('cheer_endless_buffs_v16')) || [];
         let currentBuffOptions = [];
@@ -304,7 +311,18 @@
             { id: 'zone2', name: '商場一日店長', baseRate: 0.6 },
             { id: 'zone3', name: '大巨蛋特區展覽', baseRate: 1.2 }
         ];
-        let dispatchState = JSON.parse(localStorage.getItem('cheer_dispatch_v16')) || JSON.parse(localStorage.getItem('cheer_dispatch_v15')) || { zone1: null, zone2: null, zone3: null };
+        let dispatchState = JSON.parse(localStorage.getItem('cheer_dispatch_v16')) || { zone1: null, zone2: null, zone3: null };
+
+        function updateOrbitUI() {
+            let currentRate = (0.015 + puPityRate) * 100;
+            let displayRate = currentRate.toFixed(1);
+            let barEl = document.getElementById('orbit-bar');
+            let textEl = document.getElementById('orbit-text');
+            if(barEl && textEl) {
+                barEl.style.width = Math.min(100, currentRate * 10) + '%';
+                textEl.innerText = `當前降臨機率: ${displayRate}%`;
+            }
+        }
 
         function updateStamina() {
             const now = Date.now();
@@ -328,7 +346,8 @@
                                 ds.fatigue -= 0.5; 
                                 if(ds.fatigue < 0) ds.fatigue = 0;
                                 let card = collection[ds.cardKey];
-                                let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "legendary":3.0, "mythic":3.5}[card.rarity] || 1;
+                                let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "mythic":3.5}[card.rarity] || 1;
+                                if (card.type === "1/1 混沌胚卡") rarityMult = 0; // 胚卡無加成
                                 let affMult = affection[card.name] || 1; 
                                 let zoneBase = dispatchZonesConfig.find(z => z.id === zid).baseRate;
                                 ds.collected += (zoneBase * rarityMult * (1 + affMult * 0.1));
@@ -352,7 +371,7 @@
             localStorage.setItem('cheer_tickets_v16', tickets); 
             localStorage.setItem('cheer_time_v16', lastUpdateTime); 
             localStorage.setItem('cheer_fragments_v16', fragments); 
-            localStorage.setItem('cheer_spent_fragments_v16', totalSpentFragments); // 🆕
+            localStorage.setItem('cheer_spent_fragments_v16', totalSpentFragments);
             localStorage.setItem('cheer_b_energy_v16', battleEnergy); 
             localStorage.setItem('cheer_b_time_v16', lastEnergyUpdateTime); 
             localStorage.setItem('cheer_maingirl_v16', mainGirlName || ''); 
@@ -361,21 +380,22 @@
             localStorage.setItem('cheer_squad_v16', JSON.stringify(manualSquad)); 
             localStorage.setItem('cheer_endless_floor_v16', endlessFloor); 
             localStorage.setItem('cheer_endless_buffs_v16', JSON.stringify(endlessBuffs)); 
+            localStorage.setItem('cheer_pity_v16_2', puPityRate); // Save pity
         }
 
-        const randomEvents = [ { desc: "路上遇到一位死忠球迷...", btnA: "送他一張普卡", btnB: "贊助他 20 碎片買票", resA: () => { let r=Math.random(); if(r<0.5){ tickets+=2; return "球迷感動回贈了 2 張券！"; }else{ fragments+=10; return "獲得 10 碎片。"; } }, resB: () => { if(fragments<20) return "碎片不足..."; fragments-=20; totalSpentFragments+=20; battleEnergy=Math.min(MAX_ENERGY, battleEnergy+2); return "助人為快樂之本，應援力 +2⚡"; } }, { desc: "經過黑市時，商人神秘兮兮地向你招手...", btnA: "用 30 碎片買未知盲盒", btnB: "拒絕並離開", resA: () => { if(fragments<30) return "碎片不足..."; fragments-=30; totalSpentFragments+=30; let r=Math.random(); if(r<0.2){ tickets+=5; return "大賺！盲盒裡有 5 張券！"; }else{ return "打開只有空氣..."; } }, resB: () => { return "你平安無事地離開了。"; } } ]; let currentEvent = null; function checkRandomEvent() { if(Math.random() < 0.10) { currentEvent = randomEvents[Math.floor(Math.random() * randomEvents.length)]; document.getElementById('event-desc').innerText = currentEvent.desc; document.getElementById('btn-event-a').innerText = currentEvent.btnA; document.getElementById('btn-event-b').innerText = currentEvent.btnB; document.getElementById('event-modal').style.display = 'block'; } } function resolveEvent(choiceIndex) { if(!currentEvent) return; alert(choiceIndex === 0 ? currentEvent.resA() : currentEvent.resB()); saveStamina(); updateStamina(); document.getElementById('event-modal').style.display = 'none'; currentEvent = null; }
+        const randomEvents = [ { desc: "路上遇到一位死忠球迷...", btnA: "送他一張普卡", btnB: "贊助他 20 碎片買票", resA: () => { let r=Math.random(); if(r<0.5){ tickets+=2; return "球迷感動回贈了 2 張券！"; }else{ fragments+=10; return "獲得 10 碎片。"; } }, resB: () => { if(fragments<20) return "碎片不足..."; fragments-=20; totalSpentFragments+=20; battleEnergy=Math.min(MAX_ENERGY, battleEnergy+2); return "助人為快樂之本，應援力 +2⚡"; } }, { desc: "經過黑市時，煉金術師神秘兮兮地向你招手...", btnA: "用 30 碎片買未知盲盒", btnB: "拒絕並離開", resA: () => { if(fragments<30) return "碎片不足..."; fragments-=30; totalSpentFragments+=30; let r=Math.random(); if(r<0.2){ tickets+=5; return "大賺！盲盒裡有 5 張券！"; }else{ return "打開只有空氣..."; } }, resB: () => { return "你平安無事地離開了。"; } } ]; let currentEvent = null; function checkRandomEvent() { if(Math.random() < 0.10) { currentEvent = randomEvents[Math.floor(Math.random() * randomEvents.length)]; document.getElementById('event-desc').innerText = currentEvent.desc; document.getElementById('btn-event-a').innerText = currentEvent.btnA; document.getElementById('btn-event-b').innerText = currentEvent.btnB; document.getElementById('event-modal').style.display = 'block'; } } function resolveEvent(choiceIndex) { if(!currentEvent) return; alert(choiceIndex === 0 ? currentEvent.resA() : currentEvent.resB()); saveStamina(); updateStamina(); document.getElementById('event-modal').style.display = 'none'; currentEvent = null; }
 
         function buyShopItem(type) { 
             if (type === 'random') { 
                 if (fragments >= 100) { 
                     fragments -= 100; 
-                    totalSpentFragments += 100; // 🆕
+                    totalSpentFragments += 100;
                     saveStamina(); updateStamina(); toggleModal('shop-modal'); startOpening('pack', 'free'); 
                 } else { alert("碎片不足 100 片！"); } 
             } else if (type === 'team') { 
                 if (fragments >= 150) { 
                     fragments -= 150; 
-                    totalSpentFragments += 150; // 🆕
+                    totalSpentFragments += 150;
                     saveStamina(); updateStamina(); let t = document.getElementById('shop-team-select').value; toggleModal('shop-modal'); startOpening('team', 'free', t); 
                 } else { alert("碎片不足 150 片！"); } 
             } 
@@ -387,7 +407,7 @@
                 let aff = affection[girlName] || 1; 
                 if (aff >= 10) return; 
                 fragments -= 50; 
-                totalSpentFragments += 50; // 🆕
+                totalSpentFragments += 50;
                 affection[girlName] = aff + 1; 
                 saveStamina(); 
                 localStorage.setItem('cheer_affection_v16', JSON.stringify(affection)); 
@@ -401,24 +421,101 @@
         function playGachaSound(rarity) { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); if (rarity === 'common' || rarity === 'rare') { osc.type = 'triangle'; osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1); osc.start(); osc.stop(ctx.currentTime + 0.1); } else { osc.type = 'square'; osc.frequency.setValueAtTime(600, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.1); osc.frequency.setValueAtTime(1200, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6); osc.start(); osc.stop(ctx.currentTime + 0.6); } } catch(e) {} }
         function getCurrentPUGirl() { let hour = Math.floor(Date.now() / 3600000); return allGirlsFlat[hour % allGirlsFlat.length]; } function getRandomGirl(forceTeam = null) { const teams = Object.keys(db); const team = forceTeam ? forceTeam : teams[Math.floor(Math.random() * teams.length)]; const members = db[team].members; return { team, name: members[Math.floor(Math.random() * members.length)], color: db[team].color }; } function shuffle(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
         
-        function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) { let girl; if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } else { girl = getRandomGirl(forceTeam); } let finalType = type; let finalRarity = rarity; let serialNum = ""; if (limitedTiersConfig[type] !== undefined) { let limitKey = `${girl.team}_${type}_${girl.name}`; if (limitedInventory[limitKey] > 0) { let max = limitedTiersConfig[type]; let current = max - limitedInventory[limitKey] + 1; serialNum = `${current}/${max}`; limitedInventory[limitKey] -= 1; localStorage.setItem('cheer_inventory_v16', JSON.stringify(limitedInventory)); } else { finalType = "平行閃卡"; finalRarity = "epic"; desc = ""; } } cardQueue.push({ team: girl.team, teamColor: girl.color, name: girl.name, type: finalType, rarity: finalRarity, desc, serialNum }); }
+        function generateCard(type, rarity, desc = "", forceTeam = null, isPickup = false) { 
+            let girl; 
+            if (isPickup && Math.random() < 0.40) { girl = getCurrentPUGirl(); } else { girl = getRandomGirl(forceTeam); } 
+            let finalType = type; let finalRarity = rarity; let serialNum = ""; 
+            if (limitedTiersConfig[type] !== undefined) { 
+                let limitKey = `${girl.team}_${type}_${girl.name}`; 
+                if (limitedInventory[limitKey] > 0) { 
+                    let max = limitedTiersConfig[type]; let current = max - limitedInventory[limitKey] + 1; serialNum = `${current}/${max}`; limitedInventory[limitKey] -= 1; localStorage.setItem('cheer_inventory_v16', JSON.stringify(limitedInventory)); 
+                } else { finalType = "平行閃卡"; finalRarity = "epic"; desc = ""; } 
+            } 
+            if(rarity === "mythic") serialNum = "1/1";
+            cardQueue.push({ team: girl.team, teamColor: girl.color, name: girl.name, type: finalType, rarity: finalRarity, desc, serialNum }); 
+        }
         
-        function rollSpecialSlot(isTeamPack = false) { const rng = Math.random(); if (isTeamPack) { if(rng < 0.001) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.005) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.015) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.035) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.050) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.090) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.240) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" }; } else { if(rng < 0.005) return { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; if(rng < 0.010) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; if(rng < 0.030) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; if(rng < 0.070) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; if(rng < 0.110) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; if(rng < 0.200) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; if(rng < 0.500) return { type: "平行閃卡", rarity: "epic", desc: "" }; return { type: "亮面特卡", rarity: "rare", desc: "" }; } }
+        // V16.2 命運重塑: Starlight Orbit & Blank Mythic Roll
+        function rollSpecialSlot(isTeamPack = false, isPickup = false) { 
+            const rng = Math.random(); 
+            if (isPickup) {
+                let mythicThreshold = 0.015 + puPityRate; // 1.5% base + pity
+                if (rng < mythicThreshold) {
+                    puPityRate = 0; saveStamina(); updateOrbitUI();
+                    return { type: "1/1 混沌胚卡", rarity: "mythic", desc: "🌌未覺醒" };
+                } else {
+                    puPityRate += 0.001; saveStamina(); updateOrbitUI();
+                }
+            } else {
+                if(rng < 0.015) return { type: "1/1 混沌胚卡", rarity: "mythic", desc: "🌌未覺醒" };
+            }
+
+            if(rng < 0.030) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; 
+            if(rng < 0.060) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; 
+            if(rng < 0.100) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; 
+            if(rng < 0.250) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; 
+            if(rng < 0.500) return { type: "平行閃卡", rarity: "epic", desc: "" }; 
+            return { type: "亮面特卡", rarity: "rare", desc: "" }; 
+        }
         
         function startOpening(mode, costType = 'tickets', targetTeam = null) {
             cardQueue = []; document.getElementById('duplicate-alert').innerText = "";
             if (costType === 'tickets') { if(mode === 'pack' || mode === 'team' || mode === 'pickup') { if (tickets < 1) return alert("抽卡券不足！"); tickets -= 1; } if(mode === 'box') { if (tickets < 10) return alert("抽卡券不足 10 張！"); tickets -= 10; } saveStamina(); updateStamina(); }
-            if(mode === 'pack') { for(let i=0; i<4; i++) generateCard("普卡", "common"); const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc); } else if(mode === 'pickup') { for(let i=0; i<4; i++) generateCard("普卡", "common", "", null, true); const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc, null, true); } else if(mode === 'team') { const teamToDraw = targetTeam || document.getElementById('target-team-select').value; for(let i=0; i<4; i++) generateCard("普卡", "common", "", teamToDraw); const sp = rollSpecialSlot(true); generateCard(sp.type, sp.rarity, sp.desc, teamToDraw); } else if(mode === 'box') { for(let i=0; i<35; i++) generateCard("普卡", "common"); for(let i=0; i<8; i++) generateCard("亮面特卡", "rare"); for(let i=0; i<4; i++) generateCard("平行閃卡", "epic"); generateCard("實戰衣物卡", "relic", "👕切片"); generateCard("專屬簽名卡", "legendary", "✍"); generateCard("限量銀閃卡", "limited-silver", ""); if(Math.random() < 0.05) { const sp = rollSpecialSlot(false); generateCard(sp.type, sp.rarity, sp.desc); } }
+            
+            if(mode === 'pack') { 
+                for(let i=0; i<4; i++) generateCard("普卡", "common"); 
+                const sp = rollSpecialSlot(false, false); generateCard(sp.type, sp.rarity, sp.desc); 
+            } else if(mode === 'pickup') { 
+                for(let i=0; i<4; i++) generateCard("普卡", "common", "", null, true); 
+                const sp = rollSpecialSlot(false, true); generateCard(sp.type, sp.rarity, sp.desc, null, true); 
+            } else if(mode === 'team') { 
+                const teamToDraw = targetTeam || document.getElementById('target-team-select').value; 
+                for(let i=0; i<4; i++) generateCard("普卡", "common", "", teamToDraw); 
+                const sp = rollSpecialSlot(true, false); generateCard(sp.type, sp.rarity, sp.desc, teamToDraw); 
+            } else if(mode === 'box') { 
+                for(let i=0; i<35; i++) generateCard("普卡", "common"); 
+                for(let i=0; i<8; i++) generateCard("亮面特卡", "rare"); 
+                for(let i=0; i<4; i++) generateCard("平行閃卡", "epic"); 
+                generateCard("實戰衣物卡", "relic", "👕切片");  
+                generateCard("限量銀閃卡", "limited-silver", ""); 
+                if(Math.random() < 0.05) { const sp = rollSpecialSlot(false, false); generateCard(sp.type, sp.rarity, sp.desc); } 
+            }
             shuffle(cardQueue); document.getElementById('status-text').innerText = ""; document.getElementById('btn-next').style.display = "block"; showNextCard();
             checkRandomEvent();
         }
 
+        // V16.2 UI Rendering updated for Blank Mythic
         function getCardHTML(data, isGachaReveal = false, isLocked = false) {
             let nameColor = "#fff"; let signatureHtml = ""; let relicHtml = ""; let mythicBadge = ""; let affLevel = affection[data.name] || 1; let attrData = getAttribute(data.name); let attrBadgeHtml = `<div class="attr-badge ${attrData.class}">${attrData.type}</div>`;
-            if (data.rarity === 'relic') { nameColor = '#f39c12'; relicHtml = `<div class="relic-patch">Patch</div>`; } else if (data.rarity === 'legendary') { nameColor = 'var(--pink)'; let signText = data.type === "唇印簽名卡" ? "<span class='lip-mark'>💋</span> " + data.name : "Sign. " + data.name; signatureHtml = `<div class="signature-overlay">${signText}</div>`; } else if (data.rarity === 'mythic') { nameColor = '#fff'; mythicBadge = `<div class="mythic-badge">1/1</div>`; signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">Sign. ${data.name}</div>`; }
+            
+            if (data.rarity === 'relic') { 
+                nameColor = '#f39c12'; relicHtml = `<div class="relic-patch">Patch</div>`; 
+            } else if (data.rarity === 'legendary') { 
+                nameColor = 'var(--pink)'; let signText = data.type === "唇印簽名卡" ? "<span class='lip-mark'>💋</span> " + data.name : "Sign. " + data.name; signatureHtml = `<div class="signature-overlay">${signText}</div>`; 
+            } else if (data.rarity === 'mythic') { 
+                nameColor = '#fff';
+                if (data.type === "1/1 混沌胚卡") {
+                    mythicBadge = `<div class="mythic-badge" style="background:#555; color:#ccc;">胚卡</div>`;
+                    signatureHtml = `<div class="signature-overlay" style="color:#aaa; font-size:16px; text-shadow:none;">(等待注入靈魂)</div>`;
+                } else {
+                    mythicBadge = `<div class="mythic-badge">1/1</div>`;
+                    if (data.type === "1/1 實戰衣物切片") {
+                        relicHtml = `<div class="relic-patch" style="border-color:#fff;">Patch</div>`;
+                        signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">實戰衣物</div>`;
+                    } else if (data.type === "1/1 浪漫唇印簽名") {
+                        signatureHtml = `<div class="signature-overlay" style="color:#ff7eb3; text-shadow: 0 0 10px var(--pink);"><span class='lip-mark'>💋</span> ${data.name}</div>`;
+                    } else {
+                        signatureHtml = `<div class="signature-overlay" style="color:white; text-shadow: 0 0 10px var(--gold);">Sign. ${data.name}</div>`;
+                    }
+                }
+            }
+            
             let serialBadge = ""; if (data.serials && data.serials.length > 0) { let displaySerials = data.serials.slice(0, 3).join(' / '); let more = data.serials.length > 3 ? '...' : ''; serialBadge = `<div class="serial-badge">編號: ${displaySerials}${more}</div>`; } else if (data.serialNum) { serialBadge = `<div class="serial-badge">No. ${data.serialNum}</div>`; }
             let lockedClass = isLocked ? "locked-silhouette" : ""; let flipState = isGachaReveal ? "" : "flipped"; let heartBadge = affLevel > 1 ? `<div class="heart-badge">❤️ Lv.${affLevel}</div>` : ""; let maxAffClass = affLevel === 10 ? "affection-max" : "";
-            return `<div class="card-container-3d ${lockedClass}"><div class="card-inner ${flipState}"><div class="card-back ${maxAffClass}"><div class="card-back-logo">CPBL</div><div class="card-back-sub">Cheerleaders</div></div><div class="card-front rarity-${data.rarity} ${maxAffClass}"><div class="card-team" style="background-color: ${data.teamColor};">${data.team}</div>${attrBadgeHtml} ${mythicBadge} ${serialBadge} ${heartBadge}<div class="card-image-wrapper"><img src="images/${data.name}.jpg" alt="${data.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'missing-img\\'>📸<br>缺少圖片</div>';">${relicHtml} ${signatureHtml}</div><div class="card-type">${data.type}</div><div class="card-name" style="color: ${nameColor};">${data.name}</div></div></div></div>`;
+            
+            let innerImageStyle = data.type === "1/1 混沌胚卡" && !isLocked ? "filter: grayscale(80%) contrast(1.2);" : "";
+
+            return `<div class="card-container-3d ${lockedClass}"><div class="card-inner ${flipState}"><div class="card-back ${maxAffClass}"><div class="card-back-logo">CPBL</div><div class="card-back-sub">Cheerleaders</div></div><div class="card-front rarity-${data.rarity} ${maxAffClass}"><div class="card-team" style="background-color: ${data.teamColor};">${data.team}</div>${attrBadgeHtml} ${mythicBadge} ${serialBadge} ${heartBadge}<div class="card-image-wrapper"><img src="images/${data.name}.jpg" alt="${data.name}" style="${innerImageStyle}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'missing-img\\'>📸<br>缺少圖片</div>';">${relicHtml} ${signatureHtml}</div><div class="card-type">${data.type}</div><div class="card-name" style="color: ${nameColor};">${data.name}</div></div></div></div>`;
         }
 
         function showNextCard() {
@@ -426,7 +523,7 @@
             if (cardQueue.length === 0) { container.innerHTML = ""; status.innerText = "卡包已見底！"; btn.style.display = "none"; document.getElementById('status-text').innerText = "繼續尋找本命女孩吧！"; return; }
             const data = cardQueue.pop(); totalPulls++; localStorage.setItem('cheer_total_pulls_v16', totalPulls); const key = `${data.team}_${data.type}_${data.name}`;
             
-            if (!collection[key]) { collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] }; } else { collection[key].count++; if (data.serialNum) { if (!collection[key].serials) collection[key].serials = []; collection[key].serials.push(data.serialNum); dupAlert.style.color = "var(--gold)"; dupAlert.style.textShadow = "0 0 5px var(--gold)"; dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！`; } else { let earnedPoints = rarityPoints[data.rarity] || 1; fragments += earnedPoints; localStorage.setItem('cheer_fragments_v16', fragments); dupAlert.style.color = "#00f2fe"; dupAlert.style.textShadow = "0 0 5px #00f2fe"; dupAlert.innerText = `♻️ 獲得重複卡片，轉換為 +${earnedPoints} 碎片！`; updateStamina(); } }
+            if (!collection[key]) { collection[key] = { ...data, count: 1, serials: data.serialNum ? [data.serialNum] : [] }; } else { collection[key].count++; if (data.serialNum) { if (!collection[key].serials) collection[key].serials = []; if(!collection[key].serials.includes(data.serialNum)) collection[key].serials.push(data.serialNum); dupAlert.style.color = "var(--gold)"; dupAlert.style.textShadow = "0 0 5px var(--gold)"; dupAlert.innerText = `✨ 獲得專屬限量編號 (No. ${data.serialNum})！`; } else { let earnedPoints = rarityPoints[data.rarity] || 1; fragments += earnedPoints; localStorage.setItem('cheer_fragments_v16', fragments); dupAlert.style.color = "#00f2fe"; dupAlert.style.textShadow = "0 0 5px #00f2fe"; dupAlert.innerText = `♻️ 獲得重複卡片，轉換為 +${earnedPoints} 碎片！`; updateStamina(); } }
             localStorage.setItem('cheer_collection_v16', JSON.stringify(collection)); if (['relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { pullLog.unshift({ ...data, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v16', JSON.stringify(pullLog)); }
             
             if (mainGirlName === data.name && ['epic', 'relic', 'limited-silver', 'limited-gold', 'limited-red', 'legendary', 'mythic'].includes(data.rarity)) { popMainGirlBubble("哇！你剛剛抽到了我的超稀有卡耶！太神啦✨！", 5000); }
@@ -507,7 +604,6 @@
         function removeShowcaseCard() { showcaseSquad[selectorSlotIndex] = null; saveStamina(); renderShowcase(); document.getElementById('selector-modal').style.display = 'none'; }
         function removeCardFromSlot(event, index) { event.stopPropagation(); manualSquad[index] = null; localStorage.setItem('cheer_squad_v16', JSON.stringify(manualSquad)); renderBattleModal(); }
 
-        // 無盡模式與九宮格戰鬥
         function calculateSquadPower() { 
             let finalPower = 0; 
             let cardPowers = new Array(9).fill(0);
@@ -536,10 +632,10 @@
                 let power = cardPowers[i];
                 let row = Math.floor(i/3); let col = i%3;
                 let neighbors = [];
-                if(row > 0) neighbors.push(i-3); // 上
-                if(row < 2) neighbors.push(i+3); // 下
-                if(col > 0) neighbors.push(i-1); // 左
-                if(col < 2) neighbors.push(i+1); // 右
+                if(row > 0) neighbors.push(i-3);
+                if(row < 2) neighbors.push(i+3);
+                if(col > 0) neighbors.push(i-1);
+                if(col < 2) neighbors.push(i+1);
 
                 let localMult = 1.0;
                 neighbors.forEach(n => {
@@ -664,7 +760,6 @@
                 checkRandomEvent(); 
             } catch (err) {
                 console.error("戰鬥錯誤:", err);
-                logContent.innerHTML += `<div style="color:red; margin-top:20px; font-weight:bold;">系統錯誤: ${err.message}</div>`;
                 btnFinish.style.display = 'block';
             }
         }
@@ -756,7 +851,6 @@
         }
         function resetBattleView() { document.getElementById('battle-log-panel').style.display = 'none'; document.getElementById('battle-stages-container').style.display = 'block'; renderBattleModal(); }
 
-        // 派遣
         function renderDispatch() {
             const container = document.getElementById('dispatch-zones-container');
             container.innerHTML = '';
@@ -768,7 +862,8 @@
                     let fatigueClass = state.fatigue < 20 ? 'low' : '';
                     let floorCollected = Math.floor(state.collected);
                     
-                    let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
+                    let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "mythic":8}[card.rarity] || 1;
+                    if (card.type === "1/1 混沌胚卡") rarityCostMult = 1; // 胚卡沒有高額成本
                     let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zone.id] || 1;
                     let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
 
@@ -799,14 +894,14 @@
         function restoreFatigue(zoneId) { 
             let ds = dispatchState[zoneId]; if(!ds) return; 
             let card = collection[ds.cardKey];
-            let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
+            let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "mythic":8}[card.rarity] || 1;
+            if (card.type === "1/1 混沌胚卡") rarityCostMult = 1;
             let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zoneId] || 1;
             let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
             if(fragments >= potionCost) { fragments -= potionCost; totalSpentFragments += potionCost; ds.fatigue = 100; saveStamina(); updateStamina(); renderDispatch(); alert(`花費了 ${potionCost} 碎片購買高級能量飲，${card.name} 的體力已完全恢復！`); } else { alert(`碎片不足！需要 ${potionCost} 碎片才能幫她買飲料。`); } 
         }
         function recallDispatch(zoneId) { let ds = dispatchState[zoneId]; if(ds && Math.floor(ds.collected) >= 1) { fragments += Math.floor(ds.collected); alert(`召回成功！結算獲得 ${Math.floor(ds.collected)} 枚碎片。`); } dispatchState[zoneId] = null; saveStamina(); updateStamina(); renderDispatch(); }
 
-        // 休息室 2D 物理
         let loungeGirls = []; let loungeAnimFrame = null; const LOUNGE_MAX_CAPACITY = 8;
         function renderLounge() { 
             const area = document.getElementById('lounge-area'); area.innerHTML = ''; if (loungeAnimFrame) cancelAnimationFrame(loungeAnimFrame); loungeGirls = []; 
@@ -851,97 +946,76 @@
         }
         function showLoungeBubble(index, customText = null) { let g = loungeGirls[index]; if(!g) return; let text = customText || dialogTree.lv10[Math.floor(Math.random() * dialogTree.lv10.length)]; g.bubbleEl.innerText = text; g.bubbleEl.classList.add('show'); g.pausedUntil = Date.now() + 2500; setTimeout(() => { if(g.bubbleEl) g.bubbleEl.classList.remove('show'); }, 2500); }
 
-        // V16.1 拍賣會與刷新機制
-        let auctionItem = null; let currentBid = 0; let auctionTimer = null; let timeRemain = 0;
+        // V16.2 命運重塑: Alchemy Center
+        function populateAlchemySelect() {
+            let sel = document.getElementById('alchemy-sacrifice-select');
+            sel.innerHTML = '<option value="">-- 請選擇要獻祭的重複 1/1 --</option>';
+            Object.keys(collection).forEach(k => {
+                let card = collection[k];
+                if (card.rarity === 'mythic' && card.count > 1) {
+                    sel.innerHTML += `<option value="${k}">${card.team} - ${card.name} (${card.type}) [擁有多張]</option>`;
+                }
+            });
+        }
         
-        function initAuction() { 
-            if (auctionTimer) clearInterval(auctionTimer); 
-            document.getElementById('auction-my-fragments').innerText = fragments; 
-            cardQueue = []; 
-            
-            const rng = Math.random();
-            let sp = {};
-            if (rng < 0.015) { sp = { type: "1/1 寶石簽名卡", rarity: "mythic", desc: "👑1/1" }; } // 1.5%
-            else if (rng < 0.050) { sp = { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; } // 3.5%
-            else if (rng < 0.120) { sp = { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; } // 7.0%
-            else if (rng < 0.250) { sp = { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; } // 13.0%
-            else if (rng < 0.600) { sp = { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; } // 35.0%
-            else { sp = { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; } // 40.0%
-            
-            generateCard(sp.type, sp.rarity, sp.desc); 
-            auctionItem = cardQueue.pop(); 
-            auctionItem.originalType = auctionItem.type; 
-            
-            const auctionKey = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`;
-            const hasCard = collection[auctionKey] && collection[auctionKey].count > 0;
-            let ownershipHtml = "";
-            
-            if (hasCard) {
-                ownershipHtml = `<div style="background: #2ecc71; color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 10px; display: inline-block; border: 1px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">✨ 已解鎖 (持有數: x${collection[auctionKey].count})</div>`;
+        function performAlchemy() {
+            let selVal = document.getElementById('alchemy-sacrifice-select').value;
+            if (!selVal) return alert("請先選擇要獻祭的卡片！(需持有 2 張以上的同款 1/1 寶石卡)");
+            if (fragments < 1000) return alert("碎片不足 1,000！");
+
+            let targetCard = collection[selVal];
+            if (targetCard.count <= 1) return alert("系統錯誤：該卡片不滿足獻祭條件。");
+
+            fragments -= 1000;
+            totalSpentFragments += 1000;
+            targetCard.count--;
+
+            let unownedGirls = allGirlsFlat.filter(g => {
+                return !collection[`${g.team}_1/1 混沌胚卡_${g.name}`] &&
+                       !collection[`${g.team}_1/1 專屬親筆簽名_${g.name}`] &&
+                       !collection[`${g.team}_1/1 浪漫唇印簽名_${g.name}`] &&
+                       !collection[`${g.team}_1/1 實戰衣物切片_${g.name}`];
+            });
+
+            let targetGirl;
+            if (unownedGirls.length > 0) {
+                targetGirl = unownedGirls[Math.floor(Math.random() * unownedGirls.length)];
             } else {
-                ownershipHtml = `<div style="background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 10px; display: inline-block; border: 1px solid var(--gold); box-shadow: 0 0 10px var(--gold); animation: pulse 1s infinite;">🆕 未持有 (新收藏！)</div>`;
+                targetGirl = allGirlsFlat[Math.floor(Math.random() * allGirlsFlat.length)];
             }
 
-            const displayDiv = document.getElementById('auction-card-display');
-            displayDiv.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center;">${ownershipHtml}${getCardHTML(auctionItem, false, false)}</div>`; 
-            
-            setTimeout(() => {
-                const innerCard = displayDiv.querySelector('.card-inner');
-                if(innerCard) innerCard.classList.add('flipped');
-            }, 100);
+            let newKey = `${targetGirl.team}_1/1 混沌胚卡_${targetGirl.name}`;
+            if (!collection[newKey]) {
+                collection[newKey] = { team: targetGirl.team, teamColor: targetGirl.color, name: targetGirl.name, type: "1/1 混沌胚卡", rarity: "mythic", count: 1, serials: ["1/1"] };
+            } else {
+                collection[newKey].count++;
+            }
 
-            currentBid = 500; 
-            timeRemain = 25; 
-            updateAuctionUI(); 
-            
-            auctionTimer = setInterval(() => { 
-                timeRemain--; 
-                if (timeRemain <= 0) { endAuction(); } 
-                else { 
-                    if (Math.random() < 0.3) { 
-                        currentBid += Math.random() > 0.8 ? 100 : 50; 
-                        logAuction(`NPC 神秘富豪 出價 ${currentBid} 碎片`); 
-                        updateAuctionUI(); 
-                    } 
-                    document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; 
-                } 
-            }, 1000); 
-        }
-
-        // V16.1 新增：花費碎片手動刷新黑市
-        function refreshAuction() {
-            if (fragments < 50) return alert("碎片不足 50，無法打點黑市門衛！");
-            fragments -= 50;
-            totalSpentFragments += 50; // 🆕 記帳
             saveStamina();
+            localStorage.setItem('cheer_collection_v16', JSON.stringify(collection));
             updateStamina();
-            initAuction();
-            logAuction("🔄 支付了 50 碎片，黑市重新上架了新拍品！");
+            populateAlchemySelect();
+
+            alert(`⚡ 煉金法陣啟動...\n失去了一張重複的 1/1，並燃燒了 1,000 碎片。\n\n🎉 恭喜！法陣中浮現了：\n【${targetGirl.team} - ${targetGirl.name}】的 1/1 混沌胚卡！`);
         }
 
-        function placeBid(amount) { let newBid = currentBid + amount; if (fragments < newBid) return alert("碎片不足以支付本次競標！"); currentBid = newBid; logAuction(`你 出價 ${currentBid} 碎片！`); updateAuctionUI(); }
-        function updateAuctionUI() { document.getElementById('auction-price-display').innerText = currentBid; document.getElementById('auction-timer-display').innerText = `倒數 ${timeRemain} 秒截標`; document.getElementById('btn-bid-50').disabled = (fragments < currentBid + 50); document.getElementById('btn-bid-200').disabled = (fragments < currentBid + 200); }
-        function logAuction(msg) { let logDiv = document.getElementById('auction-log-display'); logDiv.innerHTML += `<div>[即時] ${msg}</div>`; logDiv.scrollTop = logDiv.scrollHeight; }
-        
-        function endAuction() { 
-            clearInterval(auctionTimer); document.getElementById('auction-timer-display').innerText = "拍賣結束！"; document.getElementById('btn-bid-50').disabled = true; document.getElementById('btn-bid-200').disabled = true; 
-            let logText = document.getElementById('auction-log-display').innerHTML; 
-            if (logText.includes(`你 出價 ${currentBid}`)) { 
-                alert(`恭喜！你以 ${currentBid} 碎片拍下了 ${auctionItem.name} 的 ${auctionItem.type}！`); 
-                fragments -= currentBid; 
-                totalSpentFragments += currentBid; // 🆕
-                saveStamina(); updateStamina(); document.getElementById('auction-my-fragments').innerText = fragments; totalPulls++; localStorage.setItem('cheer_total_pulls_v16', totalPulls); const key = `${auctionItem.team}_${auctionItem.type}_${auctionItem.name}`; 
-                if (!collection[key]) { collection[key] = { ...auctionItem, count: 1, serials: auctionItem.serialNum ? [auctionItem.serialNum] : [] }; } else { collection[key].count++; if(auctionItem.serialNum) { if(!collection[key].serials) collection[key].serials=[]; collection[key].serials.push(auctionItem.serialNum); } } 
-                localStorage.setItem('cheer_collection_v16', JSON.stringify(collection)); pullLog.unshift({ ...auctionItem, pullNumber: totalPulls }); if (pullLog.length > 200) pullLog.pop(); localStorage.setItem('cheer_pull_log_v16', JSON.stringify(pullLog)); 
+        function toggleModal(modalId) { 
+            const modal = document.getElementById(modalId); 
+            if (modal.style.display === "block") { 
+                modal.style.display = "none"; 
             } else { 
-                alert(`可惜！商品被 NPC 買走了。`); 
-                if (auctionItem.serialNum) { let limitType = auctionItem.originalType || auctionItem.type; let limitKey = `${auctionItem.team}_${limitType}_${auctionItem.name}`; limitedInventory[limitKey] = (limitedInventory[limitKey] || 0) + 1; localStorage.setItem('cheer_inventory_v16', JSON.stringify(limitedInventory)); }
+                modal.style.display = "block"; 
+                if(modalId === 'collection-modal') renderAlbumPage(); 
+                if(modalId === 'log-modal') renderLog(); 
+                if(modalId === 'battle-modal') { currentEnvironment = stadiumEnvironments[Math.floor(Math.random() * stadiumEnvironments.length)]; renderBattleModal(); } 
+                if(modalId === 'shop-modal') { document.getElementById('shop-fragments-display').innerText = fragments; populateAlchemySelect(); } 
+                if(modalId === 'lounge-modal') renderLounge(); 
+                if(modalId === 'dispatch-modal') renderDispatch(); 
+                if(modalId === 'showcase-modal') renderShowcase(); 
+                if(modalId === 'rates-modal') renderRateChart(); 
             } 
         }
-        function closeAuction() { clearInterval(auctionTimer); document.getElementById('auction-modal').style.display = 'none'; document.getElementById('auction-log-display').innerHTML = ''; }
-
-        // Modals
-        function toggleModal(modalId) { const modal = document.getElementById(modalId); if (modal.style.display === "block") { modal.style.display = "none"; } else { modal.style.display = "block"; if(modalId === 'collection-modal') renderAlbumPage(); if(modalId === 'log-modal') renderLog(); if(modalId === 'battle-modal') { currentEnvironment = stadiumEnvironments[Math.floor(Math.random() * stadiumEnvironments.length)]; renderBattleModal(); } if(modalId === 'shop-modal') document.getElementById('shop-fragments-display').innerText = fragments; if(modalId === 'lounge-modal') renderLounge(); if(modalId === 'dispatch-modal') renderDispatch(); if(modalId === 'showcase-modal') renderShowcase(); if(modalId === 'rates-modal') renderRateChart(); } }
+        
         function renderLog() { document.getElementById('total-pulls-display').innerText = totalPulls; const logList = document.getElementById('log-list'); logList.innerHTML = ''; if(pullLog.length === 0) { logList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px;">尚未抽出極稀有大獎...</div>'; return; } pullLog.forEach(log => { let nameColor = "#fff"; let rarityBorder = "#704762"; if(log.rarity === 'mythic') { nameColor = "var(--gold)"; rarityBorder = "var(--gold)"; } else if(log.rarity === 'legendary') { nameColor = "var(--pink)"; rarityBorder = "var(--pink)"; } else if(log.rarity === 'relic') { nameColor = "#e67e22"; rarityBorder = "#e67e22"; } else if(log.rarity === 'limited-red') { nameColor = "#ff3b3b"; rarityBorder = "#ff3b3b"; } else if(log.rarity === 'limited-gold') { nameColor = "#ffd700"; rarityBorder = "#ffd700"; } else if(log.rarity === 'limited-silver') { nameColor = "#c0c0c0"; rarityBorder = "#c0c0c0"; } let serialText = log.serialNum ? ` <span style="color:#aaa; font-size:12px;">(No.${log.serialNum})</span>` : ""; logList.innerHTML += `<div class="log-item" style="border-color: ${rarityBorder};"><div style="text-align:left;"><div style="font-size:12px; color:#aaa; margin-bottom: 2px;"><span style="background:${log.teamColor}; color:white; padding:2px 6px; border-radius:4px;">${log.team}</span> ${log.type}</div><div style="font-size:22px; font-weight:bold; color:${nameColor};">${log.name}${serialText}</div></div><div class="log-pull-num">第 <span style="color:var(--gold); font-size:18px;">${log.pullNumber}</span> 抽</div></div>`; }); }
         function onAlbumFilterChange() { albumTeam = document.getElementById('filter-team').value; albumType = document.getElementById('filter-type').value; albumPage = 1; renderAlbumPage(); } function changeAlbumPage(direction) { const members = db[albumTeam].members; const totalPages = Math.ceil(members.length / cardsPerPage); let newPage = albumPage + direction; if (newPage >= 1 && newPage <= totalPages) { albumPage = newPage; renderAlbumPage(); } }
         
@@ -951,7 +1025,6 @@
             
             let totalCardsOwned = 0; let uniqueCardsOwned = Object.keys(collection).length; Object.values(collection).forEach(c => totalCardsOwned += c.count); 
             
-            // 🆕 加入歷史碎片消耗統計的顯示
             stats.innerHTML = `目前解鎖總圖鑑數：${uniqueCardsOwned} / ${totalUniquePossible} 款 | 總持有卡片：${totalCardsOwned} 張<br><span style="color:#00f2fe; font-size:14px;">💎 歷史累計消耗心願碎片：${totalSpentFragments.toLocaleString()}</span>`; 
             
             let isSeriesComplete = true; members.forEach(m => { if (!collection[`${albumTeam}_${albumType}_${m}`]) isSeriesComplete = false; }); if (isSeriesComplete) { bannerContainer.innerHTML = `<div class="complete-banner">🏆 已完成蒐集！恭喜集齊【${albumTeam}】的【${albumType}】全系列！✨</div>`; } 
@@ -969,14 +1042,70 @@
             }); 
         }
         
-        function viewCardInViewer(cardData) { const viewerModal = document.getElementById('card-viewer-modal'); const viewerContent = document.getElementById('card-viewer-content'); let aff = affection[cardData.name] || 1; let affText = aff === 10 ? "MAX" : aff; let btnDisabled = aff === 10 ? "disabled" : ""; let btnText = aff === 10 ? "好感度已達 MAX" : "🎁 餵食珍奶 (+1 Lv) 消耗 50 碎片"; let html = getCardHTML(cardData, false, false) + `<div style="margin-top: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; border: 1px solid var(--pink); text-align: center; cursor: default;" onclick="event.stopPropagation()"><div style="color: var(--pink); font-weight: bold; font-size: 18px; margin-bottom: 5px;">❤️ 本命好感度: Lv.${affText}</div><div style="color: #aaa; font-size: 12px; margin-bottom: 10px;">(Lv.5 應援戰力 +10% | Lv.10 戰力 +25% 並解鎖專屬特效)</div><button class="btn-frag" ${btnDisabled} onclick="sendGift('${cardData.name}')" style="font-size: 14px; padding: 8px 15px; margin-bottom: 10px; width:100%;">${btnText}</button><button class="btn-team" onclick="setMainGirl('${cardData.name}')" style="font-size: 14px; padding: 8px 15px; width:100%;">💖 設為首頁看板娘</button></div>`; viewerContent.innerHTML = html; viewerModal.style.display = "flex"; currentViewedCard = cardData; }
+        // V16.2 命運重塑: 靈魂刻印 UI 與邏輯
+        function viewCardInViewer(cardData) { 
+            const viewerModal = document.getElementById('card-viewer-modal'); 
+            const viewerContent = document.getElementById('card-viewer-content'); 
+            
+            let aff = affection[cardData.name] || 1; 
+            let affText = aff === 10 ? "MAX" : aff; 
+            let btnDisabled = aff === 10 ? "disabled" : ""; 
+            let btnText = aff === 10 ? "好感度已達 MAX" : "🎁 餵食珍奶 (+1 Lv) 消耗 50 碎片"; 
+            
+            let awakenBtnHtml = "";
+            if (cardData.type === "1/1 混沌胚卡") {
+                let canAwaken = fragments >= 2000;
+                awakenBtnHtml = `<button class="btn-battle" ${canAwaken?"":"disabled"} onclick="awakenSoul('${cardData.team}', '${cardData.name}')" style="font-size: 16px; padding: 12px 15px; margin-bottom: 15px; width:100%; box-shadow: 0 0 20px rgba(0,242,254,0.5); transition: 0.2s;">🌌 消耗 2,000 碎片進行【靈魂刻印】</button>`;
+            }
+
+            let html = getCardHTML(cardData, false, false) + `<div style="margin-top: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; border: 1px solid var(--pink); text-align: center; cursor: default;" onclick="event.stopPropagation()">${awakenBtnHtml}<div style="color: var(--pink); font-weight: bold; font-size: 18px; margin-bottom: 5px;">❤️ 本命好感度: Lv.${affText}</div><div style="color: #aaa; font-size: 12px; margin-bottom: 10px;">(Lv.5 應援戰力 +10% | Lv.10 戰力 +25% 並解鎖專屬特效)</div><button class="btn-frag" ${btnDisabled} onclick="sendGift('${cardData.name}')" style="font-size: 14px; padding: 8px 15px; margin-bottom: 10px; width:100%;">${btnText}</button><button class="btn-team" onclick="setMainGirl('${cardData.name}')" style="font-size: 14px; padding: 8px 15px; width:100%;">💖 設為首頁看板娘</button></div>`; 
+            viewerContent.innerHTML = html; 
+            viewerModal.style.display = "flex"; 
+            currentViewedCard = cardData; 
+        }
+
+        function awakenSoul(team, name) {
+            if (fragments < 2000) return alert("碎片不足！");
+            let oldKey = `${team}_1/1 混沌胚卡_${name}`;
+            if (!collection[oldKey] || collection[oldKey].count < 1) return;
+
+            fragments -= 2000;
+            totalSpentFragments += 2000;
+            collection[oldKey].count--;
+            if (collection[oldKey].count === 0) delete collection[oldKey];
+
+            let rng = Math.random();
+            let newType = "";
+            if (rng < 0.10) newType = "1/1 實戰衣物切片";
+            else if (rng < 0.50) newType = "1/1 浪漫唇印簽名";
+            else newType = "1/1 專屬親筆簽名";
+
+            let newKey = `${team}_${newType}_${name}`;
+            let newCardData = { team: team, teamColor: db[team].color, name: name, type: newType, rarity: "mythic", desc: "👑1/1" };
+
+            if (!collection[newKey]) {
+                collection[newKey] = { ...newCardData, count: 1, serials: ["1/1"] };
+            } else {
+                collection[newKey].count++;
+            }
+
+            saveStamina();
+            localStorage.setItem('cheer_collection_v16', JSON.stringify(collection));
+            updateStamina();
+
+            alert(`✨ 靈魂刻印成功！\n\n一陣刺眼的光芒閃過...\n這張卡片從混沌中甦醒，恭喜覺醒為全服唯一的：\n\n【${newType}】！`);
+            closeCardViewer();
+            renderAlbumPage();
+        }
+
         function closeCardViewer() { document.getElementById('card-viewer-modal').style.display = "none"; currentViewedCard = null; }
         function clearCollection() { if(confirm("確定清空所有資料嗎？(將重置為 0 抽狀態)")) { localStorage.clear(); location.reload(); } }
 
-        const rateData = [ { name: "普卡 (Common)", prob: 50.0, color: "#bdc3c7" }, { name: "亮面特卡 (Rare)", prob: 30.0, color: "#886a7d" }, { name: "平行閃卡 (Epic)", prob: 10.0, color: "#00f2fe" }, { name: "實戰衣物 (Relic)", prob: 5.0, color: "#e67e22" }, { name: "簽名卡 (Legendary)", prob: 4.0, color: "#ff7eb3" }, { name: "限量卡 (Limited)", prob: 0.5, color: "#ffd700" }, { name: "寶石卡 (Mythic)", prob: 0.5, color: "#fff" } ];
+        const rateData = [ { name: "普卡 (Common)", prob: 50.0, color: "#bdc3c7" }, { name: "亮面特卡 (Rare)", prob: 30.0, color: "#886a7d" }, { name: "平行閃卡 (Epic)", prob: 10.0, color: "#00f2fe" }, { name: "實戰衣物 (Relic)", prob: 5.0, color: "#e67e22" }, { name: "簽名卡 (Legendary)", prob: 4.0, color: "#ff7eb3" }, { name: "限量卡 (Limited)", prob: 0.5, color: "#ffd700" }, { name: "胚卡 (Mythic)", prob: 0.5, color: "#fff" } ];
         function renderRateChart() { const container = document.getElementById('rate-chart-body'); container.innerHTML = ''; rateData.forEach(item => { const row = document.createElement('div'); row.className = 'chart-row'; row.innerHTML = `<div class="chart-label">${item.name}</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width: ${item.prob * 2}%; background-color: ${item.color}; box-shadow: 0 0 10px ${item.color}"></div></div><div class="chart-perc">${item.prob}%</div>`; container.appendChild(row); }); }
 
         // 初始化啟動
+        updateOrbitUI();
         updateStamina(); 
         initMainGirl();
     </script>
