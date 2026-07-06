@@ -349,7 +349,7 @@
                                 ds.fatigue -= 0.5; 
                                 if(ds.fatigue < 0) ds.fatigue = 0;
                                 let card = collection[ds.cardKey];
-                                let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "mythic":3.5}[card.rarity] || 1;
+                                let rarityMult = {"common":1, "rare":1.2, "epic":1.5, "limited-silver":2.0, "limited-gold":2.5, "limited-red":3.0, "relic":2.5, "legendary":3.0, "mythic":3.5}[card.rarity] || 1;
                                 if (card.type === "1/1 混沌胚卡") rarityMult = 0; // 胚卡無加成
                                 let affMult = affection[card.name] || 1; 
                                 let zoneBase = dispatchZonesConfig.find(z => z.id === zid).baseRate;
@@ -923,7 +923,7 @@
                     let fatigueClass = state.fatigue < 20 ? 'low' : '';
                     let floorCollected = Math.floor(state.collected);
                     
-                    let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "mythic":8}[card.rarity] || 1;
+                    let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
                     if (card.type === "1/1 混沌胚卡") rarityCostMult = 1; // 胚卡沒有高額成本
                     let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zone.id] || 1;
                     let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
@@ -955,7 +955,7 @@
         function restoreFatigue(zoneId) { 
             let ds = dispatchState[zoneId]; if(!ds) return; 
             let card = collection[ds.cardKey];
-            let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "mythic":8}[card.rarity] || 1;
+            let rarityCostMult = {"common":1, "rare":1.5, "epic":2, "limited-silver":3, "limited-gold":4, "limited-red":5, "relic":4, "legendary":5, "mythic":8}[card.rarity] || 1;
             if (card.type === "1/1 混沌胚卡") rarityCostMult = 1;
             let zoneCostMult = {"zone1": 1, "zone2": 2, "zone3": 3}[zoneId] || 1;
             let potionCost = Math.floor(20 * rarityCostMult * zoneCostMult);
