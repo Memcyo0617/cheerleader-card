@@ -269,7 +269,7 @@
         function getAttribute(name) { const attrs = [ {type: '活力', color: 'var(--attr-v)', class: 'attr-vitality'}, {type: '甜美', color: 'var(--attr-s)', class: 'attr-sweet'}, {type: '酷炫', color: 'var(--attr-c)', class: 'attr-cool'} ]; let hash = 0; for(let i=0; i<name.length; i++) hash += name.charCodeAt(i); return attrs[hash % 3]; }
         
         // V16.2 Rarity mapping updated for Mythic variants
-        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "1/1 混沌胚卡": "mythic", "1/1 專屬親筆簽名": "mythic", "1/1 浪漫唇印簽名": "mythic", "1/1 實戰衣物切片": "mythic" }; 
+        const typeToRarity = { "普卡": "common", "亮面特卡": "rare", "平行閃卡": "epic", "限量銀閃卡": "limited-silver", "限量金閃卡": "limited-gold", "限量紅閃卡": "limited-red", "實戰衣物卡": "relic", "專屬簽名卡": "legendary", "唇印簽名卡": "legendary", "1/1 混沌胚卡": "mythic", "1/1 專屬親筆簽名": "mythic", "1/1 浪漫唇印簽名": "mythic", "1/1 實戰衣物切片": "mythic" };
         const rarityPoints = { "common": 1, "rare": 2, "epic": 10, "relic": 150, "legendary": 250, "mythic": 1000 }; 
         const rarityCombatPower = { "common": 10, "rare": 30, "epic": 100, "limited-silver": 500, "limited-gold": 1000, "limited-red": 3000, "relic": 1500, "legendary": 2500, "mythic": 10000 }; 
         const limitedTiersConfig = { "限量紅閃卡": 5, "限量金閃卡": 10, "限量銀閃卡": 25 };
@@ -512,6 +512,7 @@
             if(rng < 0.030) return { type: "限量紅閃卡", rarity: "limited-red", desc: "" }; 
             if(rng < 0.060) return { type: "限量金閃卡", rarity: "limited-gold", desc: "" }; 
             if(rng < 0.100) return { type: "限量銀閃卡", rarity: "limited-silver", desc: "" }; 
+            if(rng < 0.150) return { type: Math.random() > 0.5 ? "專屬簽名卡" : "唇印簽名卡", rarity: "legendary", desc: "✍親筆" }; // ✨ 這裡加回常規簽名卡
             if(rng < 0.250) return { type: "實戰衣物卡", rarity: "relic", desc: "👕衣物切片" }; 
             if(rng < 0.500) return { type: "平行閃卡", rarity: "epic", desc: "" }; 
             return { type: "亮面特卡", rarity: "rare", desc: "" }; 
@@ -536,6 +537,7 @@
                 for(let i=0; i<8; i++) generateCard("亮面特卡", "rare"); 
                 for(let i=0; i<4; i++) generateCard("平行閃卡", "epic"); 
                 generateCard("實戰衣物卡", "relic", "👕切片");  
+                generateCard("專屬簽名卡", "legendary", "✍"); // ✨ 這裡補回一盒保底的簽名卡
                 generateCard("限量銀閃卡", "limited-silver", ""); 
                 if(Math.random() < 0.05) { const sp = rollSpecialSlot(false, false); generateCard(sp.type, sp.rarity, sp.desc); } 
             }
