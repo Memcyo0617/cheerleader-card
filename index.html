@@ -169,7 +169,7 @@
     <div id="selector-modal" class="modal" style="z-index: 200;">
         <div class="modal-content" style="max-width: 700px; background: rgba(30,15,25,0.98); border: 2px solid var(--gold);">
             <h3 id="selector-title" style="color: var(--gold);">🔍 選擇卡片</h3>
-            <select id="selector-filter" class="team-picker" style="margin-bottom: 15px; width: 100%; max-width: 300px;" onchange="updateSelectorList()">
+           <select id="selector-filter" class="team-picker" style="margin-bottom: 15px; width: 100%; max-width: 300px;" onchange="updateSelectorList()">
                 <option value="all">顯示全部卡種</option>
                 <option value="普卡">🌸 普卡</option>
                 <option value="亮面特卡">💫 亮面特卡</option>
@@ -178,6 +178,8 @@
                 <option value="限量金閃卡">🟡 限量金閃卡</option>
                 <option value="限量紅閃卡">🔴 限量紅閃卡</option>
                 <option value="實戰衣物卡">👕 實戰衣物卡</option>
+                <option value="專屬簽名卡">✍ 專屬簽名卡</option>
+                <option value="唇印簽名卡">💋 唇印簽名卡</option>
                 <option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option>
                 <option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option>
                 <option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option>
@@ -259,7 +261,7 @@
         </div>
     </div>
 
-    <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option><option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option><option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option><option value="1/1 實戰衣物切片">👕 1/1 實戰衣物切片</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
+    <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option><option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option><option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option><option value="1/1 實戰衣物切片">👕 1/1 實戰衣物切片</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
     
     <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
 
