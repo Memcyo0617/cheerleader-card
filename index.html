@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V16.2 靈魂刻印版 + 自選PU)</title>
+    <title>🌸 CPBL 啦啦隊女孩 沉浸式抽卡卡冊 (V16.2 完整修復版)</title>
     <style>
         :root { --bg-color: #2b1b24; --panel-bg: #3d2635; --text-main: #ffe6f2; --gold: #ffd700; --pink: #ff7eb3; --silver: #bdc3c7; --team-ps: #f39c12; --team-db: #e74c3c; --team-ug: #e67e22; --team-rg: #c0392b; --team-fa: #3498db; --team-ws: #2ecc71; --attr-v: #f39c12; --attr-s: #ff7eb3; --attr-c: #00f2fe; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; text-align: center; overflow-x: hidden; }
@@ -14,7 +14,6 @@
         .controls { margin-bottom: 15px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;}
         .team-gacha-section { background: rgba(255,126,179,0.1); padding: 15px; border-radius: 12px; margin: 0 auto 15px auto; max-width: 600px; border: 1px solid rgba(255,126,179,0.3);}
         .pickup-section { background: rgba(255,215,0,0.05); padding: 15px; border-radius: 12px; margin: 0 auto 20px auto; max-width: 600px; border: 1px solid var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.1);}
-        button.btn-guide { background: linear-gradient(45deg, #667eea, #764ba2); color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
         button { background: linear-gradient(45deg, #ff9a9e, #fecfef); border: none; padding: 10px 18px; font-size: 15px; font-weight: bold; color: #551a35; border-radius: 8px; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3); }
         button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 154, 158, 0.5); } button:disabled { background: #555; color: #888; cursor: not-allowed; box-shadow: none; transform: none;}
         button.btn-box { background: linear-gradient(45deg, #a18cd1, #fbc2eb); color: white;} button.btn-team { background: linear-gradient(45deg, #f39c12, #e67e22); color: white;}
@@ -25,6 +24,7 @@
         button.btn-lounge { background: linear-gradient(45deg, #a1c4fd, #c2e9fb); color: #222; box-shadow: 0 4px 15px rgba(161, 196, 253, 0.4); }
         button.btn-dispatch { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4); }
         button.btn-showcase { background: linear-gradient(45deg, #f6d365, #fda085); color: #222; box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4); }
+        button.btn-guide { background: linear-gradient(45deg, #667eea, #764ba2); color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
         
         select.team-picker { background: #553549; color: white; border: 1px solid var(--pink); padding: 8px 15px; border-radius: 6px; font-size: 15px; font-weight: bold; margin-right: 10px;}
         #display-area { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; margin-top: 10px; }
@@ -79,7 +79,7 @@
 </head>
 <body>
 
-    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V16.2 靈魂刻印版 + 自選PU)</h1>
+    <h1>🌸 CPBL 啦啦隊 究極擴充卡冊 (V16.2 完整修復版)</h1>
     
     <div class="resource-bar">
         <span>🎫 抽卡券: <span id="ui-tickets" class="stamina-count">10</span>/10 <span id="ui-timer" class="stamina-timer"></span></span>
@@ -102,12 +102,10 @@
         <div style="margin-bottom: 15px; font-size: 16px;">
             鎖定你的專屬星向女孩：<br>
             <select id="pu-girl-select" class="team-picker" style="margin-top: 10px; width: 80%; max-width: 300px; font-size: 16px; padding: 8px;" onchange="changePUGirl()">
-                <!-- 選項會由 JS 自動生成 -->
-            </select>
+                </select>
         </div>
         <button class="btn-pu" onclick="startOpening('pickup')">🌟 抽 PU 專屬包 (消耗 1 券)</button>
         
-        <!-- V16.2 動態保底：心願星軌 -->
         <div id="orbit-container" style="margin-top: 15px; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--pink); box-shadow: inset 0 0 10px rgba(255,126,179,0.2);">
             <div style="color:var(--pink); font-size:13px; margin-bottom:8px; font-weight:bold;">🌌 心願星軌 (單抽未中 1/1 胚卡提升降臨機率)</div>
             <div style="background:#222; border-radius:8px; height:12px; overflow:hidden; border: 1px solid #553549;">
@@ -171,7 +169,7 @@
     <div id="selector-modal" class="modal" style="z-index: 200;">
         <div class="modal-content" style="max-width: 700px; background: rgba(30,15,25,0.98); border: 2px solid var(--gold);">
             <h3 id="selector-title" style="color: var(--gold);">🔍 選擇卡片</h3>
-           <select id="selector-filter" class="team-picker" style="margin-bottom: 15px; width: 100%; max-width: 300px;" onchange="updateSelectorList()">
+            <select id="selector-filter" class="team-picker" style="margin-bottom: 15px; width: 100%; max-width: 300px;" onchange="updateSelectorList()">
                 <option value="all">顯示全部卡種</option>
                 <option value="普卡">🌸 普卡</option>
                 <option value="亮面特卡">💫 亮面特卡</option>
@@ -265,7 +263,50 @@
 
     <div id="collection-modal" class="modal"><button class="close-btn" onclick="toggleModal('collection-modal')">✖ 關閉卡冊</button><div class="modal-content" style="max-width:950px;"><h2 style="color: var(--pink); text-align:center; margin-bottom:10px;">📖 啦啦隊女孩 收藏卡冊</h2><div id="collection-stats" style="text-align:center; margin-bottom:10px; color:#fbc2eb; font-weight:bold;"></div><div id="album-complete-banner"></div><div class="album-filters"><select id="filter-team" onchange="onAlbumFilterChange()"><option value="Passion Sisters">中信兄弟</option><option value="Uni Girls">統一獅</option><option value="Fubon Angels">富邦悍將</option><option value="Dragons Beauties">味全龍</option><option value="Rakuten Girls">樂天桃猿</option><option value="Wing Stars">台鋼雄鷹</option></select><select id="filter-type" onchange="onAlbumFilterChange()"><option value="普卡">🌸 普卡</option><option value="亮面特卡">💫 亮面特卡</option><option value="平行閃卡">✨ 平行閃卡</option><option value="限量銀閃卡">⚪ 限量銀閃卡</option><option value="限量金閃卡">🟡 限量金閃卡</option><option value="限量紅閃卡">🔴 限量紅閃卡</option><option value="實戰衣物卡">👕 實戰衣物卡</option><option value="專屬簽名卡">✍ 專屬簽名卡</option><option value="唇印簽名卡">💋 唇印簽名卡</option><option value="1/1 混沌胚卡">🌌 1/1 混沌胚卡</option><option value="1/1 專屬親筆簽名">👑 1/1 專屬親筆簽名</option><option value="1/1 浪漫唇印簽名">💋 1/1 浪漫唇印簽名</option><option value="1/1 實戰衣物切片">👕 1/1 實戰衣物切片</option></select></div><div id="album-grid" class="album-grid-container"></div><div class="album-pagination"><button onclick="changeAlbumPage(-1)">◀ 上一頁</button><span id="album-page-info" class="album-page-info">1 / 1</span><button onclick="changeAlbumPage(1)">下一頁 ▶</button></div></div></div>
     
-    <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-top: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
+    <div id="card-viewer-modal" class="modal" style="display:none; align-items:center; flex-direction: column; cursor: pointer;" onclick="closeCardViewer()"><div id="card-viewer-content" style="transform: scale(1.1); margin-bottom: 30px;" onclick="event.stopPropagation()"></div><button style="background: #444; color: white; border: 2px solid #666; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top:30px; z-index: 10;" onclick="closeCardViewer()">✖ 關閉檢視</button></div>
+
+    <div id="guide-modal" class="modal">
+        <button class="close-btn" onclick="toggleModal('guide-modal')">✖ 關閉指南</button>
+        <div class="modal-content" style="max-width: 800px; text-align: left;">
+            <h2 style="color: var(--pink); text-align:center; text-shadow: 0 0 10px rgba(255,126,179,0.5); margin-bottom: 20px;">📖 遊戲系統與玩法指南</h2>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: var(--gold);">🎟️ 核心資源系統</h3>
+                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
+                    <li><strong style="color:white;">抽卡券：</strong>每 10 分鐘回復 1 張，上限 10 張。用於所有常規抽卡。</li>
+                    <li><strong style="color:white;">應援力：</strong>每 3 小時回復 1 點，上限 5 點。用於挑戰「無盡應援巡迴賽」或掃蕩關卡。</li>
+                    <li><strong style="color:white;">心願碎片：</strong>遊戲通用貨幣。可透過「派遣任務」掛機獲得，或由「抽到重複卡片」轉化而來。可用於購買補給、餵食提升好感度、或執行終極煉金。</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #00f2fe;">🎯 卡池選擇策略</h3>
+                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
+                    <li><strong style="color:white;">🎁 撕開一盒 (10抽)：</strong><span style="color:#84fab0;">【新手推薦】</span>總共可獲 50 張卡。固定保底「專屬簽名卡、衣物卡、限量銀卡」各 1 張！快速累積資源的首選。</li>
+                    <li><strong style="color:white;">🎯 專屬球隊包 (單抽)：</strong><span style="color:#84fab0;">【組建陣容】</span>必定抽出指定球隊女孩，適合用來湊齊巡迴賽的「同隊連線加成」。</li>
+                    <li><strong style="color:white;">🌟 自選 PU 包 (單抽)：</strong><span style="color:#f39c12;">【大後期目標】</span>鎖定你的本命女孩。若抽中最高稀有度，有 40% 機率是她，60% 機率隨機歪出其他女孩。此卡池獨享<strong style="color:#ff7eb3;">「心願星軌 (動態保底)」</strong>機制。</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #ff7eb3;">🌌 命運重塑：1/1 神物與煉金</h3>
+                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
+                    <li><strong style="color:white;">心願星軌：</strong>單抽 PU 包未中「1/1 胚卡」時，下一次降臨機率會微幅上升 (+0.1%)。一旦出貨，機率即重置回 1.5%。</li>
+                    <li><strong style="color:white;">靈魂刻印：</strong>抽到的「1/1 混沌胚卡」無法提供派遣加成。你必須前往卡冊，消耗 <strong style="color:#00f2fe;">2,000 碎片</strong> 為其注入靈魂。覺醒後將化為全服唯一的「專屬親筆簽名 (50%)」、「浪漫唇印簽名 (40%)」或極稀有的「實戰衣物切片 (10%)」。</li>
+                    <li><strong style="color:white;">超頻煉金：</strong>若不幸歪出或抽到「重複的 1/1 寶石卡」，可前往商店獻祭該卡與 1,000 碎片，強行等價交換一張「你尚未持有的隨機 1/1 胚卡」。</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
+                <h3 style="margin-top: 0; color: #f39c12;">⚔️ 戰鬥與養成功能</h3>
+                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
+                    <li><strong style="color:white;">好感度 (餵食珍奶)：</strong>消耗碎片可提升等級。Lv.5 解鎖戰力 +10%，Lv.10 解鎖戰力 +25% 並能讓女孩入住「專屬休息室」。</li>
+                    <li><strong style="color:white;">九宮格巡迴賽：</strong>上陣 9 位女孩。相鄰位置若為「同球隊」(+15%) 或「同屬性」(+10%) 會觸發戰力加成。留意每日球場環境加成！若戰力達到通關要求的 2 倍，可直接消耗應援力進行「碾壓掃蕩」。</li>
+                    <li><strong style="color:white;">女孩派遣：</strong>將高星卡片派遣至各地農碎片。請注意女孩的體力值，體力歸 0 會停止收益，需消耗碎片買能量飲料恢復。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <script>
         const db = { "Passion Sisters": { color: "var(--team-ps)", members: ["凱蒂", "貴貴", "希希", "短今", "峮峮", "晴兒", "波波", "畇二", "妮可", "林可", "君白", "曼容", "小迪", "沛婕", "汶汶", "怡琪", "Wendy", "夏蕾", "少鹽", "邊荷律", "牛奶", "芊芊", "衣宸", "瑄", "莎莎", "維尼", "璇璇", "桃子", "金渡兒", "JJUBI", "珮含", "容容"] }, "Uni Girls": { color: "var(--team-ug)", members: ["妮妮", "Yuki", "Mina", "瑟七", "賴賴", "少少", "芮絲", "曼萍", "Joy", "柔一", "Maggie", "斐棋", "一七", "侯芳", "包子", "千紘", "希美", "趙娟週", "文慧真", "安惠志", "藤本彩花", "子筑", "安琪", "妍蓁", "培根", "姿琳"] }, "Fubon Angels": { color: "var(--team-fa)", members: ["潔米", "慈妹", "檸檬", "Jessy", "丹丹", "秀秀子", "Tiffany", "安娜", "沁沁", "維心", "奶昔", "大頭", "卡洛琳", "栗子", "南珉貞", "李雅英", "李珠珢", "禾羽", "潔潔", "雅惟", "李晧禎", "貝兒", "小芊", "呱呱", "Laynee", "陳愉", "朴星垠"] }, "Dragons Beauties": { color: "var(--team-db)", members: ["心璇", "馬妹", "小映", "口水", "Like", "張晴", "芮妮", "霖霖", "小蛙", "蘿拉", "寧寧", "詩雅", "璦昀", "沛沛", "林襄", "李多慧", "Yuri", "菲菲", "群群", "佩霓", "靜靜", "金娜妍", "權喜原", "貝拉", "姵宸", "瑄瑄"] }, "Rakuten Girls": { color: "var(--team-rg)", members: ["岱縈", "琳妲","孟潔", "卉妮", "若潼", "筠熹", "穎樂", "熊霓", "穆又甯", "宋宋", "禹菡", "貝佳頤", "言梓璇", "溫妮", "Kira", "崔荷潾", "Mika", "高橋佳帆", "笑笑", "彭彭", "廉世彬", "禹洙漢", "河智媛", "高佳彬", "金佳垠"] }, "Wing Stars": { color: "var(--team-ws)", members: ["安芝儇", "朴旻曙", "螢螢", "圈圈", "恬魚", "昆昆", "李樂", "JC", "黃澄澄", "妡0", "艾琳", "一粒", "瑈瑈", "林浠", "筱雯", "毛毛", "芃芃", "玖玖", "米亞", "米妮", "尼莫", "千千", "ET", "會晴", "芋頭", "Nina"] } };
@@ -1169,49 +1210,6 @@
         const rateData = [ { name: "普卡 (Common)", prob: 50.0, color: "#bdc3c7" }, { name: "亮面特卡 (Rare)", prob: 30.0, color: "#886a7d" }, { name: "平行閃卡 (Epic)", prob: 10.0, color: "#00f2fe" }, { name: "實戰衣物 (Relic)", prob: 5.0, color: "#e67e22" }, { name: "簽名卡 (Legendary)", prob: 4.0, color: "#ff7eb3" }, { name: "限量卡 (Limited)", prob: 0.5, color: "#ffd700" }, { name: "胚卡 (Mythic)", prob: 0.5, color: "#fff" } ];
         function renderRateChart() { const container = document.getElementById('rate-chart-body'); container.innerHTML = ''; rateData.forEach(item => { const row = document.createElement('div'); row.className = 'chart-row'; row.innerHTML = `<div class="chart-label">${item.name}</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width: ${item.prob * 2}%; background-color: ${item.color}; box-shadow: 0 0 10px ${item.color}"></div></div><div class="chart-perc">${item.prob}%</div>`; container.appendChild(row); }); }
 
-
-        <div id="guide-modal" class="modal">
-        <button class="close-btn" onclick="toggleModal('guide-modal')">✖ 關閉指南</button>
-        <div class="modal-content" style="max-width: 800px; text-align: left;">
-            <h2 style="color: var(--pink); text-align:center; text-shadow: 0 0 10px rgba(255,126,179,0.5); margin-bottom: 20px;">📖 遊戲系統與玩法指南</h2>
-            
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
-                <h3 style="margin-top: 0; color: var(--gold);">🎟️ 核心資源系統</h3>
-                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
-                    <li><strong style="color:white;">抽卡券：</strong>每 10 分鐘回復 1 張，上限 10 張。用於所有常規抽卡。</li>
-                    <li><strong style="color:white;">應援力：</strong>每 3 小時回復 1 點，上限 5 點。用於挑戰「無盡應援巡迴賽」或掃蕩關卡。</li>
-                    <li><strong style="color:white;">心願碎片：</strong>遊戲通用貨幣。可透過「派遣任務」掛機獲得，或由「抽到重複卡片」轉化而來。可用於購買補給、餵食提升好感度、或執行終極煉金。</li>
-                </ul>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
-                <h3 style="margin-top: 0; color: #00f2fe;">🎯 卡池選擇策略</h3>
-                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
-                    <li><strong style="color:white;">🎁 撕開一盒 (10抽)：</strong><span style="color:#84fab0;">【新手推薦】</span>總共可獲 50 張卡。固定保底「專屬簽名卡、衣物卡、限量銀卡」各 1 張！快速累積資源的首選。</li>
-                    <li><strong style="color:white;">🎯 專屬球隊包 (單抽)：</strong><span style="color:#84fab0;">【組建陣容】</span>必定抽出指定球隊女孩，適合用來湊齊巡迴賽的「同隊連線加成」。</li>
-                    <li><strong style="color:white;">🌟 自選 PU 包 (單抽)：</strong><span style="color:#f39c12;">【大後期目標】</span>鎖定你的本命女孩。若抽中最高稀有度，有 40% 機率是她，60% 機率隨機歪出其他女孩。此卡池獨享<strong style="color:#ff7eb3;">「心願星軌 (動態保底)」</strong>機制。</li>
-                </ul>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
-                <h3 style="margin-top: 0; color: #ff7eb3;">🌌 命運重塑：1/1 神物與煉金</h3>
-                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
-                    <li><strong style="color:white;">心願星軌：</strong>單抽 PU 包未中「1/1 胚卡」時，下一次降臨機率會微幅上升 (+0.1%)。一旦出貨，機率即重置回 1.5%。</li>
-                    <li><strong style="color:white;">靈魂刻印：</strong>抽到的「1/1 混沌胚卡」無法提供派遣加成。你必須前往卡冊，消耗 <strong style="color:#00f2fe;">2,000 碎片</strong> 為其注入靈魂。覺醒後將化為全服唯一的「專屬親筆簽名 (50%)」、「浪漫唇印簽名 (40%)」或極稀有的「實戰衣物切片 (10%)」。</li>
-                    <li><strong style="color:white;">超頻煉金：</strong>若不幸歪出或抽到「重複的 1/1 寶石卡」，可前往商店獻祭該卡與 1,000 碎片，強行等價交換一張「你尚未持有的隨機 1/1 胚卡」。</li>
-                </ul>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid #704762; margin-bottom: 15px;">
-                <h3 style="margin-top: 0; color: #f39c12;">⚔️ 戰鬥與養成功能</h3>
-                <ul style="color: #ddd; line-height: 1.6; padding-left: 20px;">
-                    <li><strong style="color:white;">好感度 (餵食珍奶)：</strong>消耗碎片可提升等級。Lv.5 解鎖戰力 +10%，Lv.10 解鎖戰力 +25% 並能讓女孩入住「專屬休息室」。</li>
-                    <li><strong style="color:white;">九宮格巡迴賽：</strong>上陣 9 位女孩。相鄰位置若為「同球隊」(+15%) 或「同屬性」(+10%) 會觸發戰力加成。留意每日球場環境加成！若戰力達到通關要求的 2 倍，可直接消耗應援力進行「碾壓掃蕩」。</li>
-                    <li><strong style="color:white;">女孩派遣：</strong>將高星卡片派遣至各地農碎片。請注意女孩的體力值，體力歸 0 會停止收益，需消耗碎片買能量飲料恢復。</li>
-                </ul>
-            </div>
-        </div>
-    </div>
         // 初始化啟動
         initPUSelect();
         updateOrbitUI();
